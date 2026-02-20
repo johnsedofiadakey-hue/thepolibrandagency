@@ -1,5 +1,7 @@
-'use client';
+"use client";
 import Link from 'next/link';
+import { useContext } from 'react';
+import { SettingsContext } from './SettingsProvider';
 
 const footerLinks = {
     Platform: [
@@ -21,18 +23,19 @@ const footerLinks = {
     ],
 };
 
-export default function Footer() {
+    const settings = useContext(SettingsContext);
+    const theme = settings.theme;
     return (
-        <footer style={{ background: '#0d0d0d', color: 'rgba(255,255,255,0.75)', paddingTop: '80px' }}>
+        <footer style={{ background: theme.primary, color: theme.text, paddingTop: '80px', borderTop: `1px solid ${theme.secondary}` }}>
             <div className="container-brand">
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '3rem', paddingBottom: '60px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                     {/* Brand Column */}
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-                            <img src="/logo.png" alt="The Polibrand Agency" style={{ height: 56, width: 56, objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="The Polibrand Agency" style={{ height: 56, width: 56, objectFit: 'contain', background: theme.background, borderRadius: 8, border: `2px solid ${theme.secondary}` }} />
                             <div>
-                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: '#C9A227', letterSpacing: '1px' }}>THE POLIBRAND</div>
-                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.6rem', color: '#fff', letterSpacing: '2px' }}>AGENCY</div>
+                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: theme.secondary, letterSpacing: '1px' }}>THE POLIBRAND</div>
+                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.6rem', color: theme.text, letterSpacing: '2px' }}>AGENCY</div>
                             </div>
                         </div>
                         <p style={{ fontSize: '0.85rem', lineHeight: 1.8, maxWidth: 280, marginBottom: '1.5rem' }}>

@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { SettingsContext } from '@/components/SettingsProvider';
 
 const sections = [
     { id: 'hero', label: 'Homepage – Hero', visible: true, text: 'Building Political Power for Women Across Africa.' },
@@ -12,6 +14,7 @@ const sections = [
 ];
 
 export default function ContentPage() {
+    const settings = useContext(SettingsContext);
     const [activeSection, setActiveSection] = useState(sections[0].id);
     const [sectionData, setSectionData] = useState(
         Object.fromEntries(sections.map((s) => [s.id, { text: s.text, visible: s.visible }]))
@@ -24,7 +27,7 @@ export default function ContentPage() {
         <div>
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Content Management</h1>
+                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: settings.theme.text, marginBottom: '0.25rem' }}>Content Management</h1>
                     <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Edit and manage all public-facing website content</p>
                 </div>
                 <button className="btn-primary" style={{ fontSize: '0.82rem' }} onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>

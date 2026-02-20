@@ -1,6 +1,8 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { useContext } from 'react';
+import { SettingsContext } from '@/components/SettingsProvider';
 
 const services = [
   {
@@ -42,7 +44,8 @@ const stats = [
   { number: '12', label: 'Institutional Partners' },
 ];
 
-export default function HomePage() {
+  const settings = useContext(SettingsContext);
+  const theme = settings.theme;
   return (
     <>
       <Navbar />
@@ -50,7 +53,7 @@ export default function HomePage() {
       {/* ─── HERO ─── */}
       <section style={{
         minHeight: '100vh', position: 'relative', display: 'flex', flexDirection: 'column',
-        background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 40%, #154e2b 70%, #0a2a14 100%)',
+        background: `linear-gradient(135deg, ${theme.background} 0%, ${theme.primary} 40%, ${theme.primary} 70%, ${theme.accent} 100%)`,
         overflow: 'hidden',
       }}>
         {/* Background texture overlay */}
@@ -77,8 +80,8 @@ export default function HomePage() {
           <div style={{ maxWidth: 760 }}>
             {/* Tag */}
             <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '2rem' }}>
-              <div style={{ width: 32, height: 1, background: '#C9A227' }} />
-              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>
+              <div style={{ width: 32, height: 1, background: theme.secondary }} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: theme.secondary, letterSpacing: '3px', textTransform: 'uppercase' }}>
                 The Leading Political Branding Partner for Women Leaders
               </span>
             </div>
@@ -86,16 +89,16 @@ export default function HomePage() {
             {/* Headline */}
             <h1 className="animate-fade-up-delay-1" style={{
               fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2.4rem, 5vw, 4rem)',
-              color: '#FFFFFF', lineHeight: 1.18, marginBottom: '1.75rem', letterSpacing: '-0.5px',
+              color: theme.text, lineHeight: 1.18, marginBottom: '1.75rem', letterSpacing: '-0.5px',
             }}>
               Building Political Power<br />
-              <span style={{ color: '#C9A227' }}>for Women</span> Across Africa.
+              <span style={{ color: theme.secondary }}>for Women</span> Across Africa.
             </h1>
 
             {/* Sub */}
             <p className="animate-fade-up-delay-2" style={{
               fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', fontWeight: 400,
-              color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 580, marginBottom: '2.5rem',
+              color: theme.text, lineHeight: 1.8, maxWidth: 580, marginBottom: '2.5rem',
             }}>
               Strategic branding, campaign communication, and leadership development
               for women shaping the future of governance.

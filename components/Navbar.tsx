@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { SettingsContext } from './SettingsProvider';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -11,9 +12,10 @@ const navLinks = [
     { label: 'Institutional Clients', href: '/institutional-clients' },
 ];
 
-export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const settings = useContext(SettingsContext);
+    const theme = settings.theme;
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -21,13 +23,18 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Shrink logo/company name on scroll
+    const logoSize = scrolled ? 60 : 100;
+    const nameSize = scrolled ? '1.5rem' : '2.5rem';
+    const subSize = scrolled ? '1rem' : '1.5rem';
+
     return (
         <nav
             style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-                background: scrolled ? 'rgba(17,17,17,0.97)' : 'rgba(17,17,17,0.6)',
+                background: scrolled ? theme.primary : 'rgba(17,17,17,0.6)',
                 backdropFilter: 'blur(16px)',
-                borderBottom: scrolled ? '1px solid rgba(201,162,39,0.25)' : 'none',
+                borderBottom: scrolled ? `1px solid ${theme.secondary}` : 'none',
                 transition: 'all 0.35s ease',
                 padding: '0 24px',
             }}
@@ -35,12 +42,12 @@ export default function Navbar() {
             <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
                 {/* Logo */}
                 <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-                    <img src="/logo.png" alt="The Polibrand Agency" className="logo" style={{ height: 100, width: 100, objectFit: 'contain', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' }} />
+                    <img src="/logo.png" alt="The Polibrand Agency" className="logo" style={{ height: logoSize, width: logoSize, objectFit: 'contain', boxShadow: '0 4px 24px rgba(0,0,0,0.15)', transition: 'height 0.3s, width 0.3s' }} />
                     <div>
-                        <div className="company-name" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.5rem', color: '#C9A227', letterSpacing: '2px', lineHeight: 1, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
+                        <div className="company-name" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: nameSize, color: theme.secondary, letterSpacing: '2px', lineHeight: 1, textShadow: '0 2px 8px rgba(0,0,0,0.12)', transition: 'font-size 0.3s, color 0.3s' }}>
                             THE POLIBRAND
                         </div>
-                        <div className="company-sub" style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '1.5rem', color: '#ffffff', letterSpacing: '4px', lineHeight: 1.4, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
+                        <div className="company-sub" style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: subSize, color: theme.text, letterSpacing: '4px', lineHeight: 1.4, textShadow: '0 2px 8px rgba(0,0,0,0.12)', transition: 'font-size 0.3s, color 0.3s' }}>
                             AGENCY
                         </div>
                     </div>

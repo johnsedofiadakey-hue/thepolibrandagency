@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { SettingsContext } from '@/components/SettingsProvider';
 
 const typographyPresets = [
     { id: 'institutional', label: 'Institutional', headline: 'Cinzel', body: 'Inter' },
@@ -7,14 +8,8 @@ const typographyPresets = [
     { id: 'classic', label: 'Classic', headline: 'Cinzel', body: 'Georgia' },
 ];
 
-export default function BrandSettingsPage() {
-    const [colors, setColors] = useState({
-        primary: '#1F6F3E',
-        secondary: '#C9A227',
-        accent: '#B22222',
-        background: '#F9F6F1',
-        text: '#111111',
-    });
+    const settings = useContext(SettingsContext);
+    const [colors, setColors] = useState(settings.theme);
     const [typography, setTypography] = useState('institutional');
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -48,8 +43,8 @@ export default function BrandSettingsPage() {
     };
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div style={{ background: colors.background }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', color: colors.text }}>
                 <div>
                     <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Brand Settings</h1>
                     <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Customize the platform visual identity</p>
@@ -57,7 +52,7 @@ export default function BrandSettingsPage() {
                 <button
                     onClick={handleSave}
                     className="btn-primary"
-                    style={{ background: saved ? '#16a34a' : undefined }}
+                    style={{ background: saved ? colors.primary : colors.secondary, color: colors.text }}
                 >
                     {saved ? '✓ Saved!' : 'Save Changes'}
                 </button>
@@ -65,8 +60,8 @@ export default function BrandSettingsPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 {/* Color Settings */}
-                <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
-                    <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.05rem', color: '#111', marginBottom: '1.5rem' }}>Color Palette</h3>
+                <div style={{ background: colors.background, borderRadius: 8, border: `1px solid ${colors.secondary}`, padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
+                    <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.05rem', color: colors.text, marginBottom: '1.5rem' }}>Color Palette</h3>
 
                     {/* Quick presets */}
                     <div style={{ marginBottom: '1.5rem' }}>

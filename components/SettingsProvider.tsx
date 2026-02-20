@@ -30,6 +30,18 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       .then(data => setSettings(data));
   }, []);
 
+  React.useEffect(() => {
+    const root = document.documentElement;
+    const theme = settings.theme;
+    if (theme) {
+      root.style.setProperty('--color-primary', theme.primary);
+      root.style.setProperty('--color-secondary', theme.secondary);
+      root.style.setProperty('--color-accent', theme.accent);
+      root.style.setProperty('--color-bg', theme.background);
+      root.style.setProperty('--color-text', theme.text);
+    }
+  }, [settings]);
+
   return (
     <SettingsContext.Provider value={settings}>
       {children}
