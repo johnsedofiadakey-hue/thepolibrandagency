@@ -1,5 +1,5 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
 const typographyPresets = [
     { id: 'institutional', label: 'Institutional', headline: 'Cinzel', body: 'Inter' },
@@ -17,11 +17,29 @@ export default function BrandSettingsPage() {
     });
     const [typography, setTypography] = useState('institutional');
     const [saved, setSaved] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    const handleSave = () => {
+    // Load settings from API
+    React.useEffect(() => {
+        fetch('/api/settings')
+            .then(res => res.json())
+            .then(data => {
+                setColors(data.theme);
+                setTypography(data.typography);
+                setLoading(false);
+            });
+    }, []);
+
+    // Save settings to API
+    const handleSave = async () => {
         setSaved(true);
+        await fetch('/api/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ theme: colors, typography }),
+        });
         setTimeout(() => setSaved(false), 2000);
-    };
+    } 
 
     const presetColors: Record<string, { primary: string; secondary: string; accent: string; background: string; text: string }> = {
         polibrand: { primary: '#1F6F3E', secondary: '#C9A227', accent: '#B22222', background: '#F9F6F1', text: '#111111' },

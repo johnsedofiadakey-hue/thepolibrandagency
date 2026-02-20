@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export": "next export"
     "lint": "eslint"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
+    "@netlify/next": "^1.4.9",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.575.0",

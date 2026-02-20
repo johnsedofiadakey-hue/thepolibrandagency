@@ -35,12 +35,12 @@ export default function Navbar() {
             <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
                 {/* Logo */}
                 <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-                    <img src="/logo.png" alt="The Polibrand Agency" style={{ height: 50, width: 50, objectFit: 'contain' }} />
+                    <img src="/logo.png" alt="The Polibrand Agency" className="logo" style={{ height: 100, width: 100, objectFit: 'contain', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' }} />
                     <div>
-                        <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.85rem', color: '#C9A227', letterSpacing: '1px', lineHeight: 1 }}>
+                        <div className="company-name" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.5rem', color: '#C9A227', letterSpacing: '2px', lineHeight: 1, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
                             THE POLIBRAND
                         </div>
-                        <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.65rem', color: '#ffffff', letterSpacing: '2px', lineHeight: 1.4 }}>
+                        <div className="company-sub" style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '1.5rem', color: '#ffffff', letterSpacing: '4px', lineHeight: 1.4, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
                             AGENCY
                         </div>
                     </div>
