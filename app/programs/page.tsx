@@ -50,19 +50,19 @@ export default function ProgramsPage() {
 
             {/* Hero */}
             <section style={{
-                background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 100%)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                 padding: '160px 0 80px', position: 'relative', overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, rgba(201,162,39,0.1) 0%, transparent 60%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
                 <div className="container-brand" style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
-                        <div style={{ width: 28, height: 1, background: '#C9A227' }} />
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>Programs & Courses</span>
+                        <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Learning & Growth</span>
                     </div>
-                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.5rem', maxWidth: 700 }}>
-                        Structured Programs for Political Leadership Development.
+                    <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4.5vw, 3.4rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.5rem' }}>
+                        Elite Programs for<br />Political Advancement.
                     </h1>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 560 }}>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 580 }}>
                         From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable.
                     </p>
                 </div>
@@ -77,19 +77,19 @@ export default function ProgramsPage() {
                                 <span className="badge badge-green">6 Weeks · Hybrid</span>
                             </div>
                             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
-                                <div style={{ width: 28, height: 1, background: '#1F6F3E' }} />
-                                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#1F6F3E', letterSpacing: '3px', textTransform: 'uppercase' }}>Flagship Program</span>
+                                <div style={{ width: 28, height: 1, background: 'var(--color-primary)' }} />
+                                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Flagship Program</span>
                             </div>
-                            <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#111', marginBottom: '0.5rem' }}>Leadership Branding Bootcamp</h2>
+                            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111', marginBottom: '0.5rem' }}>Leadership Branding Bootcamp</h2>
                             <div className="divider-gold" />
-                            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.95rem', color: '#555', lineHeight: 1.9, marginBottom: '1.5rem' }}>
+                            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#555', lineHeight: 1.9, marginBottom: '1.5rem' }}>
                                 An intensive 6-week hybrid program designed to build every structural element of your political brand — from identity architecture to campaign-ready communication.
                             </p>
-                            <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.8rem', color: '#1F6F3E', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem' }}>PROGRAM MODULES</p>
+                            <p style={{ fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.8rem', color: 'var(--color-primary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem' }}>PROGRAM MODULES</p>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                                 {bootcampModules.map((m, i) => (
-                                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid var(--color-border)', fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', color: '#333' }}>
-                                        <span style={{ width: 22, height: 22, background: '#1F6F3E', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
+                                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid var(--color-border)', fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: '#333' }}>
+                                        <span style={{ width: 22, height: 22, background: 'var(--color-primary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
                                         {m}
                                     </li>
                                 ))}
@@ -100,7 +100,7 @@ export default function ProgramsPage() {
                         </div>
                         <div>
                             <div style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: 4, padding: '2.5rem', marginBottom: '1.5rem' }}>
-                                <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '1.25rem' }}>Program Outcomes</h3>
+                                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '1.25rem' }}>Program Outcomes</h3>
                                 {[
                                     { label: 'Personal Brand Framework', icon: '◈' },
                                     { label: 'Media Readiness Profile', icon: '◉' },
@@ -108,16 +108,16 @@ export default function ProgramsPage() {
                                     { label: 'Campaign Communication Playbook', icon: '◇' },
                                 ].map((o) => (
                                     <div key={o.label} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, padding: '12px', background: '#fff', borderRadius: 4, border: '1px solid var(--color-border)' }}>
-                                        <span style={{ color: '#C9A227', fontSize: '1rem' }}>{o.icon}</span>
-                                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.86rem', fontWeight: 500, color: '#333' }}>{o.label}</span>
+                                        <span style={{ color: 'var(--color-secondary)', fontSize: '1rem' }}>{o.icon}</span>
+                                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.86rem', fontWeight: 500, color: '#333' }}>{o.label}</span>
                                     </div>
                                 ))}
                             </div>
-                            <div style={{ background: '#1F6F3E', borderRadius: 4, padding: '2rem', color: '#fff' }}>
-                                <h4 style={{ fontFamily: 'Cinzel, serif', fontWeight: 600, fontSize: '1rem', marginBottom: '0.75rem' }}>Next Cohort</h4>
-                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginBottom: '1rem' }}>Applications for the March 2026 cohort are open. Limited to 25 participants.</p>
+                            <div style={{ background: 'var(--color-primary)', borderRadius: 4, padding: '2rem', color: '#fff' }}>
+                                <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1rem', marginBottom: '0.75rem' }}>Next Cohort</h4>
+                                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginBottom: '1rem' }}>Applications for the March 2026 cohort are open. Limited to 25 participants.</p>
                                 <div style={{ display: 'flex', gap: 8 }}>
-                                    <span className="badge" style={{ background: 'rgba(201,162,39,0.2)', color: '#C9A227', border: '1px solid rgba(201,162,39,0.3)' }}>March 2026</span>
+                                    <span className="badge" style={{ background: 'color-mix(in srgb, var(--color-secondary), transparent 80%)', color: 'var(--color-secondary)', border: '1px solid color-mix(in srgb, var(--color-secondary), transparent 70%)' }}>March 2026</span>
                                     <span className="badge" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)' }}>25 Spots</span>
                                 </div>
                             </div>
@@ -132,13 +132,13 @@ export default function ProgramsPage() {
                     <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                         <span className="badge badge-gold" style={{ marginBottom: '1rem', display: 'inline-block' }}>3–6 Months · Selective Enrollment</span>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1rem', justifyContent: 'center' }}>
-                            <div style={{ width: 28, height: 1, background: '#C9A227' }} />
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>Flagship Initiative</span>
-                            <div style={{ width: 28, height: 1, background: '#C9A227' }} />
+                            <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Flagship Initiative</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
                         </div>
-                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.4rem', color: '#111', marginBottom: '1rem' }}>The Polibrand Fellowship</h2>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.4rem', color: '#111', marginBottom: '1rem' }}>The Polibrand Fellowship</h2>
                         <div className="divider-gold divider-gold-center" />
-                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#555', maxWidth: 620, margin: '0 auto' }}>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: '#555', maxWidth: 620, margin: '0 auto' }}>
                             An immersive 3–6 month program for high-potential women leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.
                         </p>
                     </div>
@@ -146,8 +146,8 @@ export default function ProgramsPage() {
                         {fellowshipIncludes.map((f, i) => (
                             <div key={i} className="card-brand" style={{ textAlign: 'center' }}>
                                 <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{f.icon}</div>
-                                <h4 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1rem', color: '#111', marginBottom: '0.5rem' }}>{f.title}</h4>
-                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#666', lineHeight: 1.7 }}>{f.desc}</p>
+                                <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#111', marginBottom: '0.5rem' }}>{f.title}</h4>
+                                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#666', lineHeight: 1.7 }}>{f.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -163,11 +163,11 @@ export default function ProgramsPage() {
                 <div className="container-brand">
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
-                            <div style={{ width: 28, height: 1, background: '#B22222' }} />
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#B22222', letterSpacing: '3px', textTransform: 'uppercase' }}>Self-Paced</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-accent)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-accent)', letterSpacing: '3px', textTransform: 'uppercase' }}>Self-Paced</span>
                         </div>
-                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Digital Courses</h2>
-                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.95rem', color: '#666', maxWidth: 500, marginTop: '0.5rem' }}>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Digital Courses</h2>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#666', maxWidth: 500, marginTop: '0.5rem' }}>
                             Self-paced learning modules for women who want to build political communication skills on their own timeline.
                         </p>
                     </div>
@@ -175,21 +175,21 @@ export default function ProgramsPage() {
                         {courses.map((c) => (
                             <div key={c.number} className="card-brand" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', gap: '2.5rem', alignItems: 'start' }}>
                                 <div>
-                                    <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '3rem', color: '#1F6F3E20' }}>{c.number}</span>
+                                    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '3rem', color: 'color-mix(in srgb, var(--color-primary), transparent 80%)' }}>{c.number}</span>
                                 </div>
                                 <div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.15rem', color: '#111' }}>{c.title}</h3>
+                                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#111' }}>{c.title}</h3>
                                         <span className="badge badge-green">{c.duration}</span>
                                     </div>
-                                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', color: '#555', lineHeight: 1.8 }}>{c.desc}</p>
+                                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: '#555', lineHeight: 1.8 }}>{c.desc}</p>
                                 </div>
                                 <div>
-                                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#C9A227', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '0.75rem' }}>TOPICS COVERED</p>
+                                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-secondary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '0.75rem' }}>TOPICS COVERED</p>
                                     <ul style={{ listStyle: 'none', padding: 0 }}>
                                         {c.topics.map((t) => (
-                                            <li key={t} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#555', padding: '4px 0 4px 1.25rem', position: 'relative' }}>
-                                                <span style={{ position: 'absolute', left: 0, color: '#C9A227' }}>▸</span>{t}
+                                            <li key={t} style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#555', padding: '4px 0 4px 1.25rem', position: 'relative' }}>
+                                                <span style={{ position: 'absolute', left: 0, color: 'var(--color-secondary)' }}>▸</span>{t}
                                             </li>
                                         ))}
                                     </ul>

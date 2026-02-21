@@ -10,31 +10,31 @@ const services = [
     icon: '◈',
     title: 'Personal Brand Positioning',
     desc: 'Identity architecture, message discipline, and leadership positioning that distinguishes you from the political noise.',
-    color: '#1F6F3E',
+    color: 'var(--color-primary)',
   },
   {
     icon: '◆',
     title: 'Political Brand Strategy',
     desc: 'Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.',
-    color: '#C9A227',
+    color: 'var(--color-secondary)',
   },
   {
     icon: '◉',
     title: 'Campaign Communication',
     desc: 'Media architecture, speech development, and crisis communication frameworks built for modern politics.',
-    color: '#B22222',
+    color: 'var(--color-accent)',
   },
   {
     icon: '◎',
     title: 'Media Training',
     desc: 'Interview simulations, debate strategy, camera presence coaching, and press preparation at the highest level.',
-    color: '#1F6F3E',
+    color: 'var(--color-primary)',
   },
   {
     icon: '◇',
     title: 'Fundraising Strategy',
     desc: 'Donor positioning, political credibility framing, and campaign funding narratives that open doors.',
-    color: '#C9A227',
+    color: 'var(--color-secondary)',
   },
 ];
 
@@ -93,7 +93,7 @@ export default function Page() {
 
             {/* Headline */}
             <h1 className="animate-fade-up-delay-1" style={{
-              fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)',
+              fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)',
               color: '#fff', lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-1px',
             }}>
               Building Political Power<br />
@@ -143,11 +143,11 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
-                <div style={{ width: 28, height: 1, background: '#B22222' }} />
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#B22222', letterSpacing: '3px', textTransform: 'uppercase' }}>The Challenge</span>
+                <div style={{ width: 28, height: 1, background: 'var(--color-accent)' }} />
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-accent)', letterSpacing: '3px', textTransform: 'uppercase' }}>The Challenge</span>
               </div>
-              <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#111', lineHeight: 1.25, marginBottom: '0.5rem' }}>
-                The Representation Gap<br />Is <span style={{ color: '#1F6F3E' }}>Structural.</span>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#111', lineHeight: 1.25, marginBottom: '0.5rem' }}>
+                The Representation Gap<br />Is <span style={{ color: 'var(--color-primary)' }}>Structural.</span>
               </h2>
               <div className="divider-gold" />
               <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.98rem', color: '#444', lineHeight: 1.9, marginBottom: '1.5rem' }}>
@@ -171,16 +171,16 @@ export default function Page() {
             {/* Visual side */}
             <div style={{ position: 'relative' }}>
               <div style={{
-                background: 'linear-gradient(135deg, #1F6F3E 0%, #154e2b 100%)',
+                background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)',
                 borderRadius: '4px', padding: '3rem', position: 'relative', overflow: 'hidden',
               }}>
-                <div style={{ position: 'absolute', top: -20, right: -20, width: 120, height: 120, borderRadius: '50%', background: 'rgba(201,162,39,0.12)' }} />
-                <div style={{ position: 'absolute', bottom: -30, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'rgba(178,34,34,0.08)' }} />
+                <div style={{ position: 'absolute', top: -20, right: -20, width: 120, height: 120, borderRadius: '50%', background: 'color-mix(in srgb, var(--color-secondary), transparent 88%)' }} />
+                <div style={{ position: 'absolute', bottom: -30, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent), transparent 92%)' }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.3rem', color: 'rgba(255,255,255,0.9)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1.3rem', color: 'rgba(255,255,255,0.9)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
                     &quot;Democracy thrives when leadership reflects society.&quot;
                   </div>
-                  <div style={{ width: 40, height: 2, background: '#C9A227', marginBottom: '1.5rem' }} />
+                  <div style={{ width: 40, height: 2, background: 'var(--color-secondary)', marginBottom: '1.5rem' }} />
                   {[
                     { label: 'Women in African Parliaments', value: '26%', target: '50%' },
                     { label: 'Women Executives', value: '18%', target: '50%' },
@@ -188,15 +188,15 @@ export default function Page() {
                   ].map((stat) => (
                     <div key={stat.label} style={{ marginBottom: '1rem' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)' }}>{stat.label}</span>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', fontWeight: 700, color: '#C9A227' }}>{stat.value}</span>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)' }}>{stat.label}</span>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-secondary)' }}>{stat.value}</span>
                       </div>
                       <div style={{ height: 4, background: 'rgba(255,255,255,0.15)', borderRadius: 2 }}>
-                        <div style={{ height: '100%', width: stat.value, background: 'linear-gradient(90deg, #C9A227, #f0c84a)', borderRadius: 2 }} />
+                        <div style={{ height: '100%', width: stat.value, background: 'linear-gradient(90deg, var(--color-secondary), var(--color-secondary-dark))', borderRadius: 2 }} />
                       </div>
                     </div>
                   ))}
-                  <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '1rem', letterSpacing: '0.5px' }}>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '1rem', letterSpacing: '0.5px' }}>
                     Source: African Union Gender Representation Index, 2024
                   </p>
                 </div>
@@ -215,7 +215,7 @@ export default function Page() {
               <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>What We Offer</span>
               <div style={{ width: 28, height: 1, background: '#C9A227' }} />
             </div>
-            <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#111', marginBottom: '1rem' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#111', marginBottom: '1rem' }}>
               Core Strategic Services
             </h2>
             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#666', maxWidth: 560, margin: '0 auto' }}>
@@ -265,10 +265,10 @@ export default function Page() {
           <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', letterSpacing: '3px', textTransform: 'uppercase', display: 'block', marginBottom: '1rem' }}>
             Diagnostic Tool
           </span>
-          <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: '#fff', marginBottom: '1rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: '#fff', marginBottom: '1rem' }}>
             Measure Your Political Readiness.
           </h2>
-          <div style={{ width: 60, height: 2, background: '#C9A227', margin: '0 auto 1.5rem' }} />
+          <div style={{ width: 60, height: 2, background: 'var(--color-secondary)', margin: '0 auto 1.5rem' }} />
           <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', maxWidth: 580, margin: '0 auto 2.5rem', lineHeight: 1.8 }}>
             A structured assessment evaluating your communication clarity, narrative strength, visibility readiness, and fundraising positioning. Get your personalized score and growth roadmap.
           </p>
@@ -296,7 +296,7 @@ export default function Page() {
                 <div style={{ width: 28, height: 1, background: '#1F6F3E' }} />
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#1F6F3E', letterSpacing: '3px', textTransform: 'uppercase' }}>Institutional</span>
               </div>
-              <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#111', lineHeight: 1.25, marginBottom: '0.5rem' }}>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#111', lineHeight: 1.25, marginBottom: '0.5rem' }}>
                 Strengthening Democratic<br />Leadership Infrastructure.
               </h2>
               <div className="divider-gold" />

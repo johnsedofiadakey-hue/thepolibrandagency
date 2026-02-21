@@ -37,7 +37,7 @@ export default function ApplyPage() {
                         <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm">
                             ✓
                         </div>
-                        <h2 className="font-serif font-bold text-3xl text-[#111] mb-4">Application Received</h2>
+                        <h2 className="font-display font-bold text-3xl text-[#111] mb-4">Application Received</h2>
                         <div className="divider-gold divider-gold-center" />
                         <p className="font-sans text-[#444] mb-8 leading-relaxed">
                             Thank you, {formData.firstName}. We have successfully received your application for the <strong>{formData.program}</strong>. Our admissions team will review your profile and contact you within 5-7 business days via email.
@@ -69,7 +69,7 @@ export default function ApplyPage() {
                             <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">Take the Next Step</span>
                             <div className="w-6 h-px bg-[var(--color-primary)]" />
                         </div>
-                        <h1 className="font-serif font-bold text-3xl md:text-5xl text-[#111] mb-6">
+                        <h1 className="font-display font-bold text-3xl md:text-5xl text-[#111] mb-6">
                             Apply to Polibrand
                         </h1>
                         <p className="font-sans text-[var(--color-muted)] text-lg">
@@ -92,7 +92,7 @@ export default function ApplyPage() {
                             {/* STEP 1 */}
                             {step === 1 && (
                                 <div className="space-y-6 animate-fade-up">
-                                    <h3 className="font-serif font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Personal details</h3>
+                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Personal details</h3>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
@@ -142,7 +142,7 @@ export default function ApplyPage() {
                             {/* STEP 2 */}
                             {step === 2 && (
                                 <div className="space-y-6 animate-fade-up">
-                                    <h3 className="font-serif font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Program & Background</h3>
+                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Program & Background</h3>
 
                                     <div>
                                         <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Program of Interest</label>

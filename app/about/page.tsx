@@ -7,25 +7,25 @@ const pillars = [
         icon: '◉',
         title: 'Research-Driven',
         desc: 'Every strategy is grounded in political science, communication theory, and real electoral data.',
-        color: '#1F6F3E',
+        color: 'var(--color-primary)',
     },
     {
         icon: '◈',
         title: 'Institutionally Aligned',
         desc: 'We work within democratic systems and align with governance frameworks, not against them.',
-        color: '#C9A227',
+        color: 'var(--color-secondary)',
     },
     {
         icon: '◆',
         title: 'Outcome-Oriented',
         desc: 'Our programs measure success in real-world leadership advancement, not participation alone.',
-        color: '#B22222',
+        color: 'var(--color-accent)',
     },
     {
         icon: '◇',
         title: 'Strategically Measurable',
         desc: 'Every program delivers scored, trackable, evidence-based growth benchmarks.',
-        color: '#1F6F3E',
+        color: 'var(--color-primary)',
     },
 ];
 
@@ -39,22 +39,22 @@ const timeline = [
 
 export default function AboutPage() {
     return (
-        <div className="bg-white">
+        <div className="bg-[var(--color-bg)]">
             <Navbar />
 
             {/* Hero */}
             <section style={{
-                background: 'linear-gradient(135deg, #0c3d1e 0%, #17542e 100%)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                 padding: '160px 0 100px', position: 'relative', overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, rgba(201,162,39,0.1) 0%, transparent 60%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
                 <div className="container-brand relative z-10 text-center animate-fade-up">
                     <div className="inline-flex items-center gap-3 mb-6">
                         <div className="w-8 h-px bg-[#C9A227]" />
                         <span className="font-sans text-xs font-semibold text-[#C9A227] tracking-widest uppercase">About Us</span>
                         <div className="w-8 h-px bg-[#C9A227]" />
                     </div>
-                    <h1 className="font-serif font-bold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
+                    <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                         Redefining Political Leadership Through Strategic Communication.
                     </h1>
                     <p className="font-sans text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">
@@ -77,7 +77,7 @@ export default function AboutPage() {
                                 <div className="w-8 h-px bg-[var(--color-primary)]" />
                                 <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">Our Mission</span>
                             </div>
-                            <h2 className="font-serif font-bold text-3xl text-[#111] mb-4">
+                            <h2 className="font-display font-bold text-3xl text-[#111] mb-4">
                                 Strategic Infrastructure for Women Leaders
                             </h2>
                             <div className="divider-gold" />
@@ -97,7 +97,7 @@ export default function AboutPage() {
                                 <div className="w-8 h-px bg-[var(--color-secondary)]" />
                                 <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">Our Vision</span>
                             </div>
-                            <h2 className="font-serif font-bold text-3xl text-[#111] mb-4">
+                            <h2 className="font-display font-bold text-3xl text-[#111] mb-4">
                                 Equal Representation in Policy & Power
                             </h2>
                             <div className="divider-gold" />
@@ -115,10 +115,10 @@ export default function AboutPage() {
             </section>
 
             {/* Four Pillars */}
-            <section className="section-pad bg-white">
+            <section className="section-pad bg-[var(--color-bg)]">
                 <div className="container-brand">
                     <div className="text-center mb-16 animate-fade-up">
-                        <h2 className="font-serif font-bold text-4xl text-[#111] mb-4">Our Approach</h2>
+                        <h2 className="font-display font-bold text-4xl text-[#111] mb-4">Our Approach</h2>
                         <div className="divider-gold divider-gold-center" />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -143,7 +143,7 @@ export default function AboutPage() {
             <section className="section-pad bg-[var(--color-bg)]">
                 <div className="container-brand max-w-4xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="font-serif font-bold text-4xl text-[#111] mb-4">Our Journey</h2>
+                        <h2 className="font-display font-bold text-4xl text-[#111] mb-4">Our Journey</h2>
                         <div className="divider-gold divider-gold-center" />
                     </div>
                     <div className="relative">
@@ -155,9 +155,9 @@ export default function AboutPage() {
                                 <div className="hidden md:block w-5/12" />
 
                                 {/* Timeline Node */}
-                                <div className="z-10 bg-white border-4 border-white shadow-[0_0_0_4px_var(--color-bg)] w-24 h-24 rounded-full flex items-center justify-center relative my-4 md:my-0">
+                                <div className="z-10 bg-[var(--color-bg)] border-4 border-[var(--color-bg)] shadow-[0_0_0_4px_var(--color-bg)] w-24 h-24 rounded-full flex items-center justify-center relative my-4 md:my-0">
                                     <div className="w-20 h-20 rounded-full border-2 border-[var(--color-primary)] flex items-center justify-center">
-                                        <span className="font-serif font-bold text-lg text-[var(--color-primary)]">{t.year}</span>
+                                        <span className="font-display font-bold text-lg text-[var(--color-primary)]">{t.year}</span>
                                     </div>
                                 </div>
 
@@ -174,9 +174,9 @@ export default function AboutPage() {
             </section>
 
             {/* CTA */}
-            <section style={{ background: 'linear-gradient(135deg, #0c3d1e 0%, #17542e 100%)', padding: '80px 0' }}>
+            <section style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '80px 0' }}>
                 <div className="container-brand text-center">
-                    <h2 className="font-serif font-bold text-3xl md:text-4xl text-white mb-6">
+                    <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-6">
                         Ready to Build Your Political Power?
                     </h2>
                     <p className="font-sans text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">

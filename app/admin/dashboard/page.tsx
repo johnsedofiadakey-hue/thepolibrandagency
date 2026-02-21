@@ -1,23 +1,17 @@
 import Link from 'next/link';
 
 const stats = [
-    { label: 'Total Users', value: '1,342', change: '+12%', color: '#1F6F3E', icon: '👤' },
-    { label: 'Assessment Completions', value: '896', change: '+8%', color: '#C9A227', icon: '📊' },
-    { label: 'Active Programs', value: '3', change: '—', color: '#B22222', icon: '🎓' },
-    { label: 'Applications Pending', value: '48', change: '+18%', color: '#1F6F3E', icon: '📋' },
-    { label: 'Revenue (USD)', value: '$24,800', change: '+22%', color: '#C9A227', icon: '💰' },
-    { label: 'Newsletter Subscribers', value: '3,201', change: '+5%', color: '#B22222', icon: '📧' },
-    { label: 'Partner Leads', value: '14', change: '+3%', color: '#1F6F3E', icon: '🤝' },
-    { label: 'Fellows Active', value: '27', change: '—', color: '#C9A227', icon: '⭐' },
+    { label: 'Total Users', value: '0', change: '—', color: 'var(--color-primary)', icon: '👤' },
+    { label: 'Assessment Completions', value: '0', change: '—', color: 'var(--color-secondary)', icon: '📊' },
+    { label: 'Active Programs', value: '3', change: '—', color: 'var(--color-accent)', icon: '🎓' },
+    { label: 'Applications Pending', value: '0', change: '—', color: 'var(--color-primary)', icon: '📋' },
+    { label: 'Revenue (USD)', value: '$0', change: '—', color: 'var(--color-secondary)', icon: '💰' },
+    { label: 'Newsletter Subscribers', value: '0', change: '—', color: 'var(--color-accent)', icon: '📧' },
+    { label: 'Partner Leads', value: '0', change: '—', color: 'var(--color-primary)', icon: '🤝' },
+    { label: 'Fellows Active', value: '0', change: '—', color: 'var(--color-secondary)', icon: '⭐' },
 ];
 
-const recentApplications = [
-    { name: 'Amara Kone', country: 'Côte d\'Ivoire', program: 'Fellowship', score: 78, status: 'Pending' },
-    { name: 'Fatima Yusuf', country: 'Nigeria', program: 'Bootcamp', score: 62, status: 'Under Review' },
-    { name: 'Grace Mutuku', country: 'Kenya', program: 'Fellowship', score: 85, status: 'Approved' },
-    { name: 'Naledi Dlamini', country: 'South Africa', program: 'Digital Courses', score: 45, status: 'Pending' },
-    { name: 'Mariama Balde', country: 'Guinea', program: 'Fellowship', score: 91, status: 'Approved' },
-];
+const recentApplications: any[] = [];
 
 const quickLinks = [
     { label: 'Brand Settings', href: '/admin/brand', icon: '🎨', desc: 'Update colors, logo, typography' },
@@ -29,20 +23,20 @@ const quickLinks = [
 export default function AdminDashboard() {
     return (
         <div>
-            {/* Header */}
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Admin Dashboard</h1>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Thursday, 19 February 2026 · Overview of platform activity</p>
+            {/* Header - Very Tiny on Mobile */}
+            <div style={{ marginBottom: '1.25rem' }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Overview</h1>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Platform activity snapshot</p>
             </div>
 
-            {/* Stats Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
+            {/* Stats Grid - High Density */}
+            <div className="grid-cols-4-mobile-2" style={{ gap: '0.75rem', marginBottom: '1.5rem' }}>
                 {stats.map((s) => (
-                    <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                    <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color, padding: '0.85rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                             <span style={{ fontSize: '1.5rem' }}>{s.icon}</span>
                             <span style={{
-                                fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 600,
+                                fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 600,
                                 color: s.change.startsWith('+') ? '#16a34a' : s.change === '—' ? '#9ca3af' : '#dc2626',
                                 background: s.change.startsWith('+') ? '#f0fdf4' : s.change === '—' ? '#f9fafb' : '#fef2f2',
                                 padding: '2px 8px', borderRadius: 10,
@@ -50,85 +44,107 @@ export default function AdminDashboard() {
                                 {s.change}
                             </span>
                         </div>
-                        <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.2rem' }}>{s.value}</div>
-                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#9ca3af', fontWeight: 500 }}>{s.label}</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#111', marginBottom: '0.1rem' }}>{s.value}</div>
+                        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px' }}>{s.label}</div>
                     </div>
                 ))}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                {/* Recent Applications Table */}
-                <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
-                    <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1rem', color: '#111' }}>Recent Applications</h3>
-                        <Link href="/admin/applications" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#1F6F3E', textDecoration: 'none', fontWeight: 600 }}>View All →</Link>
+            <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
+                {/* Recent Applications - Card Based for Mobile */}
+                <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
+                    <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111' }}>Recent Activity</h3>
+                        <Link href="/admin/applications" style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 700 }}>VIEW ALL</Link>
                     </div>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ background: '#f9fafb' }}>
-                                {['Applicant', 'Country', 'Program', 'Score', 'Status'].map((h) => (
-                                    <th key={h} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#9ca3af', letterSpacing: '1px', textTransform: 'uppercase', padding: '10px 1.5rem', textAlign: 'left' }}>{h}</th>
+                    {recentApplications.length === 0 ? (
+                        <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#9ca3af' }}>
+                            No recent applications found.
+                        </div>
+                    ) : (
+                        <>
+                            <div className="hide-mobile">
+                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                    <thead>
+                                        <tr style={{ background: '#f9fafb' }}>
+                                            {['Applicant', 'Country', 'Program', 'Score', 'Status'].map((h) => (
+                                                <th key={h} style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, color: '#9ca3af', letterSpacing: '1px', textTransform: 'uppercase', padding: '10px 1.5rem', textAlign: 'left' }}>{h}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {recentApplications.map((app, i) => (
+                                            <tr key={i} style={{ borderTop: '1px solid #f3f4f6' }}>
+                                                <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#111', padding: '12px 1.5rem' }}>{app.name}</td>
+                                                <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.5rem' }}>{app.country}</td>
+                                                <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.5rem' }}>{app.program}</td>
+                                                <td style={{ padding: '12px 1.5rem' }}>
+                                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 700, color: app.score >= 80 ? 'var(--color-primary)' : app.score >= 60 ? 'var(--color-secondary)' : 'var(--color-accent)' }}>
+                                                        {app.score}/100
+                                                    </span>
+                                                </td>
+                                                <td style={{ padding: '12px 1.5rem' }}>
+                                                    <span className={`badge ${app.status === 'Approved' ? 'badge-green' : app.status === 'Pending' ? 'badge-gray' : 'badge-gold'}`}>
+                                                        {app.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {/* Mobile Specific List View (Cards) */}
+                            <div className="show-mobile" style={{ flexDirection: 'column' }}>
+                                {recentApplications.map((app, i) => (
+                                    <div key={i} style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#111' }}>{app.name}</div>
+                                            <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6b7280' }}>{app.country} · {app.program}</div>
+                                        </div>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-primary)' }}>{app.score}/100</div>
+                                            <div className={`badge ${app.status === 'Approved' ? 'badge-green' : 'badge-gold'}`} style={{ fontSize: '0.6rem', padding: '1px 6px' }}>{app.status}</div>
+                                        </div>
+                                    </div>
                                 ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recentApplications.map((app, i) => (
-                                <tr key={i} style={{ borderTop: '1px solid #f3f4f6' }}>
-                                    <td style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', fontWeight: 600, color: '#111', padding: '12px 1.5rem' }}>{app.name}</td>
-                                    <td style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.5rem' }}>{app.country}</td>
-                                    <td style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.5rem' }}>{app.program}</td>
-                                    <td style={{ padding: '12px 1.5rem' }}>
-                                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: 700, color: app.score >= 80 ? '#1F6F3E' : app.score >= 60 ? '#C9A227' : '#B22222' }}>
-                                            {app.score}/100
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '12px 1.5rem' }}>
-                                        <span className={`badge ${app.status === 'Approved' ? 'badge-green' : app.status === 'Pending' ? 'badge-gray' : 'badge-gold'}`}>
-                                            {app.status}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </div>
+                        </>
+                    )}
                 </div>
 
-                {/* Quick Access */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.25rem 1.5rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
-                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1rem', color: '#111', marginBottom: '1rem' }}>Quick Access</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {/* Quick Access - Compact Icons */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
+                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '0.75rem' }}>Shortcuts</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                             {quickLinks.map((link) => (
                                 <Link key={link.href} href={link.href} style={{
-                                    display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px',
-                                    borderRadius: 6, textDecoration: 'none', border: '1px solid #f3f4f6', transition: 'all 0.2s',
+                                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px',
+                                    borderRadius: 8, textDecoration: 'none', background: '#f9fafb', border: '1px solid #f3f4f6', textAlign: 'center'
                                 }}>
-                                    <span style={{ fontSize: '1.2rem' }}>{link.icon}</span>
-                                    <div>
-                                        <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.82rem', color: '#111' }}>{link.label}</div>
-                                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#9ca3af' }}>{link.desc}</div>
-                                    </div>
+                                    <span style={{ fontSize: '1.25rem' }}>{link.icon}</span>
+                                    <div style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.65rem', color: '#111', textTransform: 'uppercase' }}>{link.label}</div>
                                 </Link>
                             ))}
                         </div>
                     </div>
 
-                    {/* Readiness Score Distribution */}
-                    <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.25rem 1.5rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
-                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1rem', color: '#111', marginBottom: '1rem' }}>Readiness Score Distribution</h3>
+                    {/* Distribution - High Density */}
+                    <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
+                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '0.75rem' }}>Readiness Score</h3>
                         {[
-                            { label: 'Leadership Ready (91-100)', count: 42, color: '#1F6F3E' },
-                            { label: 'Competitive (71-90)', count: 198, color: '#C9A227' },
-                            { label: 'Development (41-70)', count: 412, color: '#f59e0b' },
-                            { label: 'Foundational (0-40)', count: 244, color: '#B22222' },
+                            { label: 'Ready', count: 0, color: 'var(--color-primary)' },
+                            { label: 'Competitive', count: 0, color: 'var(--color-secondary)' },
+                            { label: 'Dev', count: 0, color: '#f59e0b' },
+                            { label: 'Basic', count: 0, color: 'var(--color-accent)' },
                         ].map((tier) => (
-                            <div key={tier.label} style={{ marginBottom: '0.75rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#6b7280' }}>{tier.label}</span>
-                                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 700, color: tier.color }}>{tier.count}</span>
+                            <div key={tier.label} style={{ marginBottom: '0.6rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', color: '#6b7280', fontWeight: 600 }}>{tier.label}</span>
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', fontWeight: 700, color: tier.color }}>{tier.count}</span>
                                 </div>
-                                <div style={{ height: 6, background: '#f3f4f6', borderRadius: 3 }}>
-                                    <div style={{ height: '100%', width: `${(tier.count / 896) * 100}%`, background: tier.color, borderRadius: 3 }} />
+                                <div style={{ height: 4, background: '#f3f4f6', borderRadius: 2 }}>
+                                    <div style={{ height: '100%', width: `0%`, background: tier.color, borderRadius: 2 }} />
                                 </div>
                             </div>
                         ))}

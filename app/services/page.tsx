@@ -6,7 +6,7 @@ const womenServices = [
     {
         number: '01',
         title: 'Personal Brand Positioning',
-        color: '#1F6F3E',
+        color: 'var(--color-primary)',
         intro: 'Identity architecture, message discipline, and leadership positioning built to distinguish you in a crowded political space.',
         deliverables: [
             'Brand identity blueprint',
@@ -19,7 +19,7 @@ const womenServices = [
     {
         number: '02',
         title: 'Political Brand Strategy',
-        color: '#C9A227',
+        color: 'var(--color-secondary)',
         intro: 'Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.',
         deliverables: [
             'Constituency segmentation model',
@@ -32,7 +32,7 @@ const womenServices = [
     {
         number: '03',
         title: 'Campaign Communication Management',
-        color: '#B22222',
+        color: 'var(--color-accent)',
         intro: 'Media architecture, speech development, and crisis communication frameworks for the modern political environment.',
         deliverables: [
             'Speech framework',
@@ -45,7 +45,7 @@ const womenServices = [
     {
         number: '04',
         title: 'Media Training',
-        color: '#1F6F3E',
+        color: 'var(--color-primary)',
         intro: 'Structured coaching that transforms raw communication talent into politically powerful presence.',
         deliverables: [
             'Mock interview sessions',
@@ -58,7 +58,7 @@ const womenServices = [
     {
         number: '05',
         title: 'Fundraising Strategy',
-        color: '#C9A227',
+        color: 'var(--color-secondary)',
         intro: 'Donor positioning, political credibility framing, and campaign funding narratives that open the right doors.',
         deliverables: [
             'Donor messaging system',
@@ -98,20 +98,20 @@ export default function ServicesPage() {
 
             {/* Hero */}
             <section style={{
-                background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 100%)',
+                background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                 padding: '160px 0 80px', position: 'relative', overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, rgba(201,162,39,0.1) 0%, transparent 60%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
                 <div className="container-brand" style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{ maxWidth: 700 }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
-                            <div style={{ width: 28, height: 1, background: '#C9A227' }} />
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>Strategic Services</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Strategic Services</span>
                         </div>
-                        <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.5rem' }}>
+                        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.5rem' }}>
                             Institutional-Grade Tools for Modern Political Leadership.
                         </h1>
-                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 580 }}>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 580 }}>
                             Every service is designed around the structural requirements of competitive democratic environments.
                         </p>
                     </div>
@@ -123,10 +123,10 @@ export default function ServicesPage() {
                 <div className="container-brand">
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
-                            <div style={{ width: 28, height: 1, background: '#1F6F3E' }} />
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#1F6F3E', letterSpacing: '3px', textTransform: 'uppercase' }}>For Women Leaders</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-primary)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '3px', textTransform: 'uppercase' }}>For Women Leaders</span>
                         </div>
-                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Individual Strategy Services</h2>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Individual Strategy Services</h2>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -137,20 +137,20 @@ export default function ServicesPage() {
                                 alignItems: 'start', boxShadow: 'var(--shadow-card)', transition: 'transform 0.3s ease',
                             }}>
                                 <div style={{ textAlign: 'center' }}>
-                                    <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.5rem', color: `${s.color}25` }}>{s.number}</span>
+                                    <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.5rem', color: 'color-mix(in srgb, var(--color-primary), transparent 85%)' }}>{s.number}</span>
                                 </div>
                                 <div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '0.75rem' }}>
                                         <div style={{ width: 4, height: 24, background: s.color, borderRadius: 2 }} />
-                                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.2rem', color: '#111' }}>{s.title}</h3>
+                                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.2rem', color: '#111' }}>{s.title}</h3>
                                     </div>
-                                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: '#555', lineHeight: 1.8 }}>{s.intro}</p>
+                                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#555', lineHeight: 1.8 }}>{s.intro}</p>
                                 </div>
                                 <div>
-                                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 700, color: s.color, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem' }}>DELIVERABLES</p>
+                                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, color: s.color, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem' }}>DELIVERABLES</p>
                                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                                         {s.deliverables.map((d) => (
-                                            <li key={d} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.84rem', color: '#444', padding: '5px 0 5px 1.5rem', position: 'relative', borderBottom: '1px solid #f0ebe2' }}>
+                                            <li key={d} style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: '#444', padding: '5px 0 5px 1.5rem', position: 'relative', borderBottom: '1px solid #f0ebe2' }}>
                                                 <span style={{ position: 'absolute', left: 0, color: s.color }}>▸</span>
                                                 {d}
                                             </li>
@@ -168,17 +168,17 @@ export default function ServicesPage() {
                 <div className="container-brand">
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
-                            <div style={{ width: 28, height: 1, background: '#B22222' }} />
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#B22222', letterSpacing: '3px', textTransform: 'uppercase' }}>For Institutions</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-accent)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-accent)', letterSpacing: '3px', textTransform: 'uppercase' }}>For Institutions</span>
                         </div>
-                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Institutional Partnership Services</h2>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Institutional Partnership Services</h2>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
                         {institutionalServices.map((s, i) => (
                             <div key={i} className="card-brand">
                                 <div style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>{s.icon}</div>
-                                <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '0.75rem' }}>{s.title}</h3>
-                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.86rem', color: '#555', lineHeight: 1.8, marginBottom: '1.25rem' }}>{s.desc}</p>
+                                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '0.75rem' }}>{s.title}</h3>
+                                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.86rem', color: '#555', lineHeight: 1.8, marginBottom: '1.25rem' }}>{s.desc}</p>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                                     {s.features.map((f) => (
                                         <li key={f} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', color: '#444', padding: '5px 0 5px 1.5rem', position: 'relative', borderBottom: '1px solid #f0ebe2' }}>
@@ -195,8 +195,8 @@ export default function ServicesPage() {
             {/* CTA */}
             <section style={{ background: '#111', padding: '80px 0' }}>
                 <div className="container-brand" style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2rem', color: '#fff', marginBottom: '0.75rem' }}>Ready to Begin?</h2>
-                    <p style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(255,255,255,0.65)', marginBottom: '2rem' }}>Start with the Political Readiness Index to identify your strategic starting point.</p>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2rem', color: '#fff', marginBottom: '0.75rem' }}>Ready to Begin?</h2>
+                    <p style={{ fontFamily: 'var(--font-body)', color: 'rgba(255,255,255,0.65)', marginBottom: '2rem' }}>Start with the Political Readiness Index to identify your strategic starting point.</p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                         <Link href="/assessment" className="btn-gold">Start Assessment →</Link>
                         <Link href="/programs#fellowship" className="btn-secondary">View Programs</Link>

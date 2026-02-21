@@ -207,22 +207,22 @@ export default function AssessmentPage() {
             <>
                 <Navbar />
                 <section style={{
-                    minHeight: '100vh', background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 100%)',
+                    minHeight: '100vh', background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                     display: 'flex', alignItems: 'center', padding: '120px 0 80px', position: 'relative', overflow: 'hidden',
                 }}>
-                    <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, rgba(201,162,39,0.1) 0%, transparent 60%)', pointerEvents: 'none' }} />
+                    <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
                     <div className="container-brand" style={{ position: 'relative', zIndex: 1 }}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
                             <div>
                                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
-                                    <div style={{ width: 28, height: 1, background: '#C9A227' }} />
-                                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>Diagnostic Tool</span>
+                                    <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Diagnostic Tool</span>
                                 </div>
-                                <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.25rem' }}>
+                                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.25rem' }}>
                                     Political Readiness Index
                                 </h1>
-                                <div style={{ width: 60, height: 2, background: '#C9A227', marginBottom: '1.5rem' }} />
-                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, marginBottom: '2rem' }}>
+                                <div style={{ width: 60, height: 2, background: 'var(--color-secondary)', marginBottom: '1.5rem' }} />
+                                <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, marginBottom: '2rem' }}>
                                     A structured diagnostic that evaluates your readiness across five critical dimensions of political competition. Receive a personalised score and strategic growth roadmap.
                                 </p>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: '2.5rem' }}>
@@ -231,7 +231,7 @@ export default function AssessmentPage() {
                                         { icon: '📊', text: '5 scored categories tracked' },
                                         { icon: '🎯', text: 'Personalised program recommendations' },
                                     ].map((item) => (
-                                        <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)' }}>
+                                        <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)' }}>
                                             <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>{item.text}
                                         </div>
                                     ))}
@@ -246,9 +246,9 @@ export default function AssessmentPage() {
                                         background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)',
                                         border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '1.25rem',
                                     }}>
-                                        <div style={{ width: 36, height: 4, background: cat.color === '#1F6F3E' ? '#C9A227' : cat.color, borderRadius: 2, marginBottom: '0.75rem' }} />
-                                        <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#fff', marginBottom: 4 }}>{cat.weight}%</div>
-                                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: 'rgba(255,255,255,0.65)', letterSpacing: '0.5px' }}>{cat.label}</div>
+                                        <div style={{ width: 36, height: 4, background: cat.color === '#1F6F3E' ? 'var(--color-secondary)' : cat.color, borderRadius: 2, marginBottom: '0.75rem' }} />
+                                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.6rem', color: '#fff', marginBottom: 4 }}>{cat.weight}%</div>
+                                        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgba(255,255,255,0.65)', letterSpacing: '0.5px' }}>{cat.label}</div>
                                     </div>
                                 ))}
                             </div>
@@ -271,22 +271,22 @@ export default function AssessmentPage() {
                     {/* Progress */}
                     <div style={{ marginBottom: '2.5rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#888', fontWeight: 500 }}>
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#888', fontWeight: 500 }}>
                                 Question {answeredCount + 1} of {totalQuestions}
                             </span>
-                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#888', fontWeight: 500 }}>
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#888', fontWeight: 500 }}>
                                 {Math.round(progress)}% Complete
                             </span>
                         </div>
                         <div style={{ height: 6, background: '#e5e0d6', borderRadius: 3 }}>
-                            <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #1F6F3E, #C9A227)', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                            <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))', borderRadius: 3, transition: 'width 0.4s ease' }} />
                         </div>
                         {/* Category tabs */}
                         <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
                             {categories.map((cat, i) => (
                                 <div key={cat.id} style={{
                                     flex: 1, height: 4, borderRadius: 2,
-                                    background: i < currentCatIdx ? '#1F6F3E' : i === currentCatIdx ? '#C9A227' : '#e5e0d6',
+                                    background: i < currentCatIdx ? 'var(--color-primary)' : i === currentCatIdx ? 'var(--color-secondary)' : '#e5e0d6',
                                     transition: 'background 0.3s',
                                 }} title={cat.label} />
                             ))}
@@ -306,7 +306,7 @@ export default function AssessmentPage() {
                         padding: '3rem', boxShadow: 'var(--shadow-card)', marginBottom: '1.5rem',
                     }}>
                         <h2 style={{
-                            fontFamily: 'Playfair Display, serif', fontWeight: 700,
+                            fontFamily: 'var(--font-display)', fontWeight: 700,
                             fontSize: '1.35rem', color: '#111', lineHeight: 1.5, marginBottom: '2rem',
                         }}>
                             {currentQ.text}
@@ -332,7 +332,7 @@ export default function AssessmentPage() {
                                     }}>
                                         {selected === opt.score && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
                                     </div>
-                                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: selected === opt.score ? currentCat.color : '#333', fontWeight: selected === opt.score ? 600 : 400 }}>
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: selected === opt.score ? currentCat.color : '#333', fontWeight: selected === opt.score ? 600 : 400 }}>
                                         {opt.text}
                                     </span>
                                 </button>
