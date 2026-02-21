@@ -42,3 +42,8 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# project specific
+/public/uploads/*
+!/public/uploads/.gitkeep
+lint_output.txt

@@ -1,3 +1,4 @@
+"use client";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
@@ -44,6 +45,7 @@ const stats = [
   { number: '12', label: 'Institutional Partners' },
 ];
 
+export default function Page() {
   const settings = useContext(SettingsContext);
   const theme = settings.theme;
   return (
@@ -52,47 +54,50 @@ const stats = [
 
       {/* ─── HERO ─── */}
       <section style={{
-        minHeight: '100vh', position: 'relative', display: 'flex', flexDirection: 'column',
-        background: `linear-gradient(135deg, ${theme.background} 0%, ${theme.primary} 40%, ${theme.primary} 70%, ${theme.accent} 100%)`,
+        minHeight: '100vh',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'var(--color-bg)',
+        backgroundImage: 'var(--hero-image)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
-        {/* Background texture overlay */}
+        {/* Dark overlay if image exists, otherwise gradient fallback */}
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(201,162,39,0.08) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(178,34,34,0.06) 0%, transparent 50%)',
-          pointerEvents: 'none',
-        }} />
-        {/* Diagonal accent */}
-        <div style={{
-          position: 'absolute', right: 0, top: 0, width: '45%', height: '100%',
-          background: 'linear-gradient(135deg, transparent 0%, rgba(201,162,39,0.04) 100%)',
-          borderLeft: '1px solid rgba(201,162,39,0.12)',
-        }} />
-        {/* Gold corner accent */}
-        <div style={{
-          position: 'absolute', top: 0, right: 0,
-          width: 0, height: 0,
-          borderTop: '200px solid rgba(201,162,39,0.07)',
-          borderLeft: '200px solid transparent',
+          background: theme.heroImage
+            ? 'linear-gradient(to right, rgba(17,17,17,0.8) 0%, rgba(17,17,17,0.4) 100%)'
+            : `linear-gradient(135deg, var(--color-bg) 0%, var(--color-primary) 40%, var(--color-primary) 70%, var(--color-accent) 100%)`,
+          zIndex: 1
         }} />
 
-        <div className="container-brand" style={{ position: 'relative', zIndex: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '120px', paddingBottom: '60px', width: '100%' }}>
-          <div style={{ maxWidth: 760 }}>
+        {/* Decorative texture */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(201,162,39,0.06) 0%, transparent 60%)',
+          pointerEvents: 'none',
+          zIndex: 1
+        }} />
+
+        <div className="container-brand" style={{ position: 'relative', zIndex: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '100px', width: '100%' }}>
+          <div style={{ maxWidth: 800 }}>
             {/* Tag */}
-            <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '2rem' }}>
-              <div style={{ width: 32, height: 1, background: theme.secondary }} />
-              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: theme.secondary, letterSpacing: '3px', textTransform: 'uppercase' }}>
+            <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.5rem' }}>
+              <div style={{ width: 40, height: 1, background: 'var(--color-secondary)' }} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '4px', textTransform: 'uppercase' }}>
                 The Leading Political Branding Partner for Women Leaders
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="animate-fade-up-delay-1" style={{
-              fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2.4rem, 5vw, 4rem)',
-              color: theme.text, lineHeight: 1.18, marginBottom: '1.75rem', letterSpacing: '-0.5px',
+              fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)',
+              color: '#fff', lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-1px',
             }}>
               Building Political Power<br />
-              <span style={{ color: theme.secondary }}>for Women</span> Across Africa.
+              <span style={{ color: 'var(--color-secondary)' }}>for Women</span> Across Africa.
             </h1>
 
             {/* Sub */}
@@ -173,7 +178,7 @@ const stats = [
                 <div style={{ position: 'absolute', bottom: -30, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'rgba(178,34,34,0.08)' }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <div style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.3rem', color: 'rgba(255,255,255,0.9)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                    "Democracy thrives when leadership reflects society."
+                    &quot;Democracy thrives when leadership reflects society.&quot;
                   </div>
                   <div style={{ width: 40, height: 2, background: '#C9A227', marginBottom: '1.5rem' }} />
                   {[

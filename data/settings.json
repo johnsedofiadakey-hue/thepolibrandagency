@@ -1,14 +1,12 @@
 {
   "theme": {
-    "primary": "#1F6F3E",
-    "secondary": "#C9A227",
-    "accent": "#B22222",
-    "background": "#F9F6F1",
-    "text": "#111111"
+    "primary": "#1e3a5f",
+    "secondary": "#d4af37",
+    "accent": "#c0392b",
+    "background": "#f0f4f8",
+    "text": "#0f172a",
+    "logo": "/logo.png",
+    "heroImage": ""
   },
-  "typography": "institutional",
-  "content": {
-    "headline": "The Leading Political Branding Partner for Women Leaders",
-    "body": "Strategic branding, campaign communication, and leadership development for women shaping the future of governance across Africa."
-  }
+  "typography": "institutional"
 }

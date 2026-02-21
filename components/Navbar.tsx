@@ -12,6 +12,7 @@ const navLinks = [
     { label: 'Institutional Clients', href: '/institutional-clients' },
 ];
 
+export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const settings = useContext(SettingsContext);
@@ -31,45 +32,75 @@ const navLinks = [
     return (
         <nav
             style={{
-                position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-                background: scrolled ? theme.primary : 'rgba(17,17,17,0.6)',
-                backdropFilter: 'blur(16px)',
-                borderBottom: scrolled ? `1px solid ${theme.secondary}` : 'none',
-                transition: 'all 0.35s ease',
-                padding: '0 24px',
+                position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+                background: scrolled ? 'rgba(17,17,17,0.95)' : 'transparent',
+                backdropFilter: scrolled ? 'blur(12px)' : 'none',
+                borderBottom: scrolled ? `1px solid ${theme.secondary}30` : 'none',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                padding: scrolled ? '0.75rem 24px' : '1.25rem 24px',
             }}
         >
-            <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-                {/* Logo */}
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-                    <img src="/logo.png" alt="The Polibrand Agency" className="logo" style={{ height: logoSize, width: logoSize, objectFit: 'contain', boxShadow: '0 4px 24px rgba(0,0,0,0.15)', transition: 'height 0.3s, width 0.3s' }} />
-                    <div>
-                        <div className="company-name" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: nameSize, color: theme.secondary, letterSpacing: '2px', lineHeight: 1, textShadow: '0 2px 8px rgba(0,0,0,0.12)', transition: 'font-size 0.3s, color 0.3s' }}>
+            <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                {/* Logo & Brand Lockup */}
+                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none', group: 'true' } as any}>
+                    <div style={{ position: 'relative', width: 48, height: 48, transition: 'transform 0.3s' }}>
+                        <img
+                            src={theme.logo || '/logo.png'}
+                            alt="Logo"
+                            style={{
+                                width: '100%', height: '100%', objectFit: 'contain',
+                                filter: scrolled ? 'none' : 'drop-shadow(0 0 8px rgba(0,0,0,0.3))'
+                            }}
+                        />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', borderLeft: `1px solid ${theme.secondary}40`, paddingLeft: '16px' }}>
+                        <span style={{
+                            fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.2rem',
+                            color: theme.secondary, letterSpacing: '2px', lineHeight: 1,
+                            textShadow: scrolled ? 'none' : '0 2px 10px rgba(0,0,0,0.4)'
+                        }}>
                             THE POLIBRAND
-                        </div>
-                        <div className="company-sub" style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: subSize, color: theme.text, letterSpacing: '4px', lineHeight: 1.4, textShadow: '0 2px 8px rgba(0,0,0,0.12)', transition: 'font-size 0.3s, color 0.3s' }}>
+                        </span>
+                        <span style={{
+                            fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.8rem',
+                            color: '#fff', letterSpacing: '4.5px', marginTop: '2px',
+                            opacity: 0.9
+                        }}>
                             AGENCY
-                        </div>
+                        </span>
                     </div>
                 </Link>
 
                 {/* Desktop Nav Links */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }} className="desktop-nav">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             style={{
-                                fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '0.78rem',
-                                letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.82)',
-                                textDecoration: 'none', transition: 'color 0.2s', padding: '4px 0',
-                                borderBottom: '2px solid transparent',
+                                fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '0.75rem',
+                                letterSpacing: '1.5px', textTransform: 'uppercase', color: '#fff',
+                                textDecoration: 'none', transition: 'all 0.2s',
+                                opacity: 0.85
                             }}
+                            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = theme.secondary; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.color = '#fff'; }}
                         >
                             {link.label}
                         </Link>
                     ))}
-                    <Link href="/apply" className="btn-gold" style={{ fontSize: '0.72rem', padding: '10px 20px' }}>
+                    <Link
+                        href="/apply"
+                        style={{
+                            background: theme.secondary, color: '#111',
+                            padding: '10px 24px', borderRadius: '2px',
+                            fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.7rem',
+                            textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none',
+                            transition: 'all 0.3s', boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.2)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)'; }}
+                    >
                         Apply Now
                     </Link>
                 </div>
@@ -80,35 +111,45 @@ const navLinks = [
                     style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
                     className="mobile-only"
                 >
-                    <div style={{ width: 24, height: 2, background: '#C9A227', marginBottom: 5, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
-                    <div style={{ width: 24, height: 2, background: '#C9A227', marginBottom: 5, opacity: menuOpen ? 0 : 1 }} />
-                    <div style={{ width: 24, height: 2, background: '#C9A227', transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none' }} />
+                    <div style={{ width: 24, height: 2, background: theme.secondary, marginBottom: 5, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
+                    <div style={{ width: 20, height: 2, background: theme.secondary, marginBottom: 5, marginLeft: 'auto', opacity: menuOpen ? 0 : 1 }} />
+                    <div style={{ width: 24, height: 2, background: theme.secondary, transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-8px)' : 'none' }} />
                 </button>
             </div>
 
-            {/* Mobile Menu */}
-            {menuOpen && (
-                <div style={{ background: 'rgba(17,17,17,0.98)', borderTop: '1px solid rgba(201,162,39,0.2)', padding: '1.5rem 24px 2rem' }}>
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMenuOpen(false)}
-                            style={{
-                                display: 'block', padding: '12px 0',
-                                fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '0.85rem',
-                                letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)',
-                                textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.07)',
-                            }}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                    <Link href="/apply" className="btn-gold" style={{ marginTop: '1.5rem', fontSize: '0.78rem' }}>
-                        Apply Now
+            {/* Mobile Menu Overlay */}
+            <div style={{
+                position: 'fixed', top: 0, right: 0, bottom: 0, left: 0,
+                background: 'rgba(17,17,17,0.98)', zIndex: -1,
+                display: menuOpen ? 'flex' : 'none', flexDirection: 'column',
+                justifyContent: 'center', alignItems: 'center', gap: '2rem',
+                transition: 'all 0.3s'
+            }}>
+                {navLinks.map((link) => (
+                    <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setMenuOpen(false)}
+                        style={{
+                            fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.5rem',
+                            color: '#fff', textDecoration: 'none', letterSpacing: '2px'
+                        }}
+                    >
+                        {link.label}
                     </Link>
-                </div>
-            )}
+                ))}
+                <Link
+                    href="/apply"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                        background: theme.secondary, color: '#111',
+                        padding: '16px 40px', borderRadius: '2px', marginTop: '1rem',
+                        fontFamily: 'Inter, sans-serif', fontWeight: 700, textDecoration: 'none'
+                    }}
+                >
+                    Apply Now
+                </Link>
+            </div>
 
             <style>{`
         @media (min-width: 769px) { .mobile-only { display: none !important; } }

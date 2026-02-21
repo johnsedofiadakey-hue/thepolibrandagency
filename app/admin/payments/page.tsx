@@ -37,7 +37,6 @@ export default function PaymentsPage() {
                                     <span style={{ padding: '8px 10px', background: '#f3f4f6', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#6b7280', fontWeight: 600 }}>{p.currency}</span>
                                     <input
                                         type="number"
-                                        defaultValue={p.price}
                                         value={newPrice[p.name] ?? p.price}
                                         onChange={(e) => setNewPrice({ ...newPrice, [p.name]: e.target.value })}
                                         style={{ padding: '8px 12px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', outline: 'none', width: 80 }}

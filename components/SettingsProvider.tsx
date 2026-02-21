@@ -8,8 +8,11 @@ export const SettingsContext = React.createContext({
     accent: '#B22222',
     background: '#F9F6F1',
     text: '#111111',
+    heroImage: '',
+    logo: '/logo.png',
   },
   typography: 'institutional',
+  updateSettings: (newSettings: any) => { },
 });
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
@@ -20,9 +23,15 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       accent: '#B22222',
       background: '#F9F6F1',
       text: '#111111',
+      heroImage: '',
+      logo: '/logo.png',
     },
     typography: 'institutional',
   });
+
+  const updateSettings = (newSettings: any) => {
+    setSettings(prev => ({ ...prev, ...newSettings }));
+  };
 
   React.useEffect(() => {
     fetch('/api/settings')
@@ -39,11 +48,12 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty('--color-accent', theme.accent);
       root.style.setProperty('--color-bg', theme.background);
       root.style.setProperty('--color-text', theme.text);
+      root.style.setProperty('--hero-image', theme.heroImage ? `url(${theme.heroImage})` : 'none');
     }
   }, [settings]);
 
   return (
-    <SettingsContext.Provider value={settings}>
+    <SettingsContext.Provider value={{ ...settings, updateSettings }}>
       {children}
     </SettingsContext.Provider>
   );
