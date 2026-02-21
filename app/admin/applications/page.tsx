@@ -33,12 +33,10 @@ export default function ApplicationsPage() {
                     />
                     <button className="btn-primary hide-mobile" style={{ fontSize: '0.75rem', padding: '8px 16px' }}>Export</button>
                 </div>
-                <div className="admin-nav" style={{
+                <div className="scroll-tabs" style={{
                     display: 'flex',
-                    gap: 4,
-                    overflowX: 'auto',
-                    paddingBottom: 4,
-                    justifyContent: 'flex-start'
+                    gap: 8,
+                    paddingBottom: 4
                 }}>
                     {['All', 'Pending', 'Review', 'Approved', 'Rejected'].map((s) => (
                         <button

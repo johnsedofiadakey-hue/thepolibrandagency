@@ -32,20 +32,12 @@ export default function AdminDashboard() {
             {/* Stats Grid - High Density */}
             <div className="grid-cols-4-mobile-2" style={{ gap: '0.75rem', marginBottom: '1.5rem' }}>
                 {stats.map((s) => (
-                    <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color, padding: '0.85rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                            <span style={{ fontSize: '1.5rem' }}>{s.icon}</span>
-                            <span style={{
-                                fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 600,
-                                color: s.change.startsWith('+') ? '#16a34a' : s.change === '—' ? '#9ca3af' : '#dc2626',
-                                background: s.change.startsWith('+') ? '#f0fdf4' : s.change === '—' ? '#f9fafb' : '#fef2f2',
-                                padding: '2px 8px', borderRadius: 10,
-                            }}>
-                                {s.change}
-                            </span>
+                    <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#111' }}>{s.value}</div>
+                            <span style={{ fontSize: '1rem' }}>{s.icon}</span>
                         </div>
-                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#111', marginBottom: '0.1rem' }}>{s.value}</div>
-                        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px' }}>{s.label}</div>
+                        <div className="label" style={{ fontFamily: 'var(--font-body)', fontSize: '0.6rem', color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px', marginTop: 'auto' }}>{s.label}</div>
                     </div>
                 ))}
             </div>

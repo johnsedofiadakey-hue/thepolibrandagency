@@ -609,16 +609,27 @@ h6 {
     flex-direction: row !important;
     display: flex !important;
     width: 100% !important;
-    justify-content: space-around !important;
-    padding: 0 8px !important;
+    justify-content: flex-start !important;
+    padding: 0 16px !important;
     align-items: center !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    /* Hide scrollbar Firefox */
+    -ms-overflow-style: none !important;
+    /* Hide scrollbar IE/Edge */
+    gap: 8px !important;
+  }
+
+  .admin-nav::-webkit-scrollbar {
+    display: none !important;
+    /* Hide scrollbar Chrome/Safari */
   }
 
   .admin-nav-item {
-    flex: 1 !important;
-    max-width: 60px !important;
+    flex: 0 0 auto !important;
+    min-width: 70px !important;
     flex-direction: column !important;
-    padding: 8px 0 !important;
+    padding: 8px 4px !important;
     gap: 4px !important;
     margin: 0 !important;
     border: none !important;
@@ -660,26 +671,48 @@ h6 {
 
   /* High-Density Card Overrides */
   .stat-widget {
-    padding: 1rem !important;
+    padding: 0.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 90px !important;
+    word-break: break-word !important;
   }
 
   .stat-widget .label {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
+    line-height: 1.2 !important;
+    margin-top: 4px !important;
   }
 
   .stat-widget .value {
-    font-size: 1.25rem !important;
+    font-size: 1.1rem !important;
   }
 
   /* Grid Resets for Mobile */
   .grid-cols-2-mobile-1 {
     grid-template-columns: 1fr !important;
-    gap: 2.5rem !important;
+    gap: 1rem !important;
   }
 
   .grid-cols-4-mobile-2 {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.5rem !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Scrollable Tab Container utility */
+  .scroll-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    gap: 8px !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+  }
+
+  .scroll-tabs::-webkit-scrollbar {
+    display: none !important;
   }
 
   /* Hero Adjustments */

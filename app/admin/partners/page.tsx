@@ -13,12 +13,12 @@ export default function PartnersPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <div>
                     <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Partners</h1>
                     <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Institutional CRM</p>
                 </div>
-                <button onClick={() => setShowAdd(!showAdd)} className="btn-primary" style={{ fontSize: '0.72rem', padding: '8px 14px' }}>+ New</button>
+                <button onClick={() => setShowAdd(!showAdd)} className="btn-primary" style={{ fontSize: '0.72rem', padding: '8px 14px', whiteSpace: 'nowrap' }}>+ New</button>
             </div>
 
             {/* Stats - High Density */}
