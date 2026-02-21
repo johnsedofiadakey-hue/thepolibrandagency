@@ -38,28 +38,30 @@ export default function AdminAnalyticsPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Analytics Dashboard</h1>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Platform traffic, conversions, and revenue metrics · Last 30 days</p>
+            <div style={{ marginBottom: '1.5rem' }}>
+                <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Analytics Dashboard</h1>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Performance metrics · Last 30 days</p>
             </div>
 
             {/* KPI Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className="grid-cols-4-mobile-2" style={{ gap: '0.75rem', marginBottom: '1.5rem' }}>
                 {[
-                    { label: 'Total Visitors', value: '15,200', change: '+22%', color: '#1F6F3E' },
-                    { label: 'Assessments Taken', value: '896', change: '+8%', color: '#C9A227' },
-                    { label: 'Total Revenue', value: '$24,800', change: '+18%', color: '#1F6F3E' },
-                    { label: 'Avg. Readiness Score', value: '64/100', change: '+3pt', color: '#C9A227' },
+                    { label: 'Visitors', value: '15,200', change: '+22%', color: '#1F6F3E' },
+                    { label: 'Assessments', value: '896', change: '+8%', color: '#C9A227' },
+                    { label: 'Revenue', value: '$24.8K', change: '+18%', color: '#1F6F3E' },
+                    { label: 'Avg. Score', value: '64/100', change: '+3pt', color: '#C9A227' },
                 ].map((kpi) => (
                     <div key={kpi.label} className="stat-widget" style={{ borderLeftColor: kpi.color }}>
-                        <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.5rem', color: '#111', marginBottom: '0.2rem' }}>{kpi.value}</div>
-                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem' }}>{kpi.label}</div>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 600, color: '#16a34a', background: '#f0fdf4', padding: '2px 8px', borderRadius: 10 }}>{kpi.change}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div className="value" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111' }}>{kpi.value}</div>
+                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.55rem', fontWeight: 700, color: '#16a34a', background: '#f0fdf4', padding: '1px 6px', borderRadius: 10 }}>{kpi.change}</span>
+                        </div>
+                        <div className="label" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.6rem', color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px', marginTop: 'auto' }}>{kpi.label}</div>
                     </div>
                 ))}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+            <div className="grid-cols-2-mobile-1" style={{ gridTemplateColumns: '2fr 1fr' }}>
                 {/* Bar Chart */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
                     <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.05rem', color: '#111', marginBottom: '1.5rem' }}>Monthly Visitors & Applications</h3>
@@ -104,7 +106,7 @@ export default function AdminAnalyticsPage() {
             </div>
 
             {/* Conversion Funnel + Revenue */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginTop: '1.5rem' }}>
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
                     <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.05rem', color: '#111', marginBottom: '1.25rem' }}>Conversion Metrics</h3>
                     {conversionMetrics.map((m) => (

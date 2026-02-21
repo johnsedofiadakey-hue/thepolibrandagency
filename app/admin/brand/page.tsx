@@ -68,21 +68,21 @@ export default function BrandPage() {
     return (
         <div style={{ background: colors.background, minHeight: '100vh', padding: '2rem' }}>
             <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', color: colors.text }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', gap: '1rem', flexWrap: 'wrap' }}>
                     <div>
-                        <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Brand Settings</h1>
-                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Customize the platform visual identity</p>
+                        <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Brand Settings</h1>
+                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Customize visual identity</p>
                     </div>
                     <button
                         onClick={() => handleSave()}
                         className="btn-primary"
-                        style={{ background: saved ? colors.primary : colors.secondary, color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 4, cursor: 'pointer', fontWeight: 600 }}
+                        style={{ background: saved ? colors.primary : colors.secondary, color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 4, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', whiteSpace: 'nowrap' }}
                     >
                         {saved ? '✓ Saved!' : 'Save Changes'}
                     </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '1.5rem' }}>
+                <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem' }}>
                     {/* Color Settings */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div style={{ background: '#fff', borderRadius: 8, border: `1px solid #e5e0d6`, padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>

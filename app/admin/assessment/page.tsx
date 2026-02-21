@@ -26,36 +26,39 @@ export default function AssessmentControlPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <div>
-                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Readiness Index Control</h1>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Configure questions, scoring weights, and tier recommendations</p>
+                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Readiness Index</h1>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Configure scoring and tiers</p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    <button style={{ padding: '9px 18px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 4, fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
-                        Export Results CSV
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <button className="hide-mobile" style={{ padding: '9px 18px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 4, fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+                        Export
                     </button>
-                    <button className="btn-primary" style={{ fontSize: '0.82rem' }} onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
+                    <button className="btn-primary" style={{ fontSize: '0.75rem', padding: '8px 16px', whiteSpace: 'nowrap' }} onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
                         {saved ? '✓ Saved' : 'Save Changes'}
                     </button>
                 </div>
             </div>
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: 4, marginBottom: '1.5rem', background: '#fff', padding: 4, borderRadius: 6, border: '1px solid #e5e7eb', width: 'fit-content' }}>
+            <div className="scroll-tabs" style={{ marginBottom: '1.5rem', width: '100%', padding: '4px 0' }}>
                 {(['questions', 'tiers', 'weights'] as const).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         style={{
-                            padding: '8px 20px', borderRadius: 4, cursor: 'pointer', border: 'none',
-                            background: activeTab === tab ? '#1F6F3E' : 'transparent',
+                            padding: '10px 24px', borderRadius: 6, cursor: 'pointer',
+                            background: activeTab === tab ? '#1F6F3E' : '#fff',
                             color: activeTab === tab ? '#fff' : '#6b7280',
-                            fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', fontWeight: 600,
-                            textTransform: 'capitalize', transition: 'all 0.2s',
+                            fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', fontWeight: 700,
+                            textTransform: 'uppercase', transition: 'all 0.2s',
+                            border: `1px solid ${activeTab === tab ? '#1F6F3E' : '#e5e7eb'}`,
+                            boxShadow: activeTab === tab ? '0 4px 12px rgba(31, 111, 62, 0.2)' : 'none',
+                            flex: '0 0 auto'
                         }}
                     >
-                        {tab === 'questions' ? '📝 Questions' : tab === 'tiers' ? '🏆 Score Tiers' : '⚖️ Weights'}
+                        {tab === 'questions' ? 'Questions' : tab === 'tiers' ? 'Score Tiers' : 'Weights'}
                     </button>
                 ))}
             </div>
@@ -63,21 +66,23 @@ export default function AssessmentControlPage() {
             {activeTab === 'questions' && (
                 <div>
                     {questions.map((q, i) => (
-                        <div key={q.id} style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.25rem 1.5rem', marginBottom: '0.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.1rem', color: '#e5e0d6', minWidth: 28 }}>Q{i + 1}</div>
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', gap: '0.75rem', marginBottom: 8 }}>
-                                    <span className="badge badge-green">{q.category}</span>
-                                    <span className="badge badge-gray">{q.weight}% weight</span>
+                        <div key={q.id} style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem', marginBottom: '0.75rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                                    <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: '#e5e0d6' }}>Q{i + 1}</span>
+                                    <span className="badge badge-green" style={{ fontSize: '0.6rem' }}>{q.category}</span>
                                 </div>
-                                <input
-                                    type="text"
-                                    value={q.text}
-                                    onChange={(e) => setQuestions(questions.map((qq, qi) => qi === i ? { ...qq, text: e.target.value } : qq))}
-                                    style={{ width: '100%', padding: '8px 12px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', outline: 'none', color: '#111' }}
-                                />
+                                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: '#9ca3af' }}>{q.weight}%</span>
+                                    <button style={{ padding: '4px 8px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.6rem', fontWeight: 700, cursor: 'pointer' }}>Del</button>
+                                </div>
                             </div>
-                            <button style={{ padding: '6px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>Remove</button>
+                            <input
+                                type="text"
+                                value={q.text}
+                                onChange={(e) => setQuestions(questions.map((qq, qi) => qi === i ? { ...qq, text: e.target.value } : qq))}
+                                style={{ width: '100%', padding: '10px 12px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', outline: 'none', color: '#111', boxSizing: 'border-box' }}
+                            />
                         </div>
                     ))}
                     <button className="btn-outline-dark" style={{ fontSize: '0.82rem', marginTop: '0.5rem' }}>+ Add Question</button>

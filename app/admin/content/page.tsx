@@ -25,17 +25,17 @@ export default function ContentPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <div>
-                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: settings.theme.text, marginBottom: '0.25rem' }}>Content Management</h1>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Edit and manage all public-facing website content</p>
+                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.4rem', color: settings.theme.text, marginBottom: '0.15rem' }}>Content Management</h1>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Manage website content</p>
                 </div>
-                <button className="btn-primary" style={{ fontSize: '0.82rem' }} onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
+                <button className="btn-primary" style={{ fontSize: '0.75rem', padding: '8px 16px', whiteSpace: 'nowrap' }} onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
                     {saved ? '✓ Published!' : 'Save & Publish'}
                 </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '1.5rem' }}>
+            <div className="grid-cols-2-mobile-1" style={{ gridTemplateColumns: '280px 1fr' }}>
                 {/* Section List */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
                     <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f3f4f6', fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '0.9rem', color: '#111' }}>Page Sections</div>

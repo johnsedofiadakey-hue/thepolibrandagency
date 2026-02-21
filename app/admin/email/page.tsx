@@ -79,12 +79,14 @@ export default function EmailPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: '0.25rem' }}>Email Automation</h1>
-                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#9ca3af' }}>Manage automated email templates and trigger logic</p>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div>
+                    <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Email Automation</h1>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Template management</p>
+                </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '1.5rem' }}>
+            <div className="grid-cols-2-mobile-1" style={{ gridTemplateColumns: '280px 1fr' }}>
                 {/* Template List */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 1px 8px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
                     <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f3f4f6', fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '0.9rem', color: '#111' }}>Email Templates</div>
