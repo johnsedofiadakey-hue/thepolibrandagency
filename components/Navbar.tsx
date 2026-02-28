@@ -1,33 +1,19 @@
 'use client';
 import { useState, useEffect, useContext } from 'react';
-import { SettingsContext } from './SettingsProvider';
+import { PoliSettingsContext } from './SettingsProvider';
 import Link from 'next/link';
-import Image from 'next/image';
-
-const navLinks = [
-    { label: 'About', href: '/about' },
-    { label: 'Services', href: '/services' },
-    { label: 'Programs', href: '/programs' },
-    { label: 'Assessment', href: '/assessment' },
-    { label: 'Institutional Clients', href: '/institutional-clients' },
-];
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const settings = useContext(SettingsContext);
-    const theme = settings.theme;
+    const { theme, content } = useContext(PoliSettingsContext) as any;
+    const nav = content.navbar;
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    // Shrink logo/company name on scroll
-    const logoSize = scrolled ? 60 : 100;
-    const nameSize = scrolled ? '1.5rem' : '2.5rem';
-    const subSize = scrolled ? '1rem' : '1.5rem';
 
     return (
         <nav
@@ -42,7 +28,7 @@ export default function Navbar() {
         >
             <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 {/* Logo & Brand Lockup */}
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none', group: 'true' } as any}>
+                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
                     <div style={{ position: 'relative', width: 48, height: 48, transition: 'transform 0.3s' }}>
                         <img
                             src={theme.logo || '/logo.png'}
@@ -59,21 +45,21 @@ export default function Navbar() {
                             color: theme.secondary, letterSpacing: '2px', lineHeight: 1,
                             textShadow: scrolled ? 'none' : '0 2px 10px rgba(0,0,0,0.4)'
                         }}>
-                            THE POLIBRAND
+                            {nav.brand.line1}
                         </span>
                         <span style={{
                             fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.8rem',
                             color: '#fff', letterSpacing: '4.5px', marginTop: '2px',
                             opacity: 0.9
                         }}>
-                            AGENCY
+                            {nav.brand.line2}
                         </span>
                     </div>
                 </Link>
 
                 {/* Desktop Nav Links */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }} className="desktop-nav">
-                    {navLinks.map((link) => (
+                    {nav.links.map((link: any) => (
                         <Link
                             key={link.href}
                             href={link.href}
@@ -90,7 +76,7 @@ export default function Navbar() {
                         </Link>
                     ))}
                     <Link
-                        href="/apply"
+                        href={nav.cta.href}
                         style={{
                             background: theme.secondary, color: '#111',
                             padding: '10px 24px', borderRadius: '2px',
@@ -101,14 +87,14 @@ export default function Navbar() {
                         onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.2)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)'; }}
                     >
-                        Apply Now
+                        {nav.cta.label}
                     </Link>
                 </div>
 
                 {/* Mobile Hamburger */}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 12 }}
                     className="mobile-only"
                 >
                     <div style={{ width: 24, height: 2, background: theme.secondary, marginBottom: 5, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
@@ -125,7 +111,7 @@ export default function Navbar() {
                 justifyContent: 'center', alignItems: 'center', gap: '2rem',
                 transition: 'all 0.3s'
             }}>
-                {navLinks.map((link) => (
+                {nav.links.map((link: any) => (
                     <Link
                         key={link.href}
                         href={link.href}
@@ -139,7 +125,7 @@ export default function Navbar() {
                     </Link>
                 ))}
                 <Link
-                    href="/apply"
+                    href={nav.cta.href}
                     onClick={() => setMenuOpen(false)}
                     style={{
                         background: theme.secondary, color: '#111',
@@ -147,7 +133,7 @@ export default function Navbar() {
                         fontFamily: 'Inter, sans-serif', fontWeight: 700, textDecoration: 'none'
                     }}
                 >
-                    Apply Now
+                    {nav.cta.label}
                 </Link>
             </div>
 

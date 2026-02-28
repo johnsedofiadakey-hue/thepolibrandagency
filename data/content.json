@@ -1,0 +1,705 @@
+{
+  "navbar": {
+    "brand": {
+      "line1": "THE POLIBRAND.",
+      "line2": "AGENCY"
+    },
+    "links": [
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "label": "Services",
+        "href": "/services"
+      },
+      {
+        "label": "Programs",
+        "href": "/programs"
+      },
+      {
+        "label": "Assessment",
+        "href": "/assessment"
+      },
+      {
+        "label": "Institutional Clients",
+        "href": "/institutional-clients"
+      }
+    ],
+    "cta": {
+      "label": "Apply Now",
+      "href": "/apply"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "The leading political branding partner for women leaders across Africa."
+    },
+    "sections": [
+      {
+        "title": "Platform",
+        "links": [
+          {
+            "label": "About",
+            "href": "/about"
+          },
+          {
+            "label": "Services",
+            "href": "/services"
+          },
+          {
+            "label": "Programs",
+            "href": "/programs"
+          },
+          {
+            "label": "Political Readiness Index",
+            "href": "/assessment"
+          }
+        ]
+      },
+      {
+        "title": "Programs",
+        "links": [
+          {
+            "label": "Leadership Bootcamp",
+            "href": "/programs#bootcamp"
+          },
+          {
+            "label": "Fellowship",
+            "href": "/programs#fellowship"
+          },
+          {
+            "label": "Digital Courses",
+            "href": "/programs#courses"
+          },
+          {
+            "label": "Fellows Portal",
+            "href": "/portal"
+          }
+        ]
+      },
+      {
+        "title": "Institution",
+        "links": [
+          {
+            "label": "Institutional Clients",
+            "href": "/institutional-clients"
+          },
+          {
+            "label": "Partner Proposal",
+            "href": "/apply"
+          },
+          {
+            "label": "Document Library",
+            "href": "/admin/documents"
+          }
+        ]
+      }
+    ],
+    "newsletter": {
+      "title": "Stay Informed",
+      "description": "Political strategy insights, fellowship updates, and program announcements."
+    },
+    "socials": [
+      {
+        "label": "Twitter/X",
+        "href": "#"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "#"
+      },
+      {
+        "label": "Instagram",
+        "href": "#"
+      }
+    ],
+    "bottom": {
+      "copyright": "© 2026 The Polibrand Agency. All rights reserved.",
+      "links": [
+        {
+          "label": "Privacy",
+          "href": "#"
+        },
+        {
+          "label": "Terms",
+          "href": "#"
+        },
+        {
+          "label": "Cookies",
+          "href": "#"
+        }
+      ]
+    }
+  },
+  "pages": {
+    "home": {
+      "hero": {
+        "tag": "The Leading Political Branding Partner for Women Leaders",
+        "headline": "Building Political Power\nfor Women Across Africa.",
+        "subheadline": "Strategic branding, campaign communication, and leadership development for women shaping the future of governance."
+      },
+      "stats": [
+        {
+          "number": "200+",
+          "label": "Women Leaders Trained"
+        },
+        {
+          "number": "18",
+          "label": "African Countries Reached"
+        },
+        {
+          "number": "94%",
+          "label": "Campaign Success Rate"
+        },
+        {
+          "number": "12",
+          "label": "Institutional Partners"
+        }
+      ],
+      "challenge": {
+        "tag": "The Challenge",
+        "title": "The Representation Gap\nIs Structural.",
+        "text": "Women across emerging democracies remain underrepresented in legislative, executive, and party leadership structures. The barrier is not ambition — it is strategic infrastructure.",
+        "list": [
+          "Narrative clarity",
+          "Media discipline",
+          "Voter alignment",
+          "Fundraising architecture",
+          "Strategic visibility"
+        ],
+        "quote": "\"Democracy thrives when leadership reflects society.\"",
+        "stats": [
+          {
+            "label": "Women in African Parliaments",
+            "value": "26%"
+          },
+          {
+            "label": "Women Executives",
+            "value": "18%"
+          },
+          {
+            "label": "Women Party Leaders",
+            "value": "14%"
+          }
+        ]
+      },
+      "services": {
+        "tag": "What We Offer",
+        "title": "Core Strategic Services",
+        "description": "Institutional-grade tools designed for the complexities of modern democratic competition.",
+        "items": [
+          {
+            "icon": "◈",
+            "title": "Personal Brand Positioning",
+            "desc": "Identity architecture, message discipline, and leadership positioning that distinguishes you from the political noise."
+          },
+          {
+            "icon": "◆",
+            "title": "Political Brand Strategy",
+            "desc": "Constituency mapping, narrative development, and strategic alignment for sustained electoral viability."
+          },
+          {
+            "icon": "◉",
+            "title": "Campaign Communication",
+            "desc": "Media architecture, speech development, and crisis communication frameworks built for modern politics."
+          },
+          {
+            "icon": "◎",
+            "title": "Media Training",
+            "desc": "Interview simulations, debate strategy, camera presence coaching, and press preparation at the highest level."
+          },
+          {
+            "icon": "◇",
+            "title": "Fundraising Strategy",
+            "desc": "Donor positioning, political credibility framing, and campaign funding narratives that open doors."
+          }
+        ]
+      },
+      "diagnostic": {
+        "tag": "Diagnostic Tool",
+        "title": "Measure Your Political Readiness.",
+        "description": "A structured assessment evaluating your communication clarity, narrative strength, visibility readiness, and fundraising positioning. Get your personalized score and growth roadmap.",
+        "categories": [
+          "Brand Clarity",
+          "Communication Strength",
+          "Public Visibility",
+          "Fundraising Readiness"
+        ]
+      },
+      "partnerships": {
+        "tag": "Global Impact",
+        "title": "Our Institutional Partners",
+        "text": "We scale our impact by aligning with leading democratic and development institutions across the continent.",
+        "items": [
+          {
+            "name": "Democratic Union",
+            "logo": "/partners/du.png"
+          },
+          {
+            "name": "Gender Equities Foundation",
+            "logo": "/partners/gef.png"
+          },
+          {
+            "name": "African Leadership Institute",
+            "logo": "/partners/ali.png"
+          },
+          {
+            "name": "Global Governance Network",
+            "logo": "/partners/ggn.png"
+          }
+        ]
+      }
+    },
+    "about": {
+      "hero": {
+        "tag": "About Us",
+        "title": "Redefining Political Leadership Through Strategic Communication.",
+        "description": "Democracy thrives when leadership reflects society. Polibrand combines political strategy, communication architecture, and leadership development to close the representation gap."
+      },
+      "vision": {
+        "tag": "Our Future",
+        "title": "Representing the Future of African Governance",
+        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where women lead at every level of policy and power.",
+        "items": [
+          {
+            "label": "Legislative Excellence",
+            "percentage": "50%"
+          },
+          {
+            "label": "Executive Leadership",
+            "percentage": "50%"
+          },
+          {
+            "label": "Party Governance",
+            "percentage": "50%"
+          }
+        ]
+      },
+      "strategy": {
+        "tag": "The Polibrand Strategy",
+        "title": "Our Strategic Architecture",
+        "steps": [
+          {
+            "title": "Research-Driven Identity",
+            "desc": "Every strategy is grounded in political science and real-world electoral data."
+          },
+          {
+            "title": "Institutional Alignment",
+            "desc": "We work within democratic systems to build sustainable leadership pipelines."
+          },
+          {
+            "title": "Outcome-Oriented Training",
+            "desc": "Our programs measure success in real-world leadership advancement."
+          },
+          {
+            "title": "Strategically Measurable",
+            "desc": "Every roadmap delivers trackable, evidence-based growth benchmarks."
+          }
+        ]
+      },
+      "philosophy": {
+        "tag": "Polibrand Philosophy",
+        "title": "The Pillars of Narrative Power",
+        "cards": [
+          {
+            "title": "Identity architecture",
+            "text": "Building the core internal narrative that drives public branding."
+          },
+          {
+            "title": "Message discipline",
+            "text": "Absolute consistency across all communication channels."
+          },
+          {
+            "title": "Strategic visibility",
+            "text": "Creating high-impact presence in the right spaces at the right time."
+          }
+        ]
+      }
+    },
+    "services": {
+      "hero": {
+        "tag": "Strategic Services",
+        "title": "Institutional-Grade Tools for Modern Political Leadership.",
+        "description": "Every service is designed around the structural requirements of competitive democratic environments."
+      },
+      "individual": {
+        "tag": "For Women Leaders",
+        "title": "Individual Strategy Services",
+        "items": [
+          {
+            "number": "01",
+            "title": "Personal Brand Positioning",
+            "color": "var(--color-primary)",
+            "intro": "Identity architecture, message discipline, and leadership positioning built to distinguish you in a crowded political space.",
+            "deliverables": [
+              "Brand identity blueprint",
+              "Message matrix",
+              "Leadership archetype framework",
+              "Visual direction guide",
+              "Signature speaking themes"
+            ]
+          },
+          {
+            "number": "02",
+            "title": "Political Brand Strategy",
+            "color": "var(--color-secondary)",
+            "intro": "Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.",
+            "deliverables": [
+              "Constituency segmentation model",
+              "Issue alignment mapping",
+              "Strategic narrative playbook",
+              "Opponent positioning strategy",
+              "Voter communication calendar"
+            ]
+          },
+          {
+            "number": "03",
+            "title": "Campaign Communication Management",
+            "color": "var(--color-accent)",
+            "intro": "Media architecture, speech development, and crisis communication frameworks for the modern political environment.",
+            "deliverables": [
+              "Speech framework",
+              "Media engagement calendar",
+              "Press release structure",
+              "Crisis communication guide",
+              "Digital content strategy"
+            ]
+          }
+        ]
+      },
+      "institutional": {
+        "tag": "For Institutions",
+        "title": "Institutional Partnership Services",
+        "items": [
+          {
+            "icon": "📋",
+            "title": "Policy Communication Consulting",
+            "desc": "Translating complex policy into compelling public communication that resonates with diverse constituencies.",
+            "features": [
+              "Policy narrative development",
+              "Public messaging frameworks",
+              "Stakeholder communication plans",
+              "Plain language guides"
+            ]
+          },
+          {
+            "icon": "👑",
+            "title": "Gender Leadership Programs",
+            "desc": "Custom-designed leadership and communication programs for political parties and NGOs.",
+            "features": [
+              "Cohort program design",
+              "Trainer certification",
+              "Curriculum development",
+              "Impact measurement frameworks"
+            ]
+          }
+        ]
+      }
+    },
+    "programs": {
+      "hero": {
+        "tag": "Learning & Growth",
+        "title": "Elite Programs for Political Advancement.",
+        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable."
+      },
+      "bootcamp": {
+        "tag": "Flagship Program",
+        "badge": "6 Weeks · Hybrid",
+        "title": "Leadership Branding Bootcamp",
+        "description": "An intensive 6-week hybrid program designed to build every structural element of your political brand — from identity architecture to campaign-ready communication.",
+        "modules": [
+          "Political identity and brand architecture",
+          "Message clarity and narrative discipline",
+          "Media readiness and interview strategy",
+          "Digital communications and content positioning",
+          "Strategic visibility and public presence",
+          "Campaign communication foundations"
+        ],
+        "outcomes": [
+          {
+            "label": "Personal Brand Framework",
+            "icon": "◈"
+          },
+          {
+            "label": "Media Readiness Profile",
+            "icon": "◉"
+          },
+          {
+            "label": "Strategic Positioning Map",
+            "icon": "◆"
+          },
+          {
+            "label": "Campaign Communication Playbook",
+            "icon": "◇"
+          }
+        ],
+        "next_cohort": "Applications for the March 2026 cohort are open. Limited to 25 participants."
+      },
+      "fellowship": {
+        "badge": "3–6 Months · Selective Enrollment",
+        "tag": "Flagship Initiative",
+        "title": "The Polibrand Fellowship",
+        "description": "An immersive 3–6 month program for high-potential women leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.",
+        "inclusions": [
+          {
+            "icon": "🧠",
+            "title": "Strategy Labs",
+            "desc": "Monthly workshops on political strategy, branding, and governance communication."
+          },
+          {
+            "icon": "🎙️",
+            "title": "Media Workshops",
+            "desc": "Hands-on training in TV, radio, and digital media performance."
+          },
+          {
+            "icon": "👥",
+            "title": "Mentorship",
+            "desc": "1:1 mentorship with experienced political communicators and leaders."
+          },
+          {
+            "icon": "📊",
+            "title": "Readiness Scoring",
+            "desc": "Quarterly political readiness assessments with personalized growth plans."
+          }
+        ]
+      },
+      "courses": {
+        "tag": "Self-Paced",
+        "title": "Digital Courses",
+        "description": "Learning modules for women who want to build political communication skills on their own timeline.",
+        "items": [
+          {
+            "number": "01",
+            "title": "Building Political Voice",
+            "duration": "4 weeks",
+            "desc": "Develop a clear, consistent political voice grounded in your values and strategic positioning.",
+            "topics": [
+              "Voice architecture",
+              "Signature phrases",
+              "Message testing"
+            ]
+          }
+        ]
+      },
+      "consulting": {
+        "title": "Policy Communication Consulting",
+        "desc": "Translating complex policy into compelling public communication for diverse constituencies."
+      },
+      "advocacy": {
+        "title": "Advocacy Campaign Architecture",
+        "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change."
+      }
+    },
+    "institutional": {
+      "hero": {
+        "tag": "Institutional Partnership",
+        "title": "Scaling Impact Through Strategic Alignment.",
+        "description": "We partner with organizations to build the leadership pipelines necessary for inclusive democracy."
+      },
+      "models": [
+        {
+          "title": "NGO & Civic Programs",
+          "icon": "🌍",
+          "desc": "Custom gender leadership training programs.",
+          "features": [
+            "Grassroots narrative building",
+            "Community mobilization"
+          ]
+        },
+        {
+          "title": "Political Parties",
+          "icon": "🏛",
+          "desc": "Candidate communication and brand strategy.",
+          "features": [
+            "Candidate media training",
+            "Debate preparation"
+          ]
+        }
+      ],
+      "partners": [
+        {
+          "name": "Democratic Union",
+          "logo": "/partners/du.png"
+        },
+        {
+          "name": "Gender Equities Foundation",
+          "logo": "/partners/gef.png"
+        }
+      ]
+    },
+    "assessment": {
+      "hero": {
+        "tag": "Diagnostic Tool",
+        "title": "Political Readiness Index (PRI)",
+        "description": "Measure your strategic communication clarity, narrative strength, and visibility readiness.",
+        "details": [
+          {
+            "icon": "📝",
+            "text": "11 Strategic Indicators"
+          },
+          {
+            "icon": "⏱️",
+            "text": "5-Minute Assessment"
+          },
+          {
+            "icon": "📊",
+            "text": "Personalized Roadmap"
+          }
+        ]
+      },
+      "categories": [
+        {
+          "id": "clarity",
+          "label": "Brand Clarity",
+          "weight": 25,
+          "color": "#1F6F3E",
+          "questions": [
+            {
+              "id": "q1",
+              "text": "Do you have a documented personal brand blueprint that defines your core values and value proposition?",
+              "options": [
+                {
+                  "text": "No, I haven't defined my brand yet.",
+                  "score": 1
+                },
+                {
+                  "text": "I have a general idea but nothing documented.",
+                  "score": 2
+                },
+                {
+                  "text": "I have some core values identified.",
+                  "score": 3
+                },
+                {
+                  "text": "Yes, I have a fully documented brand framework.",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "narrative",
+          "label": "Narrative Strength",
+          "weight": 35,
+          "color": "#C9A227",
+          "questions": [
+            {
+              "id": "q2",
+              "text": "How consistent is your public messaging across different platforms (interviews, social media, speeches)?",
+              "options": [
+                {
+                  "text": "Inconsistent; I change my message often.",
+                  "score": 1
+                },
+                {
+                  "text": "Somewhat consistent, but needs more work.",
+                  "score": 2
+                },
+                {
+                  "text": "Mostly consistent across primary platforms.",
+                  "score": 3
+                },
+                {
+                  "text": "Extremely consistent and disciplined always.",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "assessment_results": {
+      "tiers": [
+        {
+          "max": 49,
+          "label": "Foundation Stage",
+          "color": "#B22222",
+          "bg": "#fff5f5",
+          "advice": "You are at the beginning of your political branding journey. Focus on identity architecture.",
+          "program": "Building Political Voice (Digital Course)"
+        },
+        {
+          "max": 69,
+          "label": "Emerging Stage",
+          "color": "#C9A227",
+          "bg": "#fff9e6",
+          "advice": "You have a solid foundation but need more consistency and media discipline.",
+          "program": "Leadership Branding Bootcamp"
+        },
+        {
+          "max": 89,
+          "label": "Competitive Stage",
+          "color": "#1F6F3E",
+          "bg": "#f0fdf4",
+          "advice": "You are highly competitive but need advanced campaign infrastructure.",
+          "program": "The Polibrand Fellowship"
+        },
+        {
+          "max": 100,
+          "label": "Elite Stage",
+          "color": "#1F6F3E",
+          "bg": "#f0fdf4",
+          "advice": "You demonstrate exceptional readiness. Focus on high-level narrative power and delegation.",
+          "program": "Strategic Policy Consulting"
+        }
+      ],
+      "categories": [
+        {
+          "id": "clarity",
+          "label": "Brand Clarity",
+          "weight": 25,
+          "color": "#1F6F3E"
+        },
+        {
+          "id": "narrative",
+          "label": "Narrative Strength",
+          "weight": 35,
+          "color": "#C9A227"
+        }
+      ]
+    },
+    "apply": {
+      "hero": {
+        "tag": "Take the Next Step",
+        "title": "Apply to Polibrand",
+        "description": "Complete the application to be considered for our elite leadership programs."
+      },
+      "form": {
+        "step1_title": "Personal details",
+        "step2_title": "Program & Background",
+        "labels": {
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "email": "Email Address",
+          "phone": "Phone Number",
+          "country": "Country",
+          "program": "Program of Interest",
+          "role": "Current Role",
+          "essay": "Why are you applying?"
+        },
+        "placeholders": {
+          "firstName": "e.g. Grace",
+          "lastName": "Mutuku",
+          "email": "grace@example.com",
+          "phone": "+254...",
+          "role": "e.g. Candidate",
+          "essay": "Describe your journey..."
+        },
+        "success": {
+          "title": "Application Received",
+          "text": "Thank you, {name}. We will contact you within 5-7 business days."
+        }
+      }
+    },
+    "portal": {
+      "login": {
+        "title": "Fellows Portal",
+        "subtitle": "Access your strategic dashboard and program resources.",
+        "button": "Sign In to Portal"
+      }
+    }
+  }
+}

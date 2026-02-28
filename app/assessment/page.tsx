@@ -1,162 +1,33 @@
 'use client';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
+import { PoliSettingsContext } from '@/components/SettingsProvider';
 
-const categories = [
-    {
-        id: 'brand_clarity',
-        label: 'Brand Clarity',
-        weight: 25,
-        color: '#1F6F3E',
-        questions: [
-            {
-                id: 'bc1',
-                text: 'How clearly can you articulate your core political message in 30 seconds?',
-                options: [
-                    { text: 'I have a clear, rehearsed message I use consistently', score: 4 },
-                    { text: 'I have a general idea but struggle to articulate it succinctly', score: 2 },
-                    { text: 'I find it difficult to explain what I stand for concisely', score: 1 },
-                    { text: 'I have not yet defined my political message', score: 0 },
-                ],
-            },
-            {
-                id: 'bc2',
-                text: 'How consistent is your public image across different platforms?',
-                options: [
-                    { text: 'Highly consistent — same message, tone, and look everywhere', score: 4 },
-                    { text: 'Mostly consistent with some variation', score: 2 },
-                    { text: 'Inconsistent — different approaches in different contexts', score: 1 },
-                    { text: 'I have not thought about image consistency', score: 0 },
-                ],
-            },
-            {
-                id: 'bc3',
-                text: 'How well does your public image reflect your authentic leadership style?',
-                options: [
-                    { text: 'My image is a true and strategic reflection of my leadership', score: 4 },
-                    { text: 'Reasonably aligned but some gaps exist', score: 2 },
-                    { text: 'There is a significant gap between my image and who I really am', score: 1 },
-                    { text: 'I have not developed a deliberate image', score: 0 },
-                ],
-            },
-        ],
-    },
-    {
-        id: 'communication',
-        label: 'Communication Strength',
-        weight: 25,
-        color: '#C9A227',
-        questions: [
-            {
-                id: 'cm1',
-                text: 'How confident are you in a live television or radio interview?',
-                options: [
-                    { text: 'Very confident — I handle difficult questions with ease', score: 4 },
-                    { text: 'Mostly confident but occasionally struggle under pressure', score: 2 },
-                    { text: 'Anxious and reactive in live media environments', score: 1 },
-                    { text: 'I have not done significant media appearances', score: 0 },
-                ],
-            },
-            {
-                id: 'cm2',
-                text: 'How effectively do you use storytelling in your political communication?',
-                options: [
-                    { text: 'I consistently use compelling personal and constituency stories', score: 4 },
-                    { text: 'I use stories sometimes but not consistently', score: 2 },
-                    { text: 'I tend to communicate in policy language without many stories', score: 1 },
-                    { text: 'I have not used storytelling as a deliberate strategy', score: 0 },
-                ],
-            },
-            {
-                id: 'cm3',
-                text: 'How prepared are you for debate environments?',
-                options: [
-                    { text: 'Very prepared — I have researched opponents and practiced counter-arguments', score: 4 },
-                    { text: 'Somewhat prepared but not systematically', score: 2 },
-                    { text: 'I rely on my knowledge but have not formally prepared', score: 1 },
-                    { text: 'Debate preparation has not been a priority', score: 0 },
-                ],
-            },
-        ],
-    },
-    {
-        id: 'visibility',
-        label: 'Public Visibility',
-        weight: 20,
-        color: '#B22222',
-        questions: [
-            {
-                id: 'pv1',
-                text: 'How active and strategic is your social media presence?',
-                options: [
-                    { text: 'Strategic and consistent — regular posts with a clear political voice', score: 4 },
-                    { text: 'Active but not particularly strategic', score: 2 },
-                    { text: 'Occasional and mostly personal in nature', score: 1 },
-                    { text: 'Minimal or no political social media presence', score: 0 },
-                ],
-            },
-            {
-                id: 'pv2',
-                text: 'How frequently do you appear in media (print, TV, radio, online)?',
-                options: [
-                    { text: 'Regularly — at least monthly in significant media outlets', score: 4 },
-                    { text: 'Occasionally — a few times per year', score: 2 },
-                    { text: 'Rarely — mostly local or community coverage', score: 1 },
-                    { text: 'I have not had significant media coverage', score: 0 },
-                ],
-            },
-        ],
-    },
-    {
-        id: 'fundraising',
-        label: 'Fundraising Readiness',
-        weight: 20,
-        color: '#1F6F3E',
-        questions: [
-            {
-                id: 'fr1',
-                text: 'How developed is your donor network?',
-                options: [
-                    { text: 'Extensive — I have a cultivated network of committed donors', score: 4 },
-                    { text: 'Moderate — some donors but not systematically developed', score: 2 },
-                    { text: 'Limited — mostly personal contacts without formal engagement', score: 1 },
-                    { text: 'I do not yet have a donor network', score: 0 },
-                ],
-            },
-            {
-                id: 'fr2',
-                text: 'How clear is your campaign funding narrative?',
-                options: [
-                    { text: 'Very clear — I can articulate why donors should invest in my campaign', score: 4 },
-                    { text: 'Somewhat clear but needs development', score: 2 },
-                    { text: 'Vague — I have not formally developed a funding pitch', score: 1 },
-                    { text: 'I have not developed a campaign funding narrative', score: 0 },
-                ],
-            },
-        ],
-    },
-    {
-        id: 'infrastructure',
-        label: 'Strategic Infrastructure',
-        weight: 10,
-        color: '#C9A227',
-        questions: [
-            {
-                id: 'si1',
-                text: 'How structured is your political team and advisory network?',
-                options: [
-                    { text: 'Well-structured with clear roles, advisors, and regular meetings', score: 4 },
-                    { text: 'Some structure but informal in nature', score: 2 },
-                    { text: 'Minimal — mostly managed alone or with one person', score: 1 },
-                    { text: 'I do not have a team or advisory network yet', score: 0 },
-                ],
-            },
-        ],
-    },
-];
+interface Category {
+    id: string;
+    label: string;
+    weight: number;
+    color: string;
+    questions: Question[];
+}
+
+interface Question {
+    id: string;
+    text: string;
+    options: Option[];
+}
+
+interface Option {
+    text: string;
+    score: number;
+}
 
 export default function AssessmentPage() {
+    const { content } = useContext(PoliSettingsContext) as any;
+    const assessment = content.pages.assessment;
+    const categories: Category[] = assessment.categories;
+
     const router = useRouter();
     const [currentCatIdx, setCurrentCatIdx] = useState(0);
     const [currentQIdx, setCurrentQIdx] = useState(0);
@@ -164,7 +35,7 @@ export default function AssessmentPage() {
     const [selected, setSelected] = useState<number | null>(null);
     const [started, setStarted] = useState(false);
 
-    const totalQuestions = categories.reduce((sum, cat) => sum + cat.questions.length, 0);
+    const totalQuestions = categories.reduce((sum: number, cat: Category) => sum + cat.questions.length, 0);
     const answeredCount = Object.keys(answers).length;
     const progress = (answeredCount / totalQuestions) * 100;
 
@@ -172,8 +43,8 @@ export default function AssessmentPage() {
     const currentQ = currentCat?.questions[currentQIdx];
 
     const handleNext = () => {
-        if (selected === null) return;
-        const newAnswers = { ...answers, [currentQ.id]: selected };
+        if (selected === null || !currentQ) return;
+        const newAnswers: Record<string, number> = { ...answers, [currentQ.id]: selected };
         setAnswers(newAnswers);
         setSelected(null);
 
@@ -188,15 +59,15 @@ export default function AssessmentPage() {
             } else {
                 // Done — compute and go to results
                 const scores: Record<string, number> = {};
-                categories.forEach((cat) => {
-                    const catAnswers = cat.questions.map((q) => newAnswers[q.id] ?? 0);
-                    const avg = catAnswers.reduce((a, b) => a + b, 0) / cat.questions.length;
+                categories.forEach((cat: Category) => {
+                    const catAnswers = cat.questions.map((q: Question) => newAnswers[q.id] ?? 0);
+                    const avg = catAnswers.reduce((a: number, b: number) => a + b, 0) / cat.questions.length;
                     scores[cat.id] = Math.round((avg / 4) * 100);
                 });
                 const total = Math.round(
-                    categories.reduce((sum, cat) => sum + (scores[cat.id] * cat.weight) / 100, 0)
+                    categories.reduce((sum: number, cat: Category) => sum + (scores[cat.id] * cat.weight) / 100, 0)
                 );
-                const params = new URLSearchParams({ total: String(total), ...scores });
+                const params = new URLSearchParams({ total: String(total), ...Object.fromEntries(Object.entries(scores).map(([k, v]) => [k, String(v)])) });
                 router.push(`/assessment/results?${params.toString()}`);
             }
         }
@@ -216,21 +87,17 @@ export default function AssessmentPage() {
                             <div>
                                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
                                     <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
-                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Diagnostic Tool</span>
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>{assessment.hero.tag}</span>
                                 </div>
                                 <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.25rem' }}>
-                                    Political Readiness Index
+                                    {assessment.hero.title}
                                 </h1>
                                 <div style={{ width: 60, height: 2, background: 'var(--color-secondary)', marginBottom: '1.5rem' }} />
                                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, marginBottom: '2rem' }}>
-                                    A structured diagnostic that evaluates your readiness across five critical dimensions of political competition. Receive a personalised score and strategic growth roadmap.
+                                    {assessment.hero.description}
                                 </p>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: '2.5rem' }}>
-                                    {[
-                                        { icon: '⏱', text: `${totalQuestions} questions · 5–8 minutes` },
-                                        { icon: '📊', text: '5 scored categories tracked' },
-                                        { icon: '🎯', text: 'Personalised program recommendations' },
-                                    ].map((item) => (
+                                    {assessment.hero.details.map((item: any) => (
                                         <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)' }}>
                                             <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>{item.text}
                                         </div>
@@ -241,7 +108,7 @@ export default function AssessmentPage() {
                                 </button>
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                {categories.map((cat) => (
+                                {categories.map((cat: Category) => (
                                     <div key={cat.id} style={{
                                         background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)',
                                         border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '1.25rem',
@@ -283,7 +150,7 @@ export default function AssessmentPage() {
                         </div>
                         {/* Category tabs */}
                         <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
-                            {categories.map((cat, i) => (
+                            {categories.map((cat: Category, i: number) => (
                                 <div key={cat.id} style={{
                                     flex: 1, height: 4, borderRadius: 2,
                                     background: i < currentCatIdx ? 'var(--color-primary)' : i === currentCatIdx ? 'var(--color-secondary)' : '#e5e0d6',
@@ -312,7 +179,7 @@ export default function AssessmentPage() {
                             {currentQ.text}
                         </h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            {currentQ.options.map((opt, i) => (
+                            {currentQ.options.map((opt: Option, i: number) => (
                                 <button
                                     key={i}
                                     onClick={() => setSelected(opt.score)}

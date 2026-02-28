@@ -1,7 +1,9 @@
 "use client";
 import React from 'react';
 
-export const SettingsContext = React.createContext({
+import initialContent from '../data/content.json';
+
+export const PoliSettingsContext = React.createContext({
   theme: {
     primary: '#1F6F3E',
     secondary: '#C9A227',
@@ -12,7 +14,9 @@ export const SettingsContext = React.createContext({
     logo: '/logo.png',
   },
   typography: 'institutional',
+  content: initialContent as any,
   updateSettings: (newSettings: any) => { },
+  updateContent: (newContent: any) => { },
 });
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
@@ -29,31 +33,80 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     typography: 'institutional',
   });
 
+  const [content, setContent] = React.useState<any>(initialContent);
+
+  // Load from localStorage on mount
+  React.useEffect(() => {
+    const savedContent = localStorage.getItem('poli_content');
+    if (savedContent) {
+      try {
+        setContent(JSON.parse(savedContent));
+      } catch (e) {
+        console.error('Failed to parse saved content');
+      }
+    }
+
+    const savedSettings = localStorage.getItem('poli_settings');
+    if (savedSettings) {
+      try {
+        setSettings(JSON.parse(savedSettings));
+      } catch (e) {
+        console.error('Failed to parse saved settings');
+      }
+    }
+
+    // Fetch theme settings from server
+    fetch('/api/settings', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.theme) {
+          setSettings(data);
+          localStorage.setItem('poli_settings', JSON.stringify(data));
+        }
+      })
+      .catch(err => console.error('Failed to load settings:', err));
+
+    // Fetch content settings from server
+    fetch('/api/content', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setContent(data);
+          localStorage.setItem('poli_content', JSON.stringify(data));
+        }
+      })
+      .catch(err => console.error('Failed to load content:', err));
+  }, []);
+
   const updateSettings = (newSettings: any) => {
-    setSettings(prev => ({ ...prev, ...newSettings }));
+    setSettings(prev => {
+      const next = { ...prev, ...newSettings };
+      localStorage.setItem('poli_settings', JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const updateContent = (newContent: any) => {
+    setContent((prev: any) => {
+      const next = { ...prev, ...newContent };
+      localStorage.setItem('poli_content', JSON.stringify(next));
+      return next;
+    });
   };
 
   React.useEffect(() => {
-    fetch('/api/settings')
-      .then(res => res.json())
-      .then(data => setSettings(data));
-  }, []);
-
-  React.useEffect(() => {
     const root = document.documentElement;
-    const theme = settings.theme;
-    if (theme) {
-      root.style.setProperty('--color-primary', theme.primary);
-      root.style.setProperty('--color-secondary', theme.secondary);
-      root.style.setProperty('--color-accent', theme.accent);
-      root.style.setProperty('--color-bg', theme.background);
-      root.style.setProperty('--color-text', theme.text);
-      root.style.setProperty('--hero-image', theme.heroImage ? `url(${theme.heroImage})` : 'none');
+    if (!settings.theme) return;
 
-      // Handle dark variants using CSS color-mix for automatic contrast
-      root.style.setProperty('--color-primary-dark', `color-mix(in srgb, ${theme.primary}, black 20%)`);
-      root.style.setProperty('--color-secondary-dark', `color-mix(in srgb, ${theme.secondary}, black 20%)`);
-    }
+    root.style.setProperty('--color-primary', settings.theme.primary);
+    root.style.setProperty('--color-secondary', settings.theme.secondary);
+    root.style.setProperty('--color-accent', settings.theme.accent);
+    root.style.setProperty('--color-bg', settings.theme.background);
+    root.style.setProperty('--color-text', settings.theme.text);
+    root.style.setProperty('--hero-image', settings.theme.heroImage ? `url(${settings.theme.heroImage})` : 'none');
+
+    // Quick primary variations
+    root.style.setProperty('--color-primary-dark', settings.theme.primary + 'e6');
 
     if (settings.typography) {
       const fonts: Record<string, { display: string; body: string }> = {
@@ -78,8 +131,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [settings]);
 
   return (
-    <SettingsContext.Provider value={{ ...settings, updateSettings }}>
+    <PoliSettingsContext.Provider value={{ ...settings, content, updateSettings, updateContent }}>
       {children}
-    </SettingsContext.Provider>
+    </PoliSettingsContext.Provider>
   );
 }

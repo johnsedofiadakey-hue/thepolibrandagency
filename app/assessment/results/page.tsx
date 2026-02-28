@@ -1,39 +1,41 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { PoliSettingsContext } from '@/components/SettingsProvider';
 
-const categories = [
-    { id: 'brand_clarity', label: 'Brand Clarity', weight: 25, color: '#1F6F3E' },
-    { id: 'communication', label: 'Communication Strength', weight: 25, color: '#C9A227' },
-    { id: 'visibility', label: 'Public Visibility', weight: 20, color: '#B22222' },
-    { id: 'fundraising', label: 'Fundraising Readiness', weight: 20, color: '#1F6F3E' },
-    { id: 'infrastructure', label: 'Strategic Infrastructure', weight: 10, color: '#C9A227' },
-];
-
-function getTier(score: number) {
-    if (score <= 40) return { label: 'Foundational Stage', color: '#B22222', bg: '#B2222215', advice: 'You are at the beginning of your political readiness journey. Building a clear brand and communication foundation is your immediate priority.' };
-    if (score <= 70) return { label: 'Development Stage', color: '#C9A227', bg: '#C9A22715', advice: 'You have strong foundations. Now is the time to systematically develop your strategic infrastructure and media presence.' };
-    if (score <= 90) return { label: 'Competitive Stage', color: '#1F6F3E', bg: '#1F6F3E15', advice: 'You are strategically competitive. Focus on refining your fundraising, media relationships, and campaign communication systems.' };
-    return { label: 'Leadership Ready', color: '#1F6F3E', bg: '#1F6F3E20', advice: 'You are at the top tier of political readiness. Our advanced fellowship and media strategy programs will sharpen your competitive edge.' };
+interface CategoryScore {
+    id: string;
+    label: string;
+    weight: number;
+    color: string;
+    score: number;
 }
 
-function getProgram(score: number) {
-    if (score <= 40) return 'Leadership Branding Bootcamp';
-    if (score <= 70) return 'Leadership Branding Bootcamp + Fellowship';
-    if (score <= 90) return 'Fellowship Program';
-    return 'Advanced Political Strategy Fellowship';
+interface Tier {
+    max: number;
+    label: string;
+    color: string;
+    bg: string;
+    advice: string;
+    program: string;
 }
 
 function ResultsContent() {
+    const { content } = useContext(PoliSettingsContext) as any;
+    const assessmentResults = content.pages.assessment_results;
+    const categories = assessmentResults.categories;
+    const tiers: Tier[] = assessmentResults.tiers;
+
     const params = useSearchParams();
     const total = parseInt(params.get('total') ?? '0', 10);
-    const tier = getTier(total);
-    const program = getProgram(total);
 
-    const catScores = categories.map((cat) => ({
+    const tier = tiers.find((t: Tier) => total <= t.max) || tiers[tiers.length - 1];
+    const program = tier.program;
+
+    const catScores: CategoryScore[] = categories.map((cat: any) => ({
         ...cat,
         score: parseInt(params.get(cat.id) ?? '0', 10),
     }));
@@ -106,7 +108,7 @@ function ResultsContent() {
                     <div style={{ background: '#fff', border: '1px solid var(--color-border)', borderRadius: 4, padding: '2.5rem', marginBottom: '2rem', boxShadow: 'var(--shadow-card)' }}>
                         <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '2rem' }}>Category Breakdown</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            {catScores.map((cat) => (
+                            {catScores.map((cat: CategoryScore) => (
                                 <div key={cat.id}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, alignItems: 'center' }}>
                                         <div>

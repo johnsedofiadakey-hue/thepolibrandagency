@@ -1,31 +1,13 @@
 "use client";
 import Link from 'next/link';
 import { useContext } from 'react';
-import { SettingsContext } from './SettingsProvider';
-
-const footerLinks = {
-    Platform: [
-        { label: 'About', href: '/about' },
-        { label: 'Services', href: '/services' },
-        { label: 'Programs', href: '/programs' },
-        { label: 'Political Readiness Index', href: '/assessment' },
-    ],
-    Programs: [
-        { label: 'Leadership Bootcamp', href: '/programs#bootcamp' },
-        { label: 'Fellowship', href: '/programs#fellowship' },
-        { label: 'Digital Courses', href: '/programs#courses' },
-        { label: 'Fellows Portal', href: '/portal' },
-    ],
-    Institution: [
-        { label: 'Institutional Clients', href: '/institutional-clients' },
-        { label: 'Partner Proposal', href: '/apply' },
-        { label: 'Document Library', href: '/admin/documents' },
-    ],
-};
+import { PoliSettingsContext } from './SettingsProvider';
 
 export default function Footer() {
-    const settings = useContext(SettingsContext);
-    const theme = settings.theme;
+    const { theme, content } = useContext(PoliSettingsContext) as any;
+    const footer = content.footer;
+    const navbar = content.navbar;
+
     return (
         <footer style={{ background: 'var(--color-primary)', color: '#fff', paddingTop: '80px', borderTop: `1px solid var(--color-secondary)` }}>
             <div className="container-brand">
@@ -95,18 +77,18 @@ export default function Footer() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                             <img src={theme.logo || "/logo.png"} alt="The Polibrand Agency" style={{ height: 56, width: 56, objectFit: 'contain', background: 'var(--color-bg)', borderRadius: 8, border: `2px solid var(--color-secondary)` }} />
                             <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-secondary)', letterSpacing: '1px' }}>THE POLIBRAND</div>
-                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.6rem', color: '#fff', letterSpacing: '2px' }}>AGENCY</div>
+                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-secondary)', letterSpacing: '1px' }}>{navbar.brand.line1}</div>
+                                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.6rem', color: '#fff', letterSpacing: '2px' }}>{navbar.brand.line2}</div>
                             </div>
                         </div>
                         <p style={{ fontSize: '0.85rem', lineHeight: 1.8, maxWidth: 280, marginBottom: '1.5rem', opacity: 0.8 }}>
-                            The leading political branding partner for women leaders across Africa.
+                            {footer.brand.description}
                         </p>
                         <div className="social-links" style={{ display: 'flex', gap: 12 }}>
-                            {['Twitter/X', 'LinkedIn', 'Instagram'].map((social) => (
+                            {footer.socials.map((social: any) => (
                                 <a
-                                    key={social}
-                                    href="#"
+                                    key={social.label}
+                                    href={social.href}
                                     style={{
                                         width: 40, height: 40, borderRadius: '50%',
                                         border: '1px solid rgba(201,162,39,0.3)',
@@ -115,22 +97,22 @@ export default function Footer() {
                                         textDecoration: 'none', transition: 'all 0.2s',
                                         background: 'rgba(255,255,255,0.03)'
                                     }}
-                                    title={social}
+                                    title={social.label}
                                 >
-                                    {social.charAt(0)}
+                                    {social.label.charAt(0)}
                                 </a>
                             ))}
                         </div>
                     </div>
 
                     {/* Link Columns */}
-                    {Object.entries(footerLinks).map(([title, links]) => (
-                        <div key={title}>
+                    {footer.sections.map((section: any) => (
+                        <div key={section.title}>
                             <h4 style={{ fontFamily: 'Cinzel, serif', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-secondary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-                                {title}
+                                {section.title}
                             </h4>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                {links.map((link) => (
+                                {section.links.map((link: any) => (
                                     <li key={link.label} style={{ marginBottom: '0.85rem' }}>
                                         <Link
                                             href={link.href}
@@ -148,8 +130,8 @@ export default function Footer() {
                 {/* Newsletter */}
                 <div className="newsletter-section">
                     <div>
-                        <h4 style={{ fontFamily: 'Cinzel, serif', fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 8 }}>Stay Informed</h4>
-                        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)' }}>Political strategy insights, fellowship updates, and program announcements.</p>
+                        <h4 style={{ fontFamily: 'Cinzel, serif', fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 8 }}>{footer.newsletter.title}</h4>
+                        <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)' }}>{footer.newsletter.description}</p>
                     </div>
                     <div className="newsletter-form">
                         <input
@@ -178,12 +160,12 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="footer-bottom">
                     <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)' }}>
-                        © 2026 The Polibrand Agency. All rights reserved.
+                        {footer.bottom.copyright}
                     </p>
                     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        {['Privacy', 'Terms', 'Cookies'].map((item) => (
-                            <a key={item} href="#" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>
-                                {item}
+                        {footer.bottom.links.map((item: any) => (
+                            <a key={item.label} href={item.href} style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>
+                                {item.label}
                             </a>
                         ))}
                         <Link href="/admin/login" style={{

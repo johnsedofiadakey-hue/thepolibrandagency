@@ -1,16 +1,27 @@
-import fs from 'fs/promises';
-import path from 'path';
 import { NextResponse } from 'next/server';
+import { getSettings, setSettings, SiteSettings } from '@/lib/db';
 
-const settingsPath = path.join(process.cwd(), 'data', 'settings.json');
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const data = await fs.readFile(settingsPath, 'utf-8');
-  return NextResponse.json(JSON.parse(data));
+  try {
+    const data = await getSettings();
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': 'no-store, max-age=0' },
+    });
+  } catch (error) {
+    console.error('Failed to read settings:', error);
+    return NextResponse.json({ error: 'Failed to read settings' }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  await fs.writeFile(settingsPath, JSON.stringify(body, null, 2));
-  return NextResponse.json({ success: true });
+  try {
+    const body: SiteSettings = await request.json();
+    await setSettings(body);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Failed to save settings:', error);
+    return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 });
+  }
 }

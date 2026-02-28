@@ -1,12 +1,12 @@
 {
   "theme": {
-    "primary": "#4a235a",
-    "secondary": "#d4ac0d",
-    "accent": "#922b21",
-    "background": "#fdf9f0",
-    "text": "#1a1a2e",
-    "logo": "/logo.png",
-    "heroImage": ""
+    "primary": "#1F6F3E",
+    "secondary": "#C9A227",
+    "accent": "#B22222",
+    "background": "#F9F6F1",
+    "text": "#111111",
+    "heroImage": "",
+    "logo": "/logo.png"
   },
   "typography": "institutional"
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { SettingsContext } from '@/components/SettingsProvider';
+import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 const typographyPresets = [
     { id: 'institutional', label: 'Institutional', headline: 'Cinzel', body: 'Inter' },
@@ -9,7 +9,7 @@ const typographyPresets = [
 ];
 
 export default function BrandPage() {
-    const { theme, typography: contextTypography, updateSettings } = useContext(SettingsContext) as any;
+    const { theme, typography: contextTypography, updateSettings } = useContext(PoliSettingsContext) as any;
     const [colors, setColors] = useState(theme);
     const [typography, setTypography] = useState(contextTypography || 'institutional');
     const [saved, setSaved] = useState(false);

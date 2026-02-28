@@ -1,10 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 export default function ApplyPage() {
+    const { content } = useContext(PoliSettingsContext) as any;
+    const apply = content.pages.apply;
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
 
@@ -37,11 +40,9 @@ export default function ApplyPage() {
                         <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm">
                             ✓
                         </div>
-                        <h2 className="font-display font-bold text-3xl text-[#111] mb-4">Application Received</h2>
+                        <h2 className="font-display font-bold text-3xl text-[#111] mb-4">{apply.form.success.title}</h2>
                         <div className="divider-gold divider-gold-center" />
-                        <p className="font-sans text-[#444] mb-8 leading-relaxed">
-                            Thank you, {formData.firstName}. We have successfully received your application for the <strong>{formData.program}</strong>. Our admissions team will review your profile and contact you within 5-7 business days via email.
-                        </p>
+                        <p className="font-sans text-[#444] mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: apply.form.success.text.replace('{name}', formData.firstName).replace('{program}', formData.program) }} />
                         <div className="flex flex-col gap-3">
                             <Link href="/" className="btn-primary w-full justify-center">
                                 Return to Homepage
@@ -66,14 +67,14 @@ export default function ApplyPage() {
                     <div className="mb-10 text-center animate-fade-up">
                         <div className="inline-flex items-center gap-3 mb-4">
                             <div className="w-6 h-px bg-[var(--color-primary)]" />
-                            <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">Take the Next Step</span>
+                            <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">{apply.hero.tag}</span>
                             <div className="w-6 h-px bg-[var(--color-primary)]" />
                         </div>
                         <h1 className="font-display font-bold text-3xl md:text-5xl text-[#111] mb-6">
-                            Apply to Polibrand
+                            {apply.hero.title}
                         </h1>
                         <p className="font-sans text-[var(--color-muted)] text-lg">
-                            Complete the application below to be considered for our highly competitive leadership programs and institutional partnerships.
+                            {apply.hero.description}
                         </p>
                     </div>
 
@@ -92,32 +93,32 @@ export default function ApplyPage() {
                             {/* STEP 1 */}
                             {step === 1 && (
                                 <div className="space-y-6 animate-fade-up">
-                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Personal details</h3>
+                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">{apply.form.step1_title}</h3>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">First Name</label>
-                                            <input required type="text" value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder="e.g. Grace" />
+                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.firstName}</label>
+                                            <input required type="text" value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder={apply.form.placeholders.firstName} />
                                         </div>
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Last Name</label>
-                                            <input required type="text" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder="e.g. Mutuku" />
+                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.lastName}</label>
+                                            <input required type="text" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder={apply.form.placeholders.lastName} />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Email Address</label>
-                                            <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder="grace@example.com" />
+                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.email}</label>
+                                            <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder={apply.form.placeholders.email} />
                                         </div>
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Phone Number</label>
-                                            <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder="+254 700 000 000" />
+                                            <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.phone}</label>
+                                            <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder={apply.form.placeholders.phone} />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Country of Residence</label>
+                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.country}</label>
                                         <select required value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none">
                                             <option value="" disabled>Select a country</option>
                                             <option value="Nigeria">Nigeria</option>
@@ -125,7 +126,7 @@ export default function ApplyPage() {
                                             <option value="South Africa">South Africa</option>
                                             <option value="Ghana">Ghana</option>
                                             <option value="Rwanda">Rwanda</option>
-                                            <option value="Other">Other African Nation</option>
+                                            <option value="Other">Other African National</option>
                                             <option value="International">International</option>
                                         </select>
                                     </div>
@@ -142,10 +143,10 @@ export default function ApplyPage() {
                             {/* STEP 2 */}
                             {step === 2 && (
                                 <div className="space-y-6 animate-fade-up">
-                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">Program & Background</h3>
+                                    <h3 className="font-display font-bold text-xl text-[#111] border-b border-gray-100 pb-3 mb-6">{apply.form.step2_title}</h3>
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Program of Interest</label>
+                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.program}</label>
                                         <select required value={formData.program} onChange={e => setFormData({ ...formData, program: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none">
                                             <option value="Leadership Branding Bootcamp">Leadership Branding Bootcamp</option>
                                             <option value="The Elite Fellowship">The Elite Fellowship</option>
@@ -155,13 +156,13 @@ export default function ApplyPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Current Role / Political Ambition</label>
-                                        <input required type="text" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder="e.g. Member of Parliament candidate, NGO Director" />
+                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.role}</label>
+                                        <input required type="text" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none" placeholder={apply.form.placeholders.role} />
                                     </div>
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Why are you applying? (Brief essay)</label>
-                                        <textarea required value={formData.essay} onChange={e => setFormData({ ...formData, essay: e.target.value })} rows={5} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none resize-none" placeholder="Describe your leadership journey and why Polibrand's strategic architecture is the right next step for you..." />
+                                        <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.essay}</label>
+                                        <textarea required value={formData.essay} onChange={e => setFormData({ ...formData, essay: e.target.value })} rows={5} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none resize-none" placeholder={apply.form.placeholders.essay} />
                                         <p className="text-xs text-gray-400 mt-2">Minimum 50 words recommended.</p>
                                     </div>
 

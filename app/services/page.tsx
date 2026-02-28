@@ -1,102 +1,20 @@
+'use client';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-
-const womenServices = [
-    {
-        number: '01',
-        title: 'Personal Brand Positioning',
-        color: 'var(--color-primary)',
-        intro: 'Identity architecture, message discipline, and leadership positioning built to distinguish you in a crowded political space.',
-        deliverables: [
-            'Brand identity blueprint',
-            'Message matrix',
-            'Leadership archetype framework',
-            'Visual direction guide',
-            'Signature speaking themes',
-        ],
-    },
-    {
-        number: '02',
-        title: 'Political Brand Strategy',
-        color: 'var(--color-secondary)',
-        intro: 'Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.',
-        deliverables: [
-            'Constituency segmentation model',
-            'Issue alignment mapping',
-            'Strategic narrative playbook',
-            'Opponent positioning strategy',
-            'Voter communication calendar',
-        ],
-    },
-    {
-        number: '03',
-        title: 'Campaign Communication Management',
-        color: 'var(--color-accent)',
-        intro: 'Media architecture, speech development, and crisis communication frameworks for the modern political environment.',
-        deliverables: [
-            'Speech framework',
-            'Media engagement calendar',
-            'Press release structure',
-            'Crisis communication guide',
-            'Digital content strategy',
-        ],
-    },
-    {
-        number: '04',
-        title: 'Media Training',
-        color: 'var(--color-primary)',
-        intro: 'Structured coaching that transforms raw communication talent into politically powerful presence.',
-        deliverables: [
-            'Mock interview sessions',
-            'Debate rehearsal simulations',
-            'Camera presence coaching',
-            'Body language alignment',
-            'Messaging under pressure',
-        ],
-    },
-    {
-        number: '05',
-        title: 'Fundraising Strategy',
-        color: 'var(--color-secondary)',
-        intro: 'Donor positioning, political credibility framing, and campaign funding narratives that open the right doors.',
-        deliverables: [
-            'Donor messaging system',
-            'Political credibility framing',
-            'Campaign funding narrative',
-            'Sponsorship positioning',
-            'Event messaging guide',
-        ],
-    },
-];
-
-const institutionalServices = [
-    {
-        icon: '📋',
-        title: 'Policy Communication Consulting',
-        desc: 'Translating complex policy into compelling public communication that resonates with diverse constituencies.',
-        features: ['Policy narrative development', 'Public messaging frameworks', 'Stakeholder communication plans', 'Plain language guides'],
-    },
-    {
-        icon: '👑',
-        title: 'Gender Leadership Programs',
-        desc: 'Custom-designed leadership and communication programs for political parties and NGOs.',
-        features: ['Cohort program design', 'Trainer certification', 'Curriculum development', 'Impact measurement frameworks'],
-    },
-    {
-        icon: '📢',
-        title: 'Advocacy Campaign Architecture',
-        desc: 'Strategic campaign planning, stakeholder alignment, and public messaging for institutional change.',
-        features: ['Campaign strategy design', 'Coalition building frameworks', 'Media intervention planning', 'Evaluation systems'],
-    },
-];
+import { useContext } from 'react';
+import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 export default function ServicesPage() {
+    const { content } = useContext(PoliSettingsContext) as any;
+    const services = content.pages.services;
+
     return (
         <>
             <Navbar />
 
-            {/* Hero */}
+            {/* ─── HERO ─── */}
             <section style={{
                 background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                 padding: '160px 0 80px', position: 'relative', overflow: 'hidden',
@@ -106,31 +24,31 @@ export default function ServicesPage() {
                     <div style={{ maxWidth: 700 }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
                             <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
-                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Strategic Services</span>
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>{services.hero.tag}</span>
                         </div>
                         <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.5rem' }}>
-                            Institutional-Grade Tools for Modern Political Leadership.
+                            {services.hero.title}
                         </h1>
                         <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, maxWidth: 580 }}>
-                            Every service is designed around the structural requirements of competitive democratic environments.
+                            {services.hero.description}
                         </p>
                     </div>
                 </div>
             </section>
 
-            {/* For Women Leaders */}
+            {/* ─── FOR WOMEN LEADERS ─── */}
             <section className="section-pad" style={{ background: 'var(--color-bg)' }}>
                 <div className="container-brand">
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
                             <div style={{ width: 28, height: 1, background: 'var(--color-primary)' }} />
-                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '3px', textTransform: 'uppercase' }}>For Women Leaders</span>
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '3px', textTransform: 'uppercase' }}>{services.individual.tag}</span>
                         </div>
-                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Individual Strategy Services</h2>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>{services.individual.title}</h2>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        {womenServices.map((s, i) => (
+                        {services.individual.items.map((s: any, i: number) => (
                             <div key={i} style={{
                                 background: '#fff', border: '1px solid var(--color-border)', borderRadius: 4,
                                 padding: '2.5rem', display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', gap: '2.5rem',
@@ -149,7 +67,7 @@ export default function ServicesPage() {
                                 <div>
                                     <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, color: s.color, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem' }}>DELIVERABLES</p>
                                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                        {s.deliverables.map((d) => (
+                                        {s.deliverables.map((d: string) => (
                                             <li key={d} style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: '#444', padding: '5px 0 5px 1.5rem', position: 'relative', borderBottom: '1px solid #f0ebe2' }}>
                                                 <span style={{ position: 'absolute', left: 0, color: s.color }}>▸</span>
                                                 {d}
@@ -163,24 +81,24 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            {/* For Institutions */}
+            {/* ─── FOR INSTITUTIONS ─── */}
             <section className="section-pad" style={{ background: '#fff' }}>
                 <div className="container-brand">
                     <div style={{ marginBottom: '3.5rem' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
                             <div style={{ width: 28, height: 1, background: 'var(--color-accent)' }} />
-                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-accent)', letterSpacing: '3px', textTransform: 'uppercase' }}>For Institutions</span>
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-accent)', letterSpacing: '3px', textTransform: 'uppercase' }}>{services.institutional.tag}</span>
                         </div>
-                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>Institutional Partnership Services</h2>
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', color: '#111' }}>{services.institutional.title}</h2>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                        {institutionalServices.map((s, i) => (
+                        {services.institutional.items.map((s: any, i: number) => (
                             <div key={i} className="card-brand">
                                 <div style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>{s.icon}</div>
                                 <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '0.75rem' }}>{s.title}</h3>
                                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.86rem', color: '#555', lineHeight: 1.8, marginBottom: '1.25rem' }}>{s.desc}</p>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {s.features.map((f) => (
+                                    {s.features.map((f: string) => (
                                         <li key={f} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', color: '#444', padding: '5px 0 5px 1.5rem', position: 'relative', borderBottom: '1px solid #f0ebe2' }}>
                                             <span style={{ position: 'absolute', left: 0, color: '#1F6F3E' }}>▸</span>{f}
                                         </li>
@@ -192,7 +110,7 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            {/* CTA */}
+            {/* ─── CTA ─── */}
             <section style={{ background: '#111', padding: '80px 0' }}>
                 <div className="container-brand" style={{ textAlign: 'center' }}>
                     <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2rem', color: '#fff', marginBottom: '0.75rem' }}>Ready to Begin?</h2>
