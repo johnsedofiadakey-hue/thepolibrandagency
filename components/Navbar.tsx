@@ -29,7 +29,7 @@ export default function Navbar() {
             <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 {/* Logo & Brand Lockup */}
                 <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
-                    <div style={{ position: 'relative', width: 48, height: 48, transition: 'transform 0.3s' }}>
+                    <div style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
                         <img
                             src={theme.logo || '/logo.png'}
                             alt="Logo"

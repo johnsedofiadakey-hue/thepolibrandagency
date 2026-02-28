@@ -573,8 +573,56 @@ function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) =
     );
 }
 
-function ThemeEditor({ theme, onChange }: { theme: any; onChange: (t: any) => void }) {
+function ThemeEditor({ theme, onChange, onLogoUploaded }: { theme: any; onChange: (t: any) => void; onLogoUploaded?: (url: string) => void }) {
     const setField = (key: string, value: string) => onChange({ ...theme, [key]: value });
+    const [logoUploading, setLogoUploading] = React.useState(false);
+    const [heroUploading, setHeroUploading] = React.useState(false);
+
+    const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setLogoUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.url) {
+                setField('logo', data.url);
+                onLogoUploaded?.(data.url);
+            } else {
+                alert(data.error || 'Upload failed');
+            }
+        } catch {
+            alert('Upload failed');
+        } finally {
+            setLogoUploading(false);
+            e.target.value = '';
+        }
+    };
+
+    const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setHeroUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.url) {
+                setField('heroImage', data.url);
+            } else {
+                alert(data.error || 'Upload failed');
+            }
+        } catch {
+            alert('Upload failed');
+        } finally {
+            setHeroUploading(false);
+            e.target.value = '';
+        }
+    };
+
     return (
         <>
             <SectionTitle>Brand Colors</SectionTitle>
@@ -586,9 +634,57 @@ function ThemeEditor({ theme, onChange }: { theme: any; onChange: (t: any) => vo
             <Field label="Background Color" value={theme?.background} onChange={v => setField('background', v)} type="color" />
             <Field label="Text Color" value={theme?.text} onChange={v => setField('text', v)} type="color" />
 
-            <SectionTitle>Logo & Hero Image</SectionTitle>
-            <Field label="Logo Path (e.g. /logo.png)" value={theme?.logo} onChange={v => setField('logo', v)} />
-            <Field label="Hero Image URL (optional)" value={theme?.heroImage} onChange={v => setField('heroImage', v)} />
+            <SectionTitle>Logo</SectionTitle>
+            <div style={{ marginBottom: '1.5rem' }}>
+                {/* Preview */}
+                {theme?.logo && (
+                    <div style={{ marginBottom: '1rem', padding: '1rem', background: '#111', borderRadius: 6, display: 'inline-block' }}>
+                        <img src={theme.logo} alt="Logo preview" style={{ height: 68, width: 68, objectFit: 'contain' }} />
+                    </div>
+                )}
+                <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 8 }}>
+                    Upload Logo
+                </label>
+                <label style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '10px 20px', borderRadius: 6, cursor: logoUploading ? 'wait' : 'pointer',
+                    background: logoUploading ? '#f3f4f6' : '#f0fdf4',
+                    border: '1.5px dashed #1F6F3E', color: '#1F6F3E',
+                    fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', fontWeight: 600,
+                }}>
+                    <span>{logoUploading ? '⏳ Uploading...' : '📁 Choose Logo from Device'}</span>
+                    <input type="file" accept="image/*" onChange={handleLogoUpload} disabled={logoUploading} style={{ display: 'none' }} />
+                </label>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: '#9ca3af', marginTop: 6 }}>PNG, SVG, or JPG — max 2MB. Saved permanently.</p>
+            </div>
+
+            <SectionTitle>Hero Background Image</SectionTitle>
+            <div style={{ marginBottom: '1.5rem' }}>
+                {theme?.heroImage && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <img src={theme.heroImage} alt="Hero preview" style={{ height: 80, borderRadius: 4, objectFit: 'cover', maxWidth: '100%' }} />
+                    </div>
+                )}
+                <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 8 }}>
+                    Upload Hero Background
+                </label>
+                <label style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '10px 20px', borderRadius: 6, cursor: heroUploading ? 'wait' : 'pointer',
+                    background: heroUploading ? '#f3f4f6' : '#f0fdf4',
+                    border: '1.5px dashed #1F6F3E', color: '#1F6F3E',
+                    fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', fontWeight: 600,
+                }}>
+                    <span>{heroUploading ? '⏳ Uploading...' : '🖼️ Choose Hero Image from Device'}</span>
+                    <input type="file" accept="image/*" onChange={handleHeroUpload} disabled={heroUploading} style={{ display: 'none' }} />
+                </label>
+                {theme?.heroImage && (
+                    <button onClick={() => setField('heroImage', '')} style={{ display: 'block', marginTop: 8, background: 'none', border: 'none', color: '#dc2626', fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>
+                        ✕ Remove hero image
+                    </button>
+                )}
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: '#9ca3af', marginTop: 6 }}>Optional. If removed, gradient background is used. Max 2MB.</p>
+            </div>
         </>
     );
 }
