@@ -133,7 +133,7 @@ export default function AboutPage() {
                     <div className="relative">
                         <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-[var(--color-border)] transform -translate-x-1/2" />
 
-                        {timeline.map((t, i) => (
+                        {timeline.map((t: any, i: number) => (
                             <div key={i} className={`flex flex-col md:flex-row items-center justify-between mb-12 relative ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                                 <div className="hidden md:block w-5/12" />
                                 <div className="z-10 bg-[var(--color-bg)] border-4 border-[var(--color-bg)] shadow-[0_0_0_4px_var(--color-bg)] w-24 h-24 rounded-full flex items-center justify-center relative my-4 md:my-0">

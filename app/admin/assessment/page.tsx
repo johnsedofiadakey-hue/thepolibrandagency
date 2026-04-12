@@ -16,13 +16,27 @@ const tiers = [
     { range: '91–100', label: 'Leadership Ready', color: '#1F6F3E', recommendation: 'You are at the top tier. Advanced Political Strategy Fellowship will sharpen your competitive edge.' },
 ];
 
+interface Question {
+    id: number;
+    category: string;
+    text: string;
+    weight: number;
+}
+
+interface Tier {
+    range: string;
+    label: string;
+    color: string;
+    recommendation: string;
+}
+
 export default function AssessmentControlPage() {
-    const [questions, setQuestions] = useState(defaultQuestions);
-    const [tierData, setTierData] = useState(tiers);
+    const [questions, setQuestions] = useState<Question[]>(defaultQuestions);
+    const [tierData, setTierData] = useState<Tier[]>(tiers);
     const [activeTab, setActiveTab] = useState<'questions' | 'tiers' | 'weights'>('questions');
     const [saved, setSaved] = useState(false);
 
-    const totalWeight = questions.reduce((sum, q) => sum + q.weight, 0);
+    const totalWeight = questions.reduce((sum: number, q: Question) => sum + q.weight, 0);
 
     return (
         <div>
@@ -43,7 +57,7 @@ export default function AssessmentControlPage() {
 
             {/* Tabs */}
             <div className="scroll-tabs" style={{ marginBottom: '1.5rem', width: '100%', padding: '4px 0' }}>
-                {(['questions', 'tiers', 'weights'] as const).map((tab) => (
+                {(['questions', 'tiers', 'weights'] as const).map((tab: 'questions' | 'tiers' | 'weights') => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -65,7 +79,7 @@ export default function AssessmentControlPage() {
 
             {activeTab === 'questions' && (
                 <div>
-                    {questions.map((q, i) => (
+                    {questions.map((q: Question, i: number) => (
                         <div key={q.id} style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem', marginBottom: '0.75rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -80,7 +94,7 @@ export default function AssessmentControlPage() {
                             <input
                                 type="text"
                                 value={q.text}
-                                onChange={(e) => setQuestions(questions.map((qq, qi) => qi === i ? { ...qq, text: e.target.value } : qq))}
+                                onChange={(e) => setQuestions(questions.map((qq: Question, qi: number) => qi === i ? { ...qq, text: e.target.value } : qq))}
                                 style={{ width: '100%', padding: '10px 12px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', outline: 'none', color: '#111', boxSizing: 'border-box' }}
                             />
                         </div>
@@ -91,20 +105,20 @@ export default function AssessmentControlPage() {
 
             {activeTab === 'tiers' && (
                 <div>
-                    {tierData.map((tier, i) => (
+                    {tierData.map((tier: Tier, i: number) => (
                         <div key={tier.range} style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.5rem', marginBottom: '0.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', borderLeft: `4px solid ${tier.color}` }}>
                             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
                                 <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1rem', color: tier.color }}>{tier.range}</div>
                                 <input
                                     type="text"
                                     value={tier.label}
-                                    onChange={(e) => setTierData(tierData.map((t, ti) => ti === i ? { ...t, label: e.target.value } : t))}
+                                    onChange={(e) => setTierData(tierData.map((t: Tier, ti: number) => ti === i ? { ...t, label: e.target.value } : t))}
                                     style={{ padding: '6px 12px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Cinzel, serif', fontSize: '0.88rem', outline: 'none', fontWeight: 700, color: tier.color, width: 220 }}
                                 />
                             </div>
                             <textarea
                                 value={tier.recommendation}
-                                onChange={(e) => setTierData(tierData.map((t, ti) => ti === i ? { ...t, recommendation: e.target.value } : t))}
+                                onChange={(e) => setTierData(tierData.map((t: Tier, ti: number) => ti === i ? { ...t, recommendation: e.target.value } : t))}
                                 rows={2}
                                 style={{ width: '100%', padding: '10px 12px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', outline: 'none', resize: 'none', boxSizing: 'border-box' }}
                             />
@@ -120,8 +134,8 @@ export default function AssessmentControlPage() {
                             {totalWeight === 100 ? '✓ Weights sum to 100% — valid configuration' : `⚠ Weights sum to ${totalWeight}% — must equal 100%`}
                         </span>
                     </div>
-                    {['Brand Clarity', 'Communication Strength', 'Public Visibility', 'Fundraising Readiness', 'Strategic Infrastructure'].map((cat, i) => {
-                        const catQ = questions.find((q) => q.category === cat);
+                    {['Brand Clarity', 'Communication Strength', 'Public Visibility', 'Fundraising Readiness', 'Strategic Infrastructure'].map((cat: string, i: number) => {
+                        const catQ = questions.find((q: Question) => q.category === cat);
                         const weight = catQ?.weight ?? 0;
                         return (
                             <div key={cat} style={{ marginBottom: '1.25rem', padding: '1rem', background: '#f9fafb', borderRadius: 6, border: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -134,7 +148,7 @@ export default function AssessmentControlPage() {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <input
                                         type="number" min={0} max={100} value={weight}
-                                        onChange={(e) => setQuestions(questions.map((q) => q.category === cat ? { ...q, weight: parseInt(e.target.value) || 0 } : q))}
+                                        onChange={(e) => setQuestions(questions.map((q: Question) => q.category === cat ? { ...q, weight: parseInt(e.target.value) || 0 } : q))}
                                         style={{ width: 56, padding: '6px 10px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: 700, color: '#1F6F3E', outline: 'none', textAlign: 'center' }}
                                     />
                                     <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#aaa' }}>%</span>

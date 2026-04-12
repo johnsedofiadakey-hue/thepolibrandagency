@@ -1,5 +1,4 @@
 'use client';
-// @ts-nocheck
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
@@ -187,7 +186,7 @@ function StringListField({ label, items, onChange }: { label: string; items: str
             <label style={{ fontFamily: "Inter, sans-serif", fontSize: "0.72rem", fontWeight: 600, color: "#374151", textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: 12 }}>
                 {label}
             </label>
-            {(items || []).map((item, i) => (
+            {(items || []).map((item: string, i: number) => (
                 <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
                     <input
                         type="text"
@@ -226,9 +225,9 @@ function ObjectListField({ label, items, fields, onChange }: {
             <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 12 }}>
                 {label}
             </label>
-            {(items || []).map((item, i) => (
+            {(items || []).map((item: any, i: number) => (
                 <ItemCard key={i} index={i} onRemove={() => removeItem(i)}>
-                    {fields.map(f => (
+                    {fields.map((f: { key: string; label: string; type?: FieldType }) => (
                         <div key={f.key}>
                             {f.type === 'image' ? (
                                 <ImageUploadField 
@@ -1033,7 +1032,7 @@ export default function ContentPage() {
         }
     };
 
-    const active = sections.find(s => s.id === activeSection)!;
+    const active = sections.find((s: any) => s.id === activeSection)!;
 
     const renderEditor = () => {
         switch (activeSection) {
@@ -1082,12 +1081,12 @@ export default function ContentPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '1.25rem', flex: 1, minHeight: 0 }}>
                 {/* Sidebar */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', overflowY: 'auto', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-                    {['Global', 'Design', 'Pages'].map(group => (
+                    {['Global', 'Design', 'Pages'].map((group: string) => (
                         <div key={group}>
                             <div style={{ padding: '0.75rem 1rem', background: '#f9fafb', borderBottom: '1px solid #f3f4f6', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.67rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
                                 {group}
                             </div>
-                            {sections.filter(s => s.group === group).map(s => (
+                            {sections.filter((s: any) => s.group === group).map((s: any) => (
                                 <div
                                     key={s.id}
                                     onClick={() => setActiveSection(s.id)}

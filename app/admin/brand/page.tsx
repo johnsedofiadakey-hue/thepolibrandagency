@@ -92,7 +92,7 @@ export default function BrandPage() {
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#9ca3af', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '0.75rem' }}>QUICK PRESETS</p>
                                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                                    {Object.entries(presetColors).map(([key, preset]) => (
+                                    {Object.entries(presetColors).map(([key, preset]: [string, any]) => (
                                         <button
                                             key={key}
                                             onClick={() => { setColors(preset); handleSave(preset); }}
@@ -109,7 +109,7 @@ export default function BrandPage() {
                                 </div>
                             </div>
 
-                            {Object.entries(colors).filter(([key]) => !['heroImage', 'logo'].includes(key)).map(([key, value]) => (
+                            {Object.entries(colors).filter(([key]: [string, any]) => !['heroImage', 'logo'].includes(key)).map(([key, value]: [string, any]) => (
                                 <div key={key} style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     <div style={{ position: 'relative' }}>
                                         <div style={{ width: 44, height: 44, borderRadius: 6, background: value as string, border: '2px solid #e5e0d6', cursor: 'pointer', position: 'relative' }}>
@@ -219,7 +219,7 @@ export default function BrandPage() {
                                 {[
                                     { label: 'Brand Logo', type: 'logo' as const },
                                     { label: 'Hero Background', type: 'heroImage' as const }
-                                ].map((item) => (
+                                ].map((item: { label: string, type: 'logo' | 'heroImage' }) => (
                                     <div key={item.type} style={{ position: 'relative' }}>
                                         <input
                                             type="file"

@@ -61,7 +61,7 @@ export default function AssessmentPage() {
                 categories.forEach((cat: Category) => {
                     const catAnswers = cat.questions.map((q: Question) => newAnswers[q.id] ?? 0);
                     const totalPossible = cat.questions.reduce((sum, q) => {
-                        const maxOptionScore = Math.max(...q.options.map(o => o.score));
+                        const maxOptionScore = Math.max(...q.options.map((o: Option) => o.score));
                         return sum + maxOptionScore;
                     }, 0);
                     const totalScored = catAnswers.reduce((a: number, b: number) => a + b, 0);
@@ -70,7 +70,7 @@ export default function AssessmentPage() {
                 const total = Math.round(
                     categories.reduce((sum: number, cat: Category) => sum + (scores[cat.id] * cat.weight) / 100, 0)
                 );
-                const params = new URLSearchParams({ total: String(total), ...Object.fromEntries(Object.entries(scores).map(([k, v]) => [k, String(v)])) });
+                const params = new URLSearchParams({ total: String(total), ...Object.fromEntries(Object.entries(scores).map(([k, v]: [string, number]) => [k, String(v)])) });
                 router.push(`/assessment/results?${params.toString()}`);
             }
         }

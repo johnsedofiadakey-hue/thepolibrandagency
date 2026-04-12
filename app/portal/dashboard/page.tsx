@@ -49,7 +49,7 @@ export default function PortalDashboard() {
 
                     {/* Tabs */}
                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
-                        {[{ id: 'materials' as const, label: '📚 Course Materials' }, { id: 'progress' as const, label: '📊 Progress' }, { id: 'forum' as const, label: '💬 Discussion' }].map((tab) => (
+                        {([{ id: 'materials' as const, label: '📚 Course Materials' }, { id: 'progress' as const, label: '📊 Progress' }, { id: 'forum' as const, label: '💬 Discussion' }] as const).map((tab: { id: 'materials' | 'progress' | 'forum', label: string }) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
@@ -72,13 +72,13 @@ export default function PortalDashboard() {
                 {activeTab === 'materials' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
                         <div>
-                            {[1, 2, 3, 4].map((week) => {
+                            {[1, 2, 3, 4].map((week: number) => {
                                 const weekMods = modules.filter((m) => m.week === week);
                                 if (!weekMods.length) return null;
                                 return (
                                     <div key={week} style={{ marginBottom: '1.5rem' }}>
                                         <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>WEEK {week}</h3>
-                                        {weekMods.map((mod) => (
+                                        {weekMods.map((mod: any) => (
                                             <div key={mod.id} style={{ background: '#fff', borderRadius: 6, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
                                                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: mod.completed ? 'var(--color-primary)' : '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                                     <span style={{ color: mod.completed ? '#fff' : '#9ca3af', fontSize: '0.75rem' }}>{mod.completed ? '✓' : '○'}</span>
@@ -126,7 +126,7 @@ export default function PortalDashboard() {
 
                 {activeTab === 'forum' && (
                     <div style={{ maxWidth: 700 }}>
-                        {discussions.map((d, i) => (
+                        {discussions.map((d: any, i: number) => (
                             <div key={i} style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.25rem', marginBottom: '0.75rem', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
                                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                                     <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '0.78rem', flexShrink: 0 }}>
@@ -155,7 +155,7 @@ export default function PortalDashboard() {
                             { label: 'Modules Complete', value: `${completed}/${modules.length}`, color: 'var(--color-primary)', icon: '📚' },
                             { label: 'Assignments Done', value: '0/0', color: 'var(--color-secondary)', icon: '✏️' },
                             { label: 'Days Remaining', value: 'N/A', color: 'var(--color-accent)', icon: '📅' },
-                        ].map((s) => (
+                        ].map((s: any) => (
                             <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color, textAlign: 'center' }}>
                                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{s.icon}</div>
                                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.75rem', color: '#111' }}>{s.value}</div>
