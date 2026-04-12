@@ -10,6 +10,7 @@ export default function ApplyPage() {
     const apply = content.pages.apply;
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -20,12 +21,27 @@ export default function ApplyPage() {
     const handleNext = () => setStep(step + 1);
     const handlePrev = () => setStep(step - 1);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate API call and save
-        localStorage.setItem('polibrand_application', JSON.stringify({ ...formData, submitDate: new Date().toISOString() }));
-        setSubmitted(true);
-        window.scrollTo(0, 0);
+        setLoading(true);
+        try {
+            const res = await fetch('/api/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (res.ok) {
+                setSubmitted(true);
+                window.scrollTo(0, 0);
+            } else {
+                alert('Submission failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Submit error:', error);
+            alert('An error occurred. Please check your connection.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (submitted) {

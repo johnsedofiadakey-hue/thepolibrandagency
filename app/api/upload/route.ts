@@ -1,11 +1,12 @@
+import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs/promises';
 
 /**
- * General purpose upload endpoint.
- * Saves the uploaded file to the local filesystem (public/uploads/).
- * This allows for 'total control' media management in the local workspace.
+ * Global upload endpoint.
+ * Uses Vercel Blob for persistent storage in production.
+ * Falls back to local filesystem in development if no token is provided.
  */
 export async function POST(request: Request) {
     try {
@@ -26,26 +27,31 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Image must be under 5MB' }, { status: 400 });
         }
 
-        // Generate clean filename
-        const buffer = Buffer.from(await file.arrayBuffer());
-        const timestamp = Date.now();
-        const safeName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
-        const filename = `${timestamp}_${safeName}`;
+        const filename = `${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase()}`;
+
+        // IF Vercel Blob is configured, use it!
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+            const blob = await put(filename, file, {
+                access: 'public',
+            });
+            return NextResponse.json({ success: true, url: blob.url });
+        }
+
+        // --- LOCAL FALLBACK (Development/Local) ---
+        // If we reach here, Vercel Blob isn't configured.
+        console.warn('Vercel Blob token not set. Falling back to local storage (data will persist only locally).');
         
+        const buffer = Buffer.from(await file.arrayBuffer());
         const uploadDir = path.join(process.cwd(), 'public', 'uploads');
         const filePath = path.join(uploadDir, filename);
 
-        // Ensure directory exists (redundant but safe)
         await fs.mkdir(uploadDir, { recursive: true });
-        
-        // Write file to public/uploads
         await fs.writeFile(filePath, buffer);
 
-        const dataUrl = `/uploads/${filename}`;
+        return NextResponse.json({ success: true, url: `/uploads/${filename}` });
 
-        return NextResponse.json({ success: true, url: dataUrl });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Upload error:', error);
-        return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+        return NextResponse.json({ error: `Upload failed: ${error.message}` }, { status: 500 });
     }
 }

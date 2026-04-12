@@ -1,4 +1,9 @@
 {
+  "metadata": {
+    "title": "The Polibrand Agency | The Leading Political Branding Partner for Women Leaders",
+    "description": "Strategic branding, campaign communication, and leadership development for women shaping the future of governance across Africa.",
+    "keywords": "political branding, women leaders, Africa, campaign communication, leadership development, political strategy"
+  },
   "navbar": {
     "brand": {
       "line1": "THE POLIBRAND.",
@@ -249,6 +254,14 @@
             "logo": "/partners/ggn.png"
           }
         ]
+      },
+      "cta": {
+        "apply": "Apply for Fellowship →",
+        "partner": "Partner With Us",
+        "mission": "Polibrand exists to equip women with these structural tools.",
+        "services": "Explore All Services →",
+        "assessment": "Start Assessment →",
+        "proposal": "Request Partnership Proposal →"
       }
     },
     "about": {
@@ -395,6 +408,12 @@
             ]
           }
         ]
+      },
+      "cta": {
+        "title": "Ready to Build Your Political Power?",
+        "description": "Join women leaders across Africa who are transforming their political futures through strategic communication and branding.",
+        "apply": "Apply for Fellowship →",
+        "assessment": "Take the Assessment"
       }
     },
     "programs": {
@@ -408,6 +427,7 @@
         "badge": "6 Weeks · Hybrid",
         "title": "Leadership Branding Bootcamp",
         "description": "An intensive 6-week hybrid program designed to build every structural element of your political brand — from identity architecture to campaign-ready communication.",
+        "cta": "Apply for Bootcamp →",
         "modules": [
           "Political identity and brand architecture",
           "Message clarity and narrative discipline",
@@ -441,6 +461,8 @@
         "tag": "Flagship Initiative",
         "title": "The Polibrand Fellowship",
         "description": "An immersive 3–6 month program for high-potential women leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.",
+        "cta_apply": "Apply to Fellowship",
+        "cta_assessment": "Take Readiness Assessment First",
         "inclusions": [
           {
             "icon": "🧠",
@@ -484,11 +506,13 @@
       },
       "consulting": {
         "title": "Policy Communication Consulting",
-        "desc": "Translating complex policy into compelling public communication for diverse constituencies."
+        "desc": "Translating complex policy into compelling public communication for diverse constituencies.",
+        "cta": "Request Consultation →"
       },
       "advocacy": {
         "title": "Advocacy Campaign Architecture",
-        "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change."
+        "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change.",
+        "cta": "Launch Your Campaign →"
       }
     },
     "institutional": {

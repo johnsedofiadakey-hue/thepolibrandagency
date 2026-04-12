@@ -67,10 +67,10 @@ export default function Page() {
 
             <div className="animate-fade-up-delay-3" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link href="/apply" className="btn-gold">
-                Apply for Fellowship →
+                {home.cta?.apply || "Apply Now"}
               </Link>
               <Link href="/institutional-clients" className="btn-secondary">
-                Partner With Us
+                {home.cta?.partner || "Partner With Us"}
               </Link>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function Page() {
                 </ul>
               </div>
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, color: 'var(--color-primary)', fontSize: '1rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
-                Polibrand exists to equip women with these structural tools.
+                {home.cta?.mission || "The Polibrand Agency exists to equip women with structural political tools."}
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export default function Page() {
 
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
             <Link href="/services" className="btn-outline-dark">
-              Explore All Services →
+              {home.cta?.services || "Explore All Services →"}
             </Link>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function Page() {
             ))}
           </div>
           <Link href="/assessment" className="btn-gold" style={{ fontSize: '0.9rem', padding: '16px 36px' }}>
-            Start Assessment →
+            {home.cta?.assessment || "Start Assessment →"}
           </Link>
         </div>
       </section>
@@ -249,7 +249,7 @@ export default function Page() {
                 {home.partnerships.text}
               </p>
               <Link href="/apply" className="btn-primary">
-                Request Partnership Proposal →
+                {home.cta?.proposal || "Request Partnership Proposal →"}
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

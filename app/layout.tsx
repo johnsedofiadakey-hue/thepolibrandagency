@@ -1,18 +1,29 @@
-import type { Metadata } from "next";
 import "./globals.css";
-
 import { SettingsProvider } from "../components/SettingsProvider";
+import { getContent, getSettings } from "@/lib/db";
 
-export const metadata: Metadata = {
-  title: "The Polibrand Agency | The Leading Political Branding Partner for Women Leaders",
-  description: "Strategic branding, campaign communication, and leadership development for women shaping the future of governance across Africa.",
-  keywords: "political branding, women leaders, Africa, campaign communication, leadership development, political strategy",
-  openGraph: {
-    title: "The Polibrand Agency",
-    description: "The Leading Political Branding Partner for Women Leaders",
-    type: "website",
-  },
-};
+export async function generateMetadata() {
+  const [content, settings] = await Promise.all([getContent(), getSettings()]);
+  const meta = (content as any)?.metadata || {};
+  const logo = settings?.theme?.logo || "/logo.png";
+  
+  return {
+    title: meta.title || "The Polibrand Agency",
+    description: meta.description || "Strategic branding and leadership development for women in governance.",
+    keywords: meta.keywords || "political branding, women leaders, Africa",
+    icons: {
+      icon: logo,
+      shortcut: logo,
+      apple: logo,
+    },
+    openGraph: {
+      title: meta.title || "The Polibrand Agency",
+      description: meta.description || "Leading Political Branding Partner for Women Leaders",
+      type: "website",
+      images: [logo],
+    },
+  };
+}
 
 export default function RootLayout({
   children,

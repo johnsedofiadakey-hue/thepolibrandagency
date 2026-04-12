@@ -17,6 +17,7 @@ export const PoliSettingsContext = React.createContext({
   content: initialContent as any,
   updateSettings: (newSettings: any) => { },
   updateContent: (newContent: any) => { },
+  refresh: () => Promise.resolve(),
 });
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
@@ -35,48 +36,43 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   const [content, setContent] = React.useState<any>(initialContent);
 
-  // Load from localStorage on mount
+  const loadAll = React.useCallback(async () => {
+    try {
+      const [sRes, cRes] = await Promise.all([
+        fetch('/api/settings', { cache: 'no-store' }),
+        fetch('/api/content', { cache: 'no-store' })
+      ]);
+      
+      const sData = await sRes.json();
+      const cData = await cRes.json();
+      
+      if (sData.theme) {
+        setSettings(sData);
+        localStorage.setItem('poli_settings', JSON.stringify(sData));
+      }
+      if (cData && !cData.error) {
+        setContent(cData);
+        localStorage.setItem('poli_content', JSON.stringify(cData));
+      }
+    } catch (err) {
+      console.error('Failed to load fresh data:', err);
+    }
+  }, []);
+
+  // Load from localStorage on mount + then fetch fresh
   React.useEffect(() => {
     const savedContent = localStorage.getItem('poli_content');
     if (savedContent) {
-      try {
-        setContent(JSON.parse(savedContent));
-      } catch (e) {
-        console.error('Failed to parse saved content');
-      }
+      try { setContent(JSON.parse(savedContent)); } catch (e) {}
     }
 
     const savedSettings = localStorage.getItem('poli_settings');
     if (savedSettings) {
-      try {
-        setSettings(JSON.parse(savedSettings));
-      } catch (e) {
-        console.error('Failed to parse saved settings');
-      }
+      try { setSettings(JSON.parse(savedSettings)); } catch (e) {}
     }
 
-    // Fetch theme settings from server
-    fetch('/api/settings', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        if (data.theme) {
-          setSettings(data);
-          localStorage.setItem('poli_settings', JSON.stringify(data));
-        }
-      })
-      .catch(err => console.error('Failed to load settings:', err));
-
-    // Fetch content settings from server
-    fetch('/api/content', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        if (data && !data.error) {
-          setContent(data);
-          localStorage.setItem('poli_content', JSON.stringify(data));
-        }
-      })
-      .catch(err => console.error('Failed to load content:', err));
-  }, []);
+    loadAll();
+  }, [loadAll]);
 
   const updateSettings = (newSettings: any) => {
     setSettings(prev => {
@@ -96,17 +92,20 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     const root = document.documentElement;
-    if (!settings.theme) return;
+    const theme = settings.theme;
+    if (!theme) return;
 
-    root.style.setProperty('--color-primary', settings.theme.primary);
-    root.style.setProperty('--color-secondary', settings.theme.secondary);
-    root.style.setProperty('--color-accent', settings.theme.accent);
-    root.style.setProperty('--color-bg', settings.theme.background);
-    root.style.setProperty('--color-text', settings.theme.text);
-    root.style.setProperty('--hero-image', settings.theme.heroImage ? `url(${settings.theme.heroImage})` : 'none');
+    // Direct style injection to ensure 'Total Control' reflects immediately
+    root.style.setProperty('--color-primary', theme.primary);
+    root.style.setProperty('--color-secondary', theme.secondary);
+    root.style.setProperty('--color-accent', theme.accent);
+    root.style.setProperty('--color-bg', theme.background);
+    root.style.setProperty('--color-text', theme.text);
+    root.style.setProperty('--hero-image', theme.heroImage ? `url(${theme.heroImage})` : 'none');
+    root.style.setProperty('--color-border', theme.secondary + '20');
 
     // Quick primary variations
-    root.style.setProperty('--color-primary-dark', settings.theme.primary + 'e6');
+    root.style.setProperty('--color-primary-dark', theme.primary + 'e6');
 
     if (settings.typography) {
       const fonts: Record<string, { display: string; body: string }> = {
@@ -131,7 +130,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [settings]);
 
   return (
-    <PoliSettingsContext.Provider value={{ ...settings, content, updateSettings, updateContent }}>
+    <PoliSettingsContext.Provider value={{ ...settings, content, updateSettings, updateContent, refresh: loadAll }}>
       {children}
     </PoliSettingsContext.Provider>
   );

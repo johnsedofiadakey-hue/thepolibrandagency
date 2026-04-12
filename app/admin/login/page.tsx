@@ -1,12 +1,25 @@
-'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getContent, getSettings } from '@/lib/db';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [branding, setBranding] = useState<any>(null);
+
+    useEffect(() => {
+        async function loadBranding() {
+            const [c, s] = await Promise.all([getContent(), getSettings()]);
+            setBranding({
+                logo: s.theme.logo || '/logo.png',
+                line1: (c as any).navbar?.brand?.line1 || 'THE POLIBRAND.',
+                line2: (c as any).navbar?.brand?.line2 || 'AGENCY'
+            });
+        }
+        loadBranding();
+    }, []);
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -87,13 +100,14 @@ export default function AdminLoginPage() {
             {/* Left Brand Panel */}
             <div className="brand-panel">
                 <div>
-                    <img src="/logo.png" alt="The Polibrand Agency" style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: '2rem' }} />
+                    <img src={branding?.logo || "/logo.png"} alt="Brand Logo" style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: '2rem' }} />
                     <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#fff', lineHeight: 1.25, marginBottom: '1rem' }}>
-                        The Polibrand<br />Admin Portal
+                        {branding?.line1 || "THE POLIBRAND."}<br />
+                        {branding?.line2 || "AGENCY"} Admin
                     </h1>
                     <div className="divider" style={{ width: 48, height: 2, background: '#C9A227', marginBottom: '1.5rem' }} />
                     <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, maxWidth: 380 }}>
-                        Secure access to the Polibrand Management System. Manage programs, applications, content, analytics, and brand settings.
+                        Secure access to the {branding?.line1 || "Polibrand"} Management System. Manage programs, applications, content, analytics, and brand settings.
                     </p>
                     <div className="features" style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: 12 }}>
                         {['Content Management', 'Application Review', 'Brand Controls', 'Analytics Dashboard'].map((f) => (

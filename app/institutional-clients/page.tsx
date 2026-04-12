@@ -100,13 +100,13 @@ export default function InstitutionalClientsPage() {
 
                 <div className="container-brand relative z-10">
                     <h2 className="font-serif font-bold text-3xl md:text-4xl text-[#111] mb-6">
-                        Ready to Discuss a Partnership?
+                        {institutional.cta?.title || "Ready to Discuss a Partnership?"}
                     </h2>
                     <p className="font-sans text-lg text-[var(--color-muted)] max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Submit a partnership proposal request and our strategy team will reach out to align on deployment goals.
+                        {institutional.cta?.description || "Submit a partnership proposal request and our strategy team will reach out to align on deployment goals."}
                     </p>
                     <Link href="/apply?type=institutional" className="btn-primary">
-                        Request a Proposal
+                        {institutional.cta?.button || "Request a Proposal"}
                     </Link>
                 </div>
             </section>

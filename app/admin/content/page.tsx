@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 const sections = [
+    { id: 'metadata', label: 'Global SEO / Metadata', group: 'Global', icon: '🔍' },
     { id: 'navbar', label: 'Navigation Bar', group: 'Global', icon: '🧭' },
     { id: 'footer', label: 'Footer', group: 'Global', icon: '🏷️' },
     { id: 'theme', label: 'Theme & Branding', group: 'Design', icon: '🎨' },
@@ -252,6 +253,24 @@ function ObjectListField({ label, items, fields, onChange }: {
     );
 }
 
+function MetadataEditor({ content, onChange }: { content: any; onChange: (c: any) => void }) {
+    const meta = content?.metadata || {};
+    const setField = (path: string, value: any) => onChange(setNestedValue(content, `metadata.${path}`, value));
+
+    return (
+        <>
+            <SectionTitle>Global SEO Settings</SectionTitle>
+            <Field label="Site Title" value={meta.title} onChange={v => setField('title', v)} />
+            <Field label="Meta Description" value={meta.description} onChange={v => setField('description', v)} type="textarea" />
+            <Field label="Keywords (comma separated)" value={meta.keywords} onChange={v => setField('keywords', v)} type="textarea" />
+            
+            <p style={{ marginTop: '2rem', padding: '1rem', background: '#fff9e6', border: '1px solid #ffeeba', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#856404' }}>
+                <strong>Tip:</strong> These values are used by Google and social media platforms to display your site info. Changes will take effect globally after saving.
+            </p>
+        </>
+    );
+}
+ 
 //
 // ─── SECTION EDITORS ────────────────────────────────────────────────────────────────
 //
@@ -492,23 +511,28 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
                 onChange={v => setField('diagnostic.categories', v)} 
             />
 
-            <SectionTitle>Partnerships Section</SectionTitle>
-            <Field label="Tag" value={home.partnerships?.tag} onChange={v => setField('partnerships.tag', v)} />
-            <Field label="Title" value={home.partnerships?.title} onChange={v => setField('partnerships.title', v)} />
-            <Field label="Body Text" value={home.partnerships?.text} onChange={v => setField('partnerships.text', v)} type="textarea" />
-            
             <ObjectListField 
-                label="Institutional Partners" 
-                items={home.partnerships?.items || []} 
-                fields={[
-                    { key: 'name', label: 'Partner Name' },
-                    { key: 'logo', label: 'Logo URL / Path', type: 'image' }
-                ]} 
-                onChange={v => setField('partnerships.items', v)}
-            />
-        </>
-    );
-}
+                 label="Institutional Partners" 
+                 items={home.partnerships?.items || []} 
+                 fields={[
+                     { key: 'name', label: 'Partner Name' },
+                     { key: 'logo', label: 'Logo URL / Path', type: 'image' }
+                 ]} 
+                 onChange={v => setField('partnerships.items', v)}
+             />
+
+             <SectionTitle>Primary Call-to-Actions (Buttons)</SectionTitle>
+             <Field label="Apply Button Label" value={home.cta?.apply} onChange={v => setField('cta.apply', v)} />
+             <Field label="Partner Button Label" value={home.cta?.partner} onChange={v => setField('cta.partner', v)} />
+             <Field label="Mission Highlight Text" value={home.cta?.mission} onChange={v => setField('cta.mission', v)} type="textarea" />
+             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <Field label="Explore Services Label" value={home.cta?.services} onChange={v => setField('cta.services', v)} />
+                <Field label="Start Assessment Label" value={home.cta?.assessment} onChange={v => setField('cta.assessment', v)} />
+             </div>
+             <Field label="Partnership Proposal Label" value={home.cta?.proposal} onChange={v => setField('cta.proposal', v)} />
+         </>
+     );
+ }
 
 function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) => void }) {
     const about = content?.pages?.about || {};
@@ -1002,6 +1026,7 @@ export default function ContentPage() {
 
     const handleSave = async () => {
         setLoading(true);
+        setSaved(false);
         try {
             const [contentRes, settingsRes] = await Promise.all([
                 fetch('/api/content', {
@@ -1017,16 +1042,28 @@ export default function ContentPage() {
             ]);
 
             if (contentRes.ok && settingsRes.ok) {
+                // Update the context immediately
                 updateContent(localContent);
                 updateSettings({ theme: localTheme });
+                
+                // Persistence proof: Ensure fresh load
+                const [freshContent, freshSettings] = await Promise.all([
+                    fetch('/api/content', { cache: 'no-store' }).then(r => r.json()),
+                    fetch('/api/settings', { cache: 'no-store' }).then(r => r.json())
+                ]);
+                
+                if (freshContent && !freshContent.error) setLocalContent(freshContent);
+                if (freshSettings && freshSettings.theme) setLocalTheme(freshSettings.theme);
+
                 setSaved(true);
-                setTimeout(() => setSaved(false), 3000);
+                setTimeout(() => setSaved(false), 5000);
             } else {
-                throw new Error('Server responded with error');
+                const errData = await contentRes.json().catch(() => ({ error: 'Unknown server error' }));
+                throw new Error(errData.error || 'Server responded with error');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to save content:', error);
-            alert('Failed to save changes. Please try again.');
+            alert(`Error: ${error.message || 'Failed to save changes'}.\n\nPlease check your internet connection and try again.`);
         } finally {
             setLoading(false);
         }
@@ -1036,6 +1073,7 @@ export default function ContentPage() {
 
     const renderEditor = () => {
         switch (activeSection) {
+            case 'metadata': return <MetadataEditor content={localContent} onChange={setLocalContent} />;
             case 'navbar': return <NavbarEditor content={localContent} onChange={setLocalContent} />;
             case 'footer': return <FooterEditor content={localContent} onChange={setLocalContent} />;
             case 'home': return <HomeEditor content={localContent} onChange={setLocalContent} />;

@@ -156,14 +156,18 @@ export default function AboutPage() {
             <section style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '80px 0' }}>
                 <div className="container-brand text-center">
                     <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-6">
-                        Ready to Build Your Political Power?
+                        {about.cta?.title || "Ready to Build Your Political Power?"}
                     </h2>
                     <p className="font-sans text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Join women leaders across Africa who are transforming their political futures through strategic communication and branding.
+                        {about.cta?.description || "Join women leaders across Africa who are transforming their political futures through strategic communication and branding."}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/apply" className="btn-gold justify-center">Apply for Fellowship →</Link>
-                        <Link href="/assessment" className="btn-secondary justify-center">Take the Assessment</Link>
+                        <Link href="/apply" className="btn-gold justify-center">
+                            {about.cta?.apply || "Apply for Fellowship →"}
+                        </Link>
+                        <Link href="/assessment" className="btn-secondary justify-center">
+                            {about.cta?.assessment || "Take the Assessment"}
+                        </Link>
                     </div>
                 </div>
             </section>

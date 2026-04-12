@@ -21,7 +21,7 @@ function hasUpstashConfig(): boolean {
 }
 
 // Lazy-load the Redis client to avoid errors when not configured
-async function getRedis() {
+export async function getRedis() {
     if (!hasUpstashConfig()) return null;
     try {
         const { Redis } = await import('@upstash/redis');

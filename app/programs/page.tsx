@@ -65,7 +65,7 @@ export default function ProgramsPage() {
                                 ))}
                             </ul>
                             <Link href="/apply?type=bootcamp" className="btn-primary" style={{ marginTop: '2rem', display: 'inline-flex' }}>
-                                Apply for Bootcamp →
+                                {programs.bootcamp.cta || "Apply for Bootcamp →"}
                             </Link>
                         </div>
                         <div>
@@ -113,8 +113,8 @@ export default function ProgramsPage() {
                         ))}
                     </div>
                     <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                        <Link href="/assessment" className="btn-primary" style={{ marginRight: '1rem' }}>Take Readiness Assessment First</Link>
-                        <Link href="/apply" className="btn-outline-dark">Apply to Fellowship</Link>
+                        <Link href="/assessment" className="btn-primary" style={{ marginRight: '1rem' }}>{programs.fellowship.cta_assessment || "Take Readiness Assessment First"}</Link>
+                        <Link href="/apply" className="btn-outline-dark">{programs.fellowship.cta_apply || "Apply to Fellowship"}</Link>
                     </div>
                 </div>
             </section>
@@ -184,7 +184,7 @@ export default function ProgramsPage() {
                                 {programs.consulting.desc}
                             </p>
                             <Link href="/apply?type=consulting" className="font-sans text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider hover:underline">
-                                Request Consultation →
+                                {programs.consulting.cta || "Request Consultation →"}
                             </Link>
                         </div>
 
@@ -197,7 +197,7 @@ export default function ProgramsPage() {
                                 {programs.advocacy.desc}
                             </p>
                             <Link href="/apply?type=advocacy" className="font-sans text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider hover:underline">
-                                Launch Your Campaign →
+                                {programs.advocacy.cta || "Launch Your Campaign →"}
                             </Link>
                         </div>
                     </div>
