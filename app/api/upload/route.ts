@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getSettings, setSettings } from '@/lib/db';
+import path from 'path';
+import fs from 'fs/promises';
 
 /**
- * Logo upload endpoint.
- * Converts the uploaded file to a base64 data URL and stores it
- * directly in the settings object in Upstash Redis.
- * This approach avoids the filesystem entirely, so it works on Vercel.
+ * General purpose upload endpoint.
+ * Saves the uploaded file to the local filesystem (public/uploads/).
+ * This allows for 'total control' media management in the local workspace.
  */
 export async function POST(request: Request) {
     try {
@@ -21,26 +21,27 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'File must be an image' }, { status: 400 });
         }
 
-        // Max 2MB
-        if (file.size > 2 * 1024 * 1024) {
-            return NextResponse.json({ error: 'Image must be under 2MB' }, { status: 400 });
+        // Max 5MB for general uploads
+        if (file.size > 5 * 1024 * 1024) {
+            return NextResponse.json({ error: 'Image must be under 5MB' }, { status: 400 });
         }
 
-        // Convert to base64 data URL
+        // Generate clean filename
         const buffer = Buffer.from(await file.arrayBuffer());
-        const base64 = buffer.toString('base64');
-        const dataUrl = `data:${file.type};base64,${base64}`;
+        const timestamp = Date.now();
+        const safeName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+        const filename = `${timestamp}_${safeName}`;
+        
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        const filePath = path.join(uploadDir, filename);
 
-        // Store in Redis settings
-        const currentSettings = await getSettings();
-        const updatedSettings = {
-            ...currentSettings,
-            theme: {
-                ...currentSettings.theme,
-                logo: dataUrl,
-            },
-        };
-        await setSettings(updatedSettings);
+        // Ensure directory exists (redundant but safe)
+        await fs.mkdir(uploadDir, { recursive: true });
+        
+        // Write file to public/uploads
+        await fs.writeFile(filePath, buffer);
+
+        const dataUrl = `/uploads/${filename}`;
 
         return NextResponse.json({ success: true, url: dataUrl });
     } catch (error) {

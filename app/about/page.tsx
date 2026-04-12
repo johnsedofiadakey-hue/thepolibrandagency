@@ -6,17 +6,10 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
-const timeline = [
-    { year: '2018', event: 'Founded with a mission to close the political representation gap for women in West Africa.' },
-    { year: '2020', event: 'Launched the Leadership Branding Bootcamp — 80 women trained in the first cohort.' },
-    { year: '2022', event: 'Fellowship Program launched. 12 institutional partnerships established across 6 countries.' },
-    { year: '2024', event: 'Political Readiness Index developed. Platform expanded to 18 African nations.' },
-    { year: '2026', event: 'Digital platform launch. Scaling to 50+ countries.' },
-];
-
 export default function AboutPage() {
     const { content } = useContext(PoliSettingsContext) as any;
     const about = content.pages.about;
+    const timeline = about.timeline || [];
 
     return (
         <div className="bg-[var(--color-bg)]">
@@ -24,7 +17,11 @@ export default function AboutPage() {
 
             {/* ─── HERO ─── */}
             <section style={{
-                background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                background: about.hero.image 
+                    ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${about.hero.image})`
+                    : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 padding: '160px 0 100px', position: 'relative', overflow: 'hidden',
             }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />

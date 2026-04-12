@@ -62,8 +62,19 @@ export default function ApplyPage() {
         <div className="bg-[var(--color-bg)] min-h-screen">
             <Navbar />
 
-            <section className="pt-32 pb-20 relative">
-                <div className="container-brand max-w-3xl">
+            <section className="pt-40 pb-20 relative overflow-hidden" style={{
+                background: apply.hero.image 
+                    ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${apply.hero.image})`
+                    : 'transparent',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}>
+                {/* Overlay only if image exists, or a subtle gradient if not */}
+                {!apply.hero.image && (
+                     <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-bg)] to-white opacity-50 -z-10" />
+                )}
+                
+                <div className="container-brand max-w-3xl relative z-10">
                     <div className="mb-10 text-center animate-fade-up">
                         <div className="inline-flex items-center gap-3 mb-4">
                             <div className="w-6 h-px bg-[var(--color-primary)]" />
@@ -73,7 +84,7 @@ export default function ApplyPage() {
                         <h1 className="font-display font-bold text-3xl md:text-5xl text-[#111] mb-6">
                             {apply.hero.title}
                         </h1>
-                        <p className="font-sans text-[var(--color-muted)] text-lg">
+                        <p className={`font-sans text-lg ${apply.hero.image ? 'text-white/90' : 'text-[var(--color-muted)]'}`}>
                             {apply.hero.description}
                         </p>
                     </div>

@@ -27,7 +27,6 @@ export default function AssessmentPage() {
     const { content } = useContext(PoliSettingsContext) as any;
     const assessment = content.pages.assessment;
     const categories: Category[] = assessment.categories;
-
     const router = useRouter();
     const [currentCatIdx, setCurrentCatIdx] = useState(0);
     const [currentQIdx, setCurrentQIdx] = useState(0);
@@ -61,8 +60,12 @@ export default function AssessmentPage() {
                 const scores: Record<string, number> = {};
                 categories.forEach((cat: Category) => {
                     const catAnswers = cat.questions.map((q: Question) => newAnswers[q.id] ?? 0);
-                    const avg = catAnswers.reduce((a: number, b: number) => a + b, 0) / cat.questions.length;
-                    scores[cat.id] = Math.round((avg / 4) * 100);
+                    const totalPossible = cat.questions.reduce((sum, q) => {
+                        const maxOptionScore = Math.max(...q.options.map(o => o.score));
+                        return sum + maxOptionScore;
+                    }, 0);
+                    const totalScored = catAnswers.reduce((a: number, b: number) => a + b, 0);
+                    scores[cat.id] = totalPossible > 0 ? Math.round((totalScored / totalPossible) * 100) : 0;
                 });
                 const total = Math.round(
                     categories.reduce((sum: number, cat: Category) => sum + (scores[cat.id] * cat.weight) / 100, 0)
@@ -78,7 +81,12 @@ export default function AssessmentPage() {
             <>
                 <Navbar />
                 <section style={{
-                    minHeight: '100vh', background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                    minHeight: '100vh', 
+                    background: assessment.hero.image 
+                        ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${assessment.hero.image})`
+                        : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                     display: 'flex', alignItems: 'center', padding: '120px 0 80px', position: 'relative', overflow: 'hidden',
                 }}>
                     <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />

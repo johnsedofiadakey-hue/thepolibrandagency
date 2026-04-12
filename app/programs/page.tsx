@@ -16,7 +16,11 @@ export default function ProgramsPage() {
 
             {/* ─── HERO ─── */}
             <section style={{
-                background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                background: programs.hero.image 
+                    ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${programs.hero.image})`
+                    : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 padding: '160px 0 80px', position: 'relative', overflow: 'hidden',
             }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />

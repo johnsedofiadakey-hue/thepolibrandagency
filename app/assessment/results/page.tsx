@@ -26,7 +26,8 @@ interface Tier {
 function ResultsContent() {
     const { content } = useContext(PoliSettingsContext) as any;
     const assessmentResults = content.pages.assessment_results;
-    const categories = assessmentResults.categories;
+    // Use the primary categories from the assessment page, not the redundant results object
+    const categories = content.pages.assessment.categories;
     const tiers: Tier[] = assessmentResults.tiers;
 
     const params = useSearchParams();

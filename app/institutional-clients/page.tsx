@@ -15,7 +15,13 @@ export default function InstitutionalClientsPage() {
             <Navbar />
 
             {/* ─── HERO ─── */}
-            <section className="relative pt-40 pb-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0c3d1e 0%, #17542e 100%)' }}>
+            <section className="relative pt-40 pb-24 overflow-hidden" style={{ 
+                background: institutional.hero.image 
+                    ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${institutional.hero.image})`
+                    : 'linear-gradient(135deg, #0c3d1e 0%, #17542e 100%)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(201,162,39,0.1) 0%, transparent 50%)', pointerEvents: 'none' }} />
 
                 <div className="container-brand relative z-10 text-center animate-fade-up">
@@ -32,6 +38,25 @@ export default function InstitutionalClientsPage() {
                     </p>
                 </div>
             </section>
+
+            {/* ─── INSTITUTIONAL PARTNERS ─── */}
+            {institutional.partners && institutional.partners.length > 0 && (
+                <section className="py-12 bg-white border-b border-[var(--color-border)]">
+                    <div className="container-brand">
+                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 hover:opacity-100 transition-opacity duration-500">
+                            {institutional.partners.map((partner: any, i: number) => (
+                                <div key={i} className="grayscale hover:grayscale-0 transition-all duration-300">
+                                    {partner.logo ? (
+                                        <img src={partner.logo} alt={partner.name} className="h-10 md:h-12 w-auto object-contain" />
+                                    ) : (
+                                        <span className="font-serif font-bold text-xl text-[var(--color-primary)]">{partner.name}</span>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ─── PARTNERSHIP MODELS ─── */}
             <section className="section-pad">
