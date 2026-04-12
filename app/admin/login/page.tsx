@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getContent, getSettings } from '@/lib/db';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -12,12 +11,22 @@ export default function AdminLoginPage() {
 
     useEffect(() => {
         async function loadBranding() {
-            const [c, s] = await Promise.all([getContent(), getSettings()]);
-            setBranding({
-                logo: s.theme.logo || '/logo.png',
-                line1: (c as any).navbar?.brand?.line1 || 'THE POLIBRAND.',
-                line2: (c as any).navbar?.brand?.line2 || 'AGENCY'
-            });
+            try {
+                const [contentRes, settingsRes] = await Promise.all([
+                    fetch('/api/content'),
+                    fetch('/api/settings')
+                ]);
+                const c = await contentRes.json();
+                const s = await settingsRes.json();
+                
+                setBranding({
+                    logo: s.theme?.logo || '/logo.png',
+                    line1: c.navbar?.brand?.line1 || 'THE POLIBRAND.',
+                    line2: c.navbar?.brand?.line2 || 'AGENCY'
+                });
+            } catch (err) {
+                console.error('Failed to load branding:', err);
+            }
         }
         loadBranding();
     }, []);
