@@ -36,7 +36,7 @@ export async function getRedis() {
         });
         return redis;
     } catch (err) {
-        console.error('Redis init error:', err);
+        console.warn('⚠️ [PERSISTENCE] Redis connection failed. Serving bundled defaults to prevent outage.', err);
         return null;
     }
 }
@@ -52,14 +52,14 @@ export async function getContent(): Promise<Record<string, unknown>> {
         const redis = await getRedis();
         if (redis) {
             const data = await redis.get<Record<string, unknown>>(CONTENT_KEY);
-            if (data) return data;
+            if (data) return { ...data, _source: 'cloud' };
         }
     } catch (err) {
-        console.error('Redis getContent error:', err);
+        // Log handled in getRedis
     }
     
     // Bundle-safe fallback: Use the directly imported JSON
-    return localContent as Record<string, unknown>;
+    return { ...(localContent as Record<string, unknown>), _source: 'local_fallback' };
 }
 
 export async function setContent(data: Record<string, unknown>): Promise<void> {
@@ -95,19 +95,19 @@ export interface SiteSettings {
     typography: string;
 }
 
-export async function getSettings(): Promise<SiteSettings> {
+export async function getSettings(): Promise<SiteSettings & { _source?: string }> {
     try {
         const redis = await getRedis();
         if (redis) {
             const data = await redis.get<SiteSettings>(SETTINGS_KEY);
-            if (data) return data;
+            if (data) return { ...data, _source: 'cloud' };
         }
     } catch (err) {
-        console.error('Redis getSettings error:', err);
+        // Log handled in getRedis
     }
     
     // Bundle-safe fallback: Use the directly imported JSON
-    return localSettings as SiteSettings;
+    return { ...(localSettings as SiteSettings), _source: 'local_fallback' };
 }
 
 export async function setSettings(data: SiteSettings): Promise<void> {

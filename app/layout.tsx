@@ -29,11 +29,14 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSettings().catch(() => ({ theme: { logo: "/logo.png" } }));
+  const logo = (settings as any)?.theme?.logo || "/logo.png";
+
   return (
     <html lang="en">
       <head>
@@ -43,6 +46,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="PoliBrand" />
+        
+        {/* Force Favicon Sync */}
+        <link rel="icon" href={logo} />
+        <link rel="shortcut icon" href={logo} />
+        <link rel="apple-touch-icon" href={logo} />
+        
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
