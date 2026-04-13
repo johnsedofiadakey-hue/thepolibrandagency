@@ -10,8 +10,10 @@ export async function GET() {
             headers: { 'Cache-Control': 'no-store, max-age=0' },
         });
     } catch (error) {
-        console.error('Failed to read content:', error);
-        return NextResponse.json({ error: 'Failed to read content' }, { status: 500 });
+        console.error('Safe fallback for content API:', error);
+        // Importing localContent again if needed or relying on getContent() hardening
+        const data = await getContent(); 
+        return NextResponse.json(data);
     }
 }
 

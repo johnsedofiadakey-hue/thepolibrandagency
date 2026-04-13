@@ -3,11 +3,16 @@
  *
  * Unified data access layer.
  * - In production / when UPSTASH env vars are set: reads/writes to Upstash Redis (persistent).
- * - In development (no env vars): reads/writes to local JSON files.
+ * - FALLBACK: Uses imported JSON files (bundled) to ensure zero-crash production behavior.
  */
 
 import path from 'path';
 import fs from 'fs';
+
+// @ts-ignore
+import localContent from '../data/content.json';
+// @ts-ignore
+import localSettings from '../data/settings.json';
 
 const CONTENT_KEY = 'poli:content';
 const SETTINGS_KEY = 'poli:settings';
@@ -20,7 +25,7 @@ function hasUpstashConfig(): boolean {
     );
 }
 
-// Lazy-load the Redis client to avoid errors when not configured
+// Lazy-load the Redis client
 export async function getRedis() {
     if (!hasUpstashConfig()) return null;
     try {
@@ -29,7 +34,6 @@ export async function getRedis() {
             url: process.env.UPSTASH_REDIS_REST_URL!,
             token: process.env.UPSTASH_REDIS_REST_TOKEN!,
         });
-        // Test connection briefly or just return
         return redis;
     } catch (err) {
         console.error('Redis init error:', err);
@@ -37,7 +41,7 @@ export async function getRedis() {
     }
 }
 
-// Local fallback paths (used in dev)
+// Local fallback paths (only for WRITING in dev; READS use imports)
 const localContentPath = path.join(process.cwd(), 'data', 'content.json');
 const localSettingsPath = path.join(process.cwd(), 'data', 'settings.json');
 
@@ -53,13 +57,9 @@ export async function getContent(): Promise<Record<string, unknown>> {
     } catch (err) {
         console.error('Redis getContent error:', err);
     }
-    // Fallback to local file
-    try {
-        const raw = fs.readFileSync(localContentPath, 'utf-8');
-        return JSON.parse(raw);
-    } catch {
-        return {};
-    }
+    
+    // Bundle-safe fallback: Use the directly imported JSON
+    return localContent as Record<string, unknown>;
 }
 
 export async function setContent(data: Record<string, unknown>): Promise<void> {
@@ -71,12 +71,11 @@ export async function setContent(data: Record<string, unknown>): Promise<void> {
     } catch (err) {
         console.error('Redis setContent error:', err);
     }
-    // Also write local file (for dev snapshot; fails silently in prod)
+    
+    // Snapshot to local file (fails silently in prod)
     try {
         fs.writeFileSync(localContentPath, JSON.stringify(data, null, 2));
-    } catch {
-        // Ignore — read-only fs in prod is expected
-    }
+    } catch {}
 }
 
 // --- SETTINGS ---
@@ -96,19 +95,6 @@ export interface SiteSettings {
     typography: string;
 }
 
-const defaultSettings: SiteSettings = {
-    theme: {
-        primary: '#1F6F3E',
-        secondary: '#C9A227',
-        accent: '#B22222',
-        background: '#F9F6F1',
-        text: '#111111',
-        heroImage: '',
-        logo: '/logo.png',
-    },
-    typography: 'institutional',
-};
-
 export async function getSettings(): Promise<SiteSettings> {
     try {
         const redis = await getRedis();
@@ -119,16 +105,9 @@ export async function getSettings(): Promise<SiteSettings> {
     } catch (err) {
         console.error('Redis getSettings error:', err);
     }
-    // Fallback to local file
-    try {
-        if (fs.existsSync(localSettingsPath)) {
-            const raw = fs.readFileSync(localSettingsPath, 'utf-8');
-            return JSON.parse(raw);
-        }
-    } catch {
-        // ignore
-    }
-    return defaultSettings;
+    
+    // Bundle-safe fallback: Use the directly imported JSON
+    return localSettings as SiteSettings;
 }
 
 export async function setSettings(data: SiteSettings): Promise<void> {
@@ -140,9 +119,8 @@ export async function setSettings(data: SiteSettings): Promise<void> {
     } catch (err) {
         console.error('Redis setSettings error:', err);
     }
+    
     try {
         fs.writeFileSync(localSettingsPath, JSON.stringify(data, null, 2));
-    } catch {
-        // Ignore in prod
-    }
+    } catch {}
 }

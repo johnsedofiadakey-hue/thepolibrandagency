@@ -10,8 +10,9 @@ export async function GET() {
       headers: { 'Cache-Control': 'no-store, max-age=0' },
     });
   } catch (error) {
-    console.error('Failed to read settings:', error);
-    return NextResponse.json({ error: 'Failed to read settings' }, { status: 500 });
+    console.error('Safe fallback for settings API:', error);
+    const data = await getSettings();
+    return NextResponse.json(data);
   }
 }
 
