@@ -3,9 +3,13 @@ import { SettingsProvider } from "../components/SettingsProvider";
 import { getContent, getSettings } from "@/lib/db";
 
 export async function generateMetadata() {
-  const [content, settings] = await Promise.all([getContent(), getSettings()]);
+  const [content, settings] = await Promise.all([
+    getContent().catch(() => ({})),
+    getSettings().catch(() => ({})),
+  ]);
+  
   const meta = (content as any)?.metadata || {};
-  const logo = settings?.theme?.logo || "/logo.png";
+  const logo = (settings as any)?.theme?.logo || "/logo.png";
   
   return {
     title: meta.title || "The Polibrand Agency",
@@ -40,9 +44,6 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="PoliBrand" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
-        <link rel="icon" href="/icon-192.png" />
-        <title>The Poli Brand Agency</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

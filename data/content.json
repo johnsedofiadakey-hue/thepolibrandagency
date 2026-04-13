@@ -239,19 +239,19 @@
         "items": [
           {
             "name": "Democratic Union",
-            "logo": "/partners/du.png"
+            "logo": "/partners/du.svg"
           },
           {
             "name": "Gender Equities Foundation",
-            "logo": "/partners/gef.png"
+            "logo": "/partners/gef.svg"
           },
           {
             "name": "African Leadership Institute",
-            "logo": "/partners/ali.png"
+            "logo": "/partners/ali.svg"
           },
           {
             "name": "Global Governance Network",
-            "logo": "/partners/ggn.png"
+            "logo": "/partners/ggn.svg"
           }
         ]
       },
@@ -544,11 +544,11 @@
       "partners": [
         {
           "name": "Democratic Union",
-          "logo": "/partners/du.png"
+          "logo": "/partners/du.svg"
         },
         {
           "name": "Gender Equities Foundation",
-          "logo": "/partners/gef.png"
+          "logo": "/partners/gef.svg"
         }
       ]
     },

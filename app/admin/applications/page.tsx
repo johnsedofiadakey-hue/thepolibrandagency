@@ -1,18 +1,59 @@
-'use client';
-import { useState } from 'react';
-
-const applications: any[] = [];
+import { useState, useEffect } from 'react';
 
 const statusColors: Record<string, string> = { Pending: 'badge-gray', 'Under Review': 'badge-gold', Approved: 'badge-green', Rejected: 'badge-red' };
 
 export default function ApplicationsPage() {
+    const [applications, setApplications] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All');
     const [search, setSearch] = useState('');
+
+    const fetchApplications = async () => {
+        try {
+            const res = await fetch('/api/applications');
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                // Add a mock score if missing
+                const appsWithScore = data.map(app => ({
+                    ...app,
+                    name: `${app.firstName} ${app.lastName}`,
+                    status: app.status || 'Pending',
+                    score: app.score || Math.min(100, (app.essay?.length || 0) / 5) // Mock score logic
+                }));
+                setApplications(appsWithScore);
+            }
+        } catch (err) {
+            console.error('Fetch error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchApplications();
+    }, []);
+
+    const handleStatusUpdate = async (id: number, newStatus: string) => {
+        try {
+            const res = await fetch('/api/applications', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status: newStatus }),
+            });
+            if (res.ok) {
+                setApplications(prev => prev.map(app => app.id === id ? { ...app, status: newStatus } : app));
+            }
+        } catch (err) {
+            alert('Failed to update status');
+        }
+    };
 
     const filtered = applications.filter((a) =>
         (filter === 'All' || a.status === filter) &&
         (a.name.toLowerCase().includes(search.toLowerCase()) || a.country.toLowerCase().includes(search.toLowerCase()))
     );
+
+    if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading applications...</div>;
 
     return (
         <div>
@@ -21,32 +62,28 @@ export default function ApplicationsPage() {
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Manage program applicants</p>
             </div>
 
-            {/* Filters - High Density */}
+            {/* Filters */}
             <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
                 <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
                     <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="Search by name or country..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         style={{ flex: 1, padding: '8px 12px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.8rem', outline: 'none' }}
                     />
-                    <button className="btn-primary hide-mobile" style={{ fontSize: '0.75rem', padding: '8px 16px' }}>Export</button>
+                    <button onClick={() => window.print()} className="btn-primary hide-mobile" style={{ fontSize: '0.75rem', padding: '8px 16px' }}>Print Report</button>
                 </div>
-                <div className="scroll-tabs" style={{
-                    display: 'flex',
-                    gap: 8,
-                    paddingBottom: 4
-                }}>
-                    {['All', 'Pending', 'Review', 'Approved', 'Rejected'].map((s) => (
+                <div className="scroll-tabs" style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
+                    {['All', 'Pending', 'Under Review', 'Approved', 'Rejected'].map((s) => (
                         <button
                             key={s}
-                            onClick={() => setFilter(s === 'Review' ? 'Under Review' : s)}
+                            onClick={() => setFilter(s)}
                             style={{
                                 padding: '6px 12px', borderRadius: 16, cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.68rem', fontWeight: 700,
-                                background: (filter === s || (filter === 'Under Review' && s === 'Review')) ? 'var(--color-primary)' : '#f9fafb',
-                                color: (filter === s || (filter === 'Under Review' && s === 'Review')) ? '#fff' : '#6b7280',
-                                border: `1px solid ${(filter === s || (filter === 'Under Review' && s === 'Review')) ? 'var(--color-primary)' : '#e5e7eb'}`,
+                                background: filter === s ? 'var(--color-primary)' : '#f9fafb',
+                                color: filter === s ? '#fff' : '#6b7280',
+                                border: `1px solid ${filter === s ? 'var(--color-primary)' : '#e5e7eb'}`,
                                 transition: 'all 0.2s',
                                 whiteSpace: 'nowrap'
                             }}
@@ -80,7 +117,7 @@ export default function ApplicationsPage() {
                                     <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: '#6b7280', padding: '14px 1.25rem' }}>{app.program}</td>
                                     <td style={{ padding: '14px 1.25rem' }}>
                                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: app.score >= 80 ? 'var(--color-primary)' : app.score >= 60 ? 'var(--color-secondary)' : 'var(--color-accent)' }}>
-                                            {app.score}
+                                            {Math.round(app.score)}
                                         </span>
                                     </td>
                                     <td style={{ padding: '14px 1.25rem' }}>
@@ -88,8 +125,8 @@ export default function ApplicationsPage() {
                                     </td>
                                     <td style={{ padding: '14px 1.25rem' }}>
                                         <div style={{ display: 'flex', gap: 6 }}>
-                                            <button style={{ padding: '4px 8px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Approve</button>
-                                            <button style={{ padding: '4px 8px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Reject</button>
+                                            <button onClick={() => handleStatusUpdate(app.id, 'Approved')} style={{ padding: '4px 8px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Approve</button>
+                                            <button onClick={() => handleStatusUpdate(app.id, 'Rejected')} style={{ padding: '4px 8px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Reject</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -108,14 +145,13 @@ export default function ApplicationsPage() {
                                     <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af' }}>{app.country} · {app.program}</div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-primary)' }}>{app.score}</div>
+                                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-primary)' }}>{Math.round(app.score)}</div>
                                     <span className={`badge ${statusColors[app.status]}`} style={{ fontSize: '0.55rem', padding: '1px 6px' }}>{app.status}</span>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: 6 }}>
-                                <button style={{ flex: 1, padding: '7px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Approve</button>
-                                <button style={{ flex: 1, padding: '7px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Reject</button>
-                                <button style={{ padding: '7px 12px', background: '#f9fafb', color: '#6b7280', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>...</button>
+                                <button onClick={() => handleStatusUpdate(app.id, 'Approved')} style={{ flex: 1, padding: '7px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Approve</button>
+                                <button onClick={() => handleStatusUpdate(app.id, 'Rejected')} style={{ flex: 1, padding: '7px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Reject</button>
                             </div>
                         </div>
                     ))}
@@ -130,3 +166,4 @@ export default function ApplicationsPage() {
         </div>
     );
 }
+

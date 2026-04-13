@@ -6,8 +6,18 @@ import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 export default function Page() {
-  const { theme, content } = useContext(PoliSettingsContext) as any;
-  const home = content.pages.home;
+  const { theme = {}, content = {} } = useContext(PoliSettingsContext) as any;
+  
+  // Safe deep access with fallbacks to prevent rendering crashes
+  const home = content?.pages?.home || {
+    hero: { tag: "The Polibrand Agency", headline: "Building Political Power\nfor Women.", subheadline: "Strategic branding and leadership development." },
+    stats: [],
+    challenge: { tag: "Challenge", title: "Gap", text: "", list: [], quote: "", stats: [] },
+    services: { tag: "Services", title: "Core Services", description: "", items: [] },
+    diagnostic: { tag: "Diagnostic", title: "Ready?", description: "", categories: [] },
+    partnerships: { tag: "Global Impact", title: "Our Partners", text: "", items: [] },
+    cta: {}
+  };
 
   return (
     <>

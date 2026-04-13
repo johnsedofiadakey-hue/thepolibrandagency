@@ -1,0 +1,15 @@
+[
+  {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane@example.com",
+    "phone": "1234567890",
+    "country": "Nigeria",
+    "program": "The Elite Fellowship",
+    "role": "State Governor Assistant",
+    "essay": "I want to lead African women to excellence in political branding and governance.",
+    "id": 1776088221433,
+    "timestamp": "2026-04-13T13:50:21.433Z",
+    "status": "Approved"
+  }
+]

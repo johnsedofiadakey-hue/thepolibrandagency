@@ -10,9 +10,13 @@ export async function POST(request: Request) {
         const appWithMeta = { ...application, id: Date.now(), timestamp };
 
         // Save to Redis if available
-        const redis = await getRedis();
-        if (redis) {
-            await redis.lpush('poli:applications', JSON.stringify(appWithMeta));
+        try {
+            const redis = await getRedis();
+            if (redis) {
+                await redis.lpush('poli:applications', JSON.stringify(appWithMeta));
+            }
+        } catch (err) {
+            console.error('Redis apply error:', err);
         }
 
         // Local fallback (append to a file for dev)

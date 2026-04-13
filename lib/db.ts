@@ -25,11 +25,14 @@ export async function getRedis() {
     if (!hasUpstashConfig()) return null;
     try {
         const { Redis } = await import('@upstash/redis');
-        return new Redis({
+        const redis = new Redis({
             url: process.env.UPSTASH_REDIS_REST_URL!,
             token: process.env.UPSTASH_REDIS_REST_TOKEN!,
         });
-    } catch {
+        // Test connection briefly or just return
+        return redis;
+    } catch (err) {
+        console.error('Redis init error:', err);
         return null;
     }
 }
@@ -41,10 +44,14 @@ const localSettingsPath = path.join(process.cwd(), 'data', 'settings.json');
 // --- CONTENT ---
 
 export async function getContent(): Promise<Record<string, unknown>> {
-    const redis = await getRedis();
-    if (redis) {
-        const data = await redis.get<Record<string, unknown>>(CONTENT_KEY);
-        if (data) return data;
+    try {
+        const redis = await getRedis();
+        if (redis) {
+            const data = await redis.get<Record<string, unknown>>(CONTENT_KEY);
+            if (data) return data;
+        }
+    } catch (err) {
+        console.error('Redis getContent error:', err);
     }
     // Fallback to local file
     try {
@@ -56,9 +63,13 @@ export async function getContent(): Promise<Record<string, unknown>> {
 }
 
 export async function setContent(data: Record<string, unknown>): Promise<void> {
-    const redis = await getRedis();
-    if (redis) {
-        await redis.set(CONTENT_KEY, data);
+    try {
+        const redis = await getRedis();
+        if (redis) {
+            await redis.set(CONTENT_KEY, data);
+        }
+    } catch (err) {
+        console.error('Redis setContent error:', err);
     }
     // Also write local file (for dev snapshot; fails silently in prod)
     try {
@@ -99,10 +110,14 @@ const defaultSettings: SiteSettings = {
 };
 
 export async function getSettings(): Promise<SiteSettings> {
-    const redis = await getRedis();
-    if (redis) {
-        const data = await redis.get<SiteSettings>(SETTINGS_KEY);
-        if (data) return data;
+    try {
+        const redis = await getRedis();
+        if (redis) {
+            const data = await redis.get<SiteSettings>(SETTINGS_KEY);
+            if (data) return data;
+        }
+    } catch (err) {
+        console.error('Redis getSettings error:', err);
     }
     // Fallback to local file
     try {
@@ -117,9 +132,13 @@ export async function getSettings(): Promise<SiteSettings> {
 }
 
 export async function setSettings(data: SiteSettings): Promise<void> {
-    const redis = await getRedis();
-    if (redis) {
-        await redis.set(SETTINGS_KEY, data);
+    try {
+        const redis = await getRedis();
+        if (redis) {
+            await redis.set(SETTINGS_KEY, data);
+        }
+    } catch (err) {
+        console.error('Redis setSettings error:', err);
     }
     try {
         fs.writeFileSync(localSettingsPath, JSON.stringify(data, null, 2));

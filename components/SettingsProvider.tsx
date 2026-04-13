@@ -43,19 +43,23 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         fetch('/api/content', { cache: 'no-store' })
       ]);
       
+      if (!sRes.ok || !cRes.ok) throw new Error('API request failed');
+
       const sData = await sRes.json();
       const cData = await cRes.json();
       
-      if (sData.theme) {
+      if (sData && sData.theme && !sData.error) {
         setSettings(sData);
         localStorage.setItem('poli_settings', JSON.stringify(sData));
       }
-      if (cData && !cData.error) {
+      
+      // Ensure cData is a valid content object (not an error and has pages/navbar)
+      if (cData && !cData.error && cData.pages) {
         setContent(cData);
         localStorage.setItem('poli_content', JSON.stringify(cData));
       }
     } catch (err) {
-      console.error('Failed to load fresh data:', err);
+      console.warn('Using local/cached data as fallback:', err);
     }
   }, []);
 
