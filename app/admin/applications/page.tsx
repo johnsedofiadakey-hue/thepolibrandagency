@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from 'react';
 
 const statusColors: Record<string, string> = { Pending: 'badge-gray', 'Under Review': 'badge-gold', Approved: 'badge-green', Rejected: 'badge-red' };
