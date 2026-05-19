@@ -48,3 +48,7 @@ next-env.d.ts
 !/public/uploads/.gitkeep
 lint_output.txt
 .env*.local
+
+# firebase
+.firebase/
+firebase-debug.log*

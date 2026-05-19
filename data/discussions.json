@@ -1,0 +1,26 @@
+[
+  {
+    "author": "Jane Doe",
+    "email": "jane@example.com",
+    "msg": "Testing the real-time cohort discussions!",
+    "timestamp": "2026-05-19T09:45:10.331Z"
+  },
+  {
+    "author": "Jane Doe",
+    "email": "jane@example.com",
+    "msg": "Excited to embark on the Brand Identity module! The workbook material is exceptionally detailed.",
+    "timestamp": "2026-05-19T07:45:04.382Z"
+  },
+  {
+    "author": "Polibrand Admin",
+    "email": "admin@thepolibrandagency.com",
+    "msg": "Welcome everyone to Cohort 3! Looking forward to collaborating on our strategic policy advocacy sessions.",
+    "timestamp": "2026-05-19T04:45:04.388Z"
+  },
+  {
+    "author": "Grace Mutuku",
+    "email": "grace@example.com",
+    "msg": "Found the message discipline workshop exceptionally valuable for our press release prep.",
+    "timestamp": "2026-05-18T09:45:04.388Z"
+  }
+]
