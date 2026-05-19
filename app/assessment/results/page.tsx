@@ -136,7 +136,7 @@ function ResultsContent() {
                             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'rgba(255,255,255,0.78)', marginBottom: '1.5rem', lineHeight: 1.7 }}>
                                 Based on your readiness score, we recommend: <strong style={{ color: '#C9A227' }}>{program}</strong>
                             </p>
-                            <Link href="/apply" className="btn-gold" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
+                            <Link href={`/apply?score=${total}&program=${encodeURIComponent(program)}`} className="btn-gold" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
                                 Apply Now →
                             </Link>
                         </div>

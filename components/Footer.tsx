@@ -1,12 +1,43 @@
 "use client";
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { PoliSettingsContext } from './SettingsProvider';
 
 export default function Footer() {
     const { theme, content } = useContext(PoliSettingsContext) as any;
     const footer = content.footer;
     const navbar = content.navbar;
+
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) return;
+
+        setStatus('loading');
+        try {
+            const res = await fetch('/api/newsletter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setStatus('success');
+                setMessage(data.message || 'Thank you for subscribing!');
+                setEmail('');
+            } else {
+                setStatus('error');
+                setMessage(data.error || 'Failed to subscribe. Please try again.');
+            }
+        } catch (err) {
+            setStatus('error');
+            setMessage('Network error. Please try again.');
+        }
+    };
+
 
     return (
         <footer style={{ background: 'var(--color-primary)', color: '#fff', paddingTop: '80px', borderTop: `1px solid var(--color-secondary)` }}>
@@ -133,27 +164,50 @@ export default function Footer() {
                         <h4 style={{ fontFamily: 'Cinzel, serif', fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 8 }}>{footer.newsletter.title}</h4>
                         <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)' }}>{footer.newsletter.description}</p>
                     </div>
-                    <div className="newsletter-form">
-                        <input
-                            type="email"
-                            placeholder="Email address"
-                            style={{
-                                background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(201,162,39,0.3)',
-                                borderRight: 'none', color: '#fff', padding: '14px 20px', fontSize: '0.9rem',
-                                borderRadius: '4px 0 0 4px', outline: 'none', flex: 1,
-                                fontFamily: 'Inter, sans-serif',
-                            }}
-                        />
-                        <button
-                            style={{
-                                background: 'var(--color-secondary)', color: '#111', border: 'none', padding: '14px 24px',
-                                fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.75rem',
-                                letterSpacing: '1px', textTransform: 'uppercase', cursor: 'pointer',
-                                borderRadius: '0 4px 4px 0',
-                            }}
-                        >
-                            Subscribe
-                        </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', maxWidth: '450px' }}>
+                        <form onSubmit={handleSubscribe} className="newsletter-form">
+                            <input
+                                type="email"
+                                placeholder="Email address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                disabled={status === 'loading'}
+                                style={{
+                                    background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(201,162,39,0.3)',
+                                    borderRight: 'none', color: '#fff', padding: '14px 20px', fontSize: '0.9rem',
+                                    borderRadius: '4px 0 0 4px', outline: 'none', flex: 1,
+                                    fontFamily: 'Inter, sans-serif',
+                                }}
+                            />
+                            <button
+                                type="submit"
+                                disabled={status === 'loading'}
+                                style={{
+                                    background: 'var(--color-secondary)', color: '#111', border: 'none', padding: '14px 24px',
+                                    fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.75rem',
+                                    letterSpacing: '1px', textTransform: 'uppercase', cursor: 'pointer',
+                                    borderRadius: '0 4px 4px 0',
+                                    opacity: status === 'loading' ? 0.7 : 1,
+                                    transition: 'opacity 0.2s'
+                                }}
+                            >
+                                {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                            </button>
+                        </form>
+                        {status !== 'idle' && status !== 'loading' && (
+                            <div style={{
+                                fontSize: '0.85rem',
+                                color: status === 'success' ? '#4ade80' : '#f87171',
+                                padding: '6px 12px',
+                                borderRadius: '4px',
+                                background: 'rgba(255,255,255,0.05)',
+                                borderLeft: `3px solid ${status === 'success' ? '#4ade80' : '#f87171'}`,
+                                marginTop: '4px'
+                            }}>
+                                {message}
+                            </div>
+                        )}
                     </div>
                 </div>
 

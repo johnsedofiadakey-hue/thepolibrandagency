@@ -34,8 +34,59 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSettings().catch(() => ({ theme: { logo: "/logo.png" } }));
-  const logo = (settings as any)?.theme?.logo || "/logo.png";
+  const [settings, content] = await Promise.all([
+    getSettings().catch(() => null),
+    getContent().catch(() => null)
+  ]);
+
+  const activeSettings = settings || {
+    theme: {
+      primary: '#1F6F3E',
+      secondary: '#C9A227',
+      accent: '#B22222',
+      background: '#F9F6F1',
+      text: '#111111',
+      heroImage: '',
+      logo: '/logo.png',
+    },
+    typography: 'institutional',
+  };
+
+  const logo = activeSettings.theme?.logo || "/logo.png";
+  const theme = activeSettings.theme;
+  const typography = activeSettings.typography || 'institutional';
+
+  const fonts: Record<string, { display: string; body: string }> = {
+    institutional: {
+      display: "'Cinzel', 'Playfair Display', serif",
+      body: "'Inter', sans-serif"
+    },
+    modern: {
+      display: "'Inter', sans-serif",
+      body: "'Inter', sans-serif"
+    },
+    classic: {
+      display: "'Playfair Display', serif",
+      body: "'Inter', sans-serif"
+    }
+  };
+
+  const set = fonts[typography] || fonts.institutional;
+
+  const styleVariables = `
+    :root {
+      --color-primary: ${theme.primary};
+      --color-secondary: ${theme.secondary};
+      --color-accent: ${theme.accent};
+      --color-bg: ${theme.background};
+      --color-text: ${theme.text};
+      --hero-image: ${theme.heroImage ? `url(${theme.heroImage})` : 'none'};
+      --color-border: ${theme.secondary}20;
+      --color-primary-dark: ${theme.primary}e6;
+      --font-display: ${set.display};
+      --font-body: ${set.body};
+    }
+  `;
 
   return (
     <html lang="en">
@@ -59,9 +110,10 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <style dangerouslySetInnerHTML={{ __html: styleVariables }} />
       </head>
       <body>
-        <SettingsProvider>
+        <SettingsProvider serverSettings={activeSettings} serverContent={content}>
           {children}
         </SettingsProvider>
       </body>

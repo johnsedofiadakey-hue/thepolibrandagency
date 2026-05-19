@@ -20,21 +20,33 @@ export const PoliSettingsContext = React.createContext({
   refresh: () => Promise.resolve(),
 });
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = React.useState({
-    theme: {
-      primary: '#1F6F3E',
-      secondary: '#C9A227',
-      accent: '#B22222',
-      background: '#F9F6F1',
-      text: '#111111',
-      heroImage: '',
-      logo: '/logo.png',
-    },
-    typography: 'institutional',
+export function SettingsProvider({ 
+  children,
+  serverSettings,
+  serverContent
+}: { 
+  children: React.ReactNode;
+  serverSettings?: any;
+  serverContent?: any;
+}) {
+  const [settings, setSettings] = React.useState(() => {
+    return serverSettings || {
+      theme: {
+        primary: '#1F6F3E',
+        secondary: '#C9A227',
+        accent: '#B22222',
+        background: '#F9F6F1',
+        text: '#111111',
+        heroImage: '',
+        logo: '/logo.png',
+      },
+      typography: 'institutional',
+    };
   });
 
-  const [content, setContent] = React.useState<any>(initialContent);
+  const [content, setContent] = React.useState<any>(() => {
+    return serverContent || initialContent;
+  });
 
   const loadAll = React.useCallback(async () => {
     try {
@@ -79,7 +91,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [loadAll]);
 
   const updateSettings = (newSettings: any) => {
-    setSettings(prev => {
+    setSettings((prev: any) => {
       const next = { ...prev, ...newSettings };
       localStorage.setItem('poli_settings', JSON.stringify(next));
       return next;

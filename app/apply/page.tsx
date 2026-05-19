@@ -1,21 +1,43 @@
 'use client';
-import { useState, useContext } from 'react';
+import { Suspense, useState, useContext } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
-export default function ApplyPage() {
+function ApplyForm() {
     const { content } = useContext(PoliSettingsContext) as any;
     const apply = content.pages.apply;
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // Form state
-    const [formData, setFormData] = useState({
-        firstName: '', lastName: '', email: '', phone: '',
-        country: '', program: 'Bootcamp', role: '', essay: '',
+    const searchParams = useSearchParams();
+    const paramScore = searchParams.get('score');
+    const paramProgram = searchParams.get('program');
+
+    // Form state with lazy initialization to parse search params
+    const [formData, setFormData] = useState(() => {
+        let initialProgram = 'Leadership Branding Bootcamp';
+        if (paramProgram) {
+            const normalized = decodeURIComponent(paramProgram).trim();
+            if (normalized.toLowerCase().includes('fellowship')) {
+                initialProgram = 'The Elite Fellowship';
+            } else if (normalized.toLowerCase().includes('bootcamp')) {
+                initialProgram = 'Leadership Branding Bootcamp';
+            } else if (normalized.toLowerCase().includes('digital') || normalized.toLowerCase().includes('course')) {
+                initialProgram = 'Digital Courses';
+            } else if (normalized.toLowerCase().includes('partnership') || normalized.toLowerCase().includes('proposal') || normalized.toLowerCase().includes('institutional')) {
+                initialProgram = 'Institutional Partnership Proposal';
+            }
+        }
+
+        return {
+            firstName: '', lastName: '', email: '', phone: '',
+            country: '', program: initialProgram, role: '', essay: '',
+            assessmentScore: paramScore ? parseInt(paramScore, 10) : undefined,
+        };
     });
 
     const handleNext = () => setStep(step + 1);
@@ -106,6 +128,41 @@ export default function ApplyPage() {
                     </div>
 
                     <div className="card-brand animate-fade-up-delay-1 p-8 md:p-12 shadow-[var(--shadow-soft)]">
+                        {/* Dynamic Score Sync Notification */}
+                        {formData.assessmentScore !== undefined && (
+                            <div style={{
+                                background: 'rgba(31, 111, 62, 0.08)',
+                                border: '1.5px solid var(--color-primary)',
+                                borderRadius: '6px',
+                                padding: '1rem',
+                                marginBottom: '2rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px'
+                            }}>
+                                <div style={{
+                                    width: '28px',
+                                    height: '28px',
+                                    borderRadius: '50%',
+                                    background: 'var(--color-primary)',
+                                    color: '#fff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.85rem'
+                                }}>✓</div>
+                                <div>
+                                    <h4 className="font-display font-bold text-sm text-[#111] m-0">
+                                        Political Readiness Score Sync Active
+                                    </h4>
+                                    <p className="font-sans text-xs text-[#555] m-0 mt-1">
+                                        Your index score of <strong>{formData.assessmentScore}</strong> and recommended program selection have been successfully imported.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Progress Tracker */}
                         <div className="flex justify-between items-center mb-10 relative">
                             <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-100 -translate-y-1/2 z-0" />
@@ -146,7 +203,7 @@ export default function ApplyPage() {
 
                                     <div>
                                         <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.country}</label>
-                                        <select required value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none">
+                                        <select required value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[length:1.25em_1.25em]" style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")` }}>
                                             <option value="" disabled>Select a country</option>
                                             <option value="Nigeria">Nigeria</option>
                                             <option value="Kenya">Kenya</option>
@@ -174,7 +231,7 @@ export default function ApplyPage() {
 
                                     <div>
                                         <label className="block font-sans text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{apply.form.labels.program}</label>
-                                        <select required value={formData.program} onChange={e => setFormData({ ...formData, program: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none">
+                                        <select required value={formData.program} onChange={e => setFormData({ ...formData, program: e.target.value })} className="w-full p-4 border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[length:1.25em_1.25em]" style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")` }}>
                                             <option value="Leadership Branding Bootcamp">Leadership Branding Bootcamp</option>
                                             <option value="The Elite Fellowship">The Elite Fellowship</option>
                                             <option value="Digital Courses">Digital Courses</option>
@@ -211,5 +268,20 @@ export default function ApplyPage() {
 
             <Footer />
         </div>
+    );
+}
+
+export default function ApplyPage() {
+    return (
+        <Suspense fallback={
+            <div className="bg-[var(--color-bg)] min-h-screen flex items-center justify-center font-sans text-[#111]">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Loading Application Form...</p>
+                </div>
+            </div>
+        }>
+            <ApplyForm />
+        </Suspense>
     );
 }

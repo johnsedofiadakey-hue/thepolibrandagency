@@ -58,6 +58,16 @@ export async function getContent(): Promise<Record<string, unknown>> {
         // Log handled in getRedis
     }
     
+    // Live disk read to prevent static memory caching in local dev fallback
+    try {
+        if (fs.existsSync(localContentPath)) {
+            const fileData = fs.readFileSync(localContentPath, 'utf-8');
+            return { ...JSON.parse(fileData), _source: 'local_disk' };
+        }
+    } catch (e) {
+        console.error('Disk getContent error, falling back to bundled static import:', e);
+    }
+    
     // Bundle-safe fallback: Use the directly imported JSON
     return { ...(localContent as Record<string, unknown>), _source: 'local_fallback' };
 }
@@ -104,6 +114,16 @@ export async function getSettings(): Promise<SiteSettings & { _source?: string }
         }
     } catch (err) {
         // Log handled in getRedis
+    }
+    
+    // Live disk read to prevent static memory caching in local dev fallback
+    try {
+        if (fs.existsSync(localSettingsPath)) {
+            const fileData = fs.readFileSync(localSettingsPath, 'utf-8');
+            return { ...JSON.parse(fileData), _source: 'local_disk' };
+        }
+    } catch (e) {
+        console.error('Disk getSettings error, falling back to bundled static import:', e);
     }
     
     // Bundle-safe fallback: Use the directly imported JSON

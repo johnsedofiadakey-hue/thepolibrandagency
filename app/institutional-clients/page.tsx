@@ -105,7 +105,7 @@ export default function InstitutionalClientsPage() {
                     <p className="font-sans text-lg text-[var(--color-muted)] max-w-2xl mx-auto mb-10 leading-relaxed">
                         {institutional.cta?.description || "Submit a partnership proposal request and our strategy team will reach out to align on deployment goals."}
                     </p>
-                    <Link href="/apply?type=institutional" className="btn-primary">
+                    <Link href="/apply?program=Institutional%20Partnership%20Proposal" className="btn-primary">
                         {institutional.cta?.button || "Request a Proposal"}
                     </Link>
                 </div>

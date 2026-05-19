@@ -1,16 +1,95 @@
 'use client';
-import { useState } from 'react';
 
-const transactions: any[] = [];
-
-const programs = [
-    { name: 'Fellowship Program', price: 500, currency: 'USD', enrolled: 0 },
-    { name: 'Leadership Bootcamp', price: 250, currency: 'USD', enrolled: 0 },
-    { name: 'Digital Courses', price: 120, currency: 'USD', enrolled: 0 },
-];
+import { useState, useEffect, useMemo } from 'react';
 
 export default function PaymentsPage() {
+    const [applications, setApplications] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [newPrice, setNewPrice] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const fetchApps = async () => {
+            try {
+                const res = await fetch('/api/applications');
+                if (res.ok) {
+                    const data = await res.ok ? await res.json() : [];
+                    setApplications(data);
+                }
+            } catch (err) {
+                console.error('Failed to load payments applications:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchApps();
+    }, []);
+
+    const data = useMemo(() => {
+        // Derive dynamic transactions from Approved applications
+        const transactionsList = applications
+            .filter((a: any) => (a.status || '').toLowerCase() === 'approved')
+            .map((app: any) => {
+                let amount = 0;
+                const prog = (app.program || '').toLowerCase();
+                if (prog.includes('fellowship')) amount = 500;
+                else if (prog.includes('bootcamp') || prog.includes('leadership')) amount = 250;
+                else if (prog.includes('digital') || prog.includes('course')) amount = 120;
+                else return null;
+
+                return {
+                    id: app.id || Date.now(),
+                    name: app.name || 'Anonymous',
+                    program: app.program || 'Polibrand Course',
+                    amount: amount,
+                    status: 'Completed',
+                    date: app.timestamp ? new Date(app.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
+                };
+            })
+            .filter(Boolean) as any[];
+
+        // Count enrollments by program (approved only)
+        let fellowshipCount = 0;
+        let bootcampCount = 0;
+        let courseCount = 0;
+
+        applications.forEach((app: any) => {
+            if ((app.status || '').toLowerCase() === 'approved') {
+                const prog = (app.program || '').toLowerCase();
+                if (prog.includes('fellowship')) fellowshipCount++;
+                else if (prog.includes('bootcamp') || prog.includes('leadership')) bootcampCount++;
+                else if (prog.includes('digital') || prog.includes('course')) courseCount++;
+            }
+        });
+
+        const programs = [
+            { name: 'Fellowship Program', price: 500, currency: 'USD', enrolled: fellowshipCount },
+            { name: 'Leadership Bootcamp', price: 250, currency: 'USD', enrolled: bootcampCount },
+            { name: 'Digital Courses', price: 120, currency: 'USD', enrolled: courseCount },
+        ];
+
+        return {
+            transactions: transactionsList,
+            programs
+        };
+    }, [applications]);
+
+    if (loading) {
+        return (
+            <div>
+                {/* Header skeleton */}
+                <div style={{ marginBottom: '1.25rem', height: '40px', background: '#e5e7eb', borderRadius: 4, width: '200px', animation: 'pulse 1.5s infinite ease-in-out' }} />
+                
+                {/* Grid skeleton */}
+                <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
+                    <div style={{ height: '220px', background: '#e5e7eb', borderRadius: 8, animation: 'pulse 1.5s infinite ease-in-out' }} />
+                    <div style={{ height: '220px', background: '#e5e7eb', borderRadius: 8, animation: 'pulse 1.5s infinite ease-in-out' }} />
+                </div>
+
+                {/* Table skeleton */}
+                <div style={{ height: '260px', background: '#e5e7eb', borderRadius: 8, animation: 'pulse 1.5s infinite ease-in-out' }} />
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -22,10 +101,13 @@ export default function PaymentsPage() {
             <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
                 {/* Program Pricing - High Density */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '1rem' }}>Pricing Controls</h3>
-                    {programs.map((p) => (
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '1rem' }}>Pricing & Enrollments</h3>
+                    {data.programs.map((p) => (
                         <div key={p.name} style={{ marginBottom: '0.75rem', padding: '0.75rem', background: '#f9fafb', borderRadius: 8, border: '1px solid #f3f4f6' }}>
-                            <div style={{ fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.8rem', color: '#111', marginBottom: 6 }}>{p.name}</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                                <div style={{ fontFamily: 'var(--font-body)', fontWeight: 700, fontSize: '0.8rem', color: '#111' }}>{p.name}</div>
+                                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', color: 'var(--color-primary)', fontWeight: 700 }}>{p.enrolled} Enrolled</div>
+                            </div>
                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #e5e0d6', background: '#fff', borderRadius: 6, overflow: 'hidden', flex: 1 }}>
                                     <span style={{ padding: '6px 8px', background: '#f9fafb', fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#9ca3af', fontWeight: 700 }}>$</span>
@@ -45,16 +127,8 @@ export default function PaymentsPage() {
                 {/* Coupon Codes - Compact */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
                     <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: '1rem' }}>Active Coupons</h3>
-                    {[].map((c: any) => (
-                        <div key={c.code} style={{ marginBottom: '0.5rem', padding: '0.75rem', background: '#f9fafb', borderRadius: 8, border: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '0.8rem', color: 'var(--color-primary)', background: 'rgba(13, 44, 25, 0.05)', padding: '2px 8px', borderRadius: 4 }}>{c.code}</span>
-                                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', color: '#9ca3af', marginTop: 4, fontWeight: 600 }}>{c.discount} off · {c.uses} used</div>
-                            </div>
-                            <button style={{ padding: '4px 8px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Del</button>
-                        </div>
-                    ))}
-                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280', fontFamily: 'var(--font-body)', marginBottom: '0.75rem' }}>No coupons created yet. Apply discount codes for special campaigns.</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                             <input type="text" placeholder="Code" style={{ flex: 1, padding: '8px 10px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.8rem', outline: 'none' }} />
                             <input type="text" placeholder="%" style={{ width: 60, padding: '8px 10px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.8rem', outline: 'none' }} />
@@ -82,7 +156,7 @@ export default function PaymentsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {transactions.map((tx) => (
+                            {data.transactions.map((tx) => (
                                 <tr key={tx.id} style={{ borderTop: '1px solid #f3f4f6' }}>
                                     <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#111', padding: '12px 1.25rem' }}>{tx.name}</td>
                                     <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.25rem' }}>{tx.program}</td>
@@ -99,7 +173,7 @@ export default function PaymentsPage() {
 
                 {/* Mobile Card List */}
                 <div className="show-mobile" style={{ flexDirection: 'column' }}>
-                    {transactions.map((tx) => (
+                    {data.transactions.map((tx) => (
                         <div key={tx.id} style={{ padding: '1rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
                                 <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 700, color: '#111' }}>{tx.name}</div>
@@ -113,7 +187,7 @@ export default function PaymentsPage() {
                     ))}
                 </div>
 
-                {transactions.length === 0 && (
+                {data.transactions.length === 0 && (
                     <div style={{ textAlign: 'center', padding: '3rem', fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#9ca3af' }}>
                         No transactions found.
                     </div>
