@@ -3,6 +3,9 @@ import { getRedis } from '@/lib/db';
 import fs from 'fs';
 import path from 'path';
 
+// @ts-ignore
+import localApps from '@/data/applications.json';
+
 const APPS_KEY = 'poli:applications';
 const DISCUSSIONS_KEY = 'poli:discussions';
 const PROGRESS_KEY_PREFIX = 'poli:fellow:';
@@ -32,7 +35,9 @@ async function getApplications(): Promise<any[]> {
     } catch (e) {
         console.error('Local applications read error in portal API:', e);
     }
-    return [];
+    
+    // Bundle-safe static fallback
+    return localApps || [];
 }
 
 // Default discussions to populate if empty

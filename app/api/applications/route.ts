@@ -3,6 +3,9 @@ import { getRedis } from '@/lib/db';
 import fs from 'fs';
 import path from 'path';
 
+// @ts-ignore
+import localApps from '@/data/applications.json';
+
 const APPS_KEY = 'poli:applications';
 const localAppsPath = path.join(process.cwd(), 'data', 'applications.json');
 
@@ -25,6 +28,8 @@ export async function GET() {
         if (!hasRedisData) {
             if (fs.existsSync(localAppsPath)) {
                 applications = JSON.parse(fs.readFileSync(localAppsPath, 'utf-8'));
+            } else {
+                applications = localApps || [];
             }
         }
 
