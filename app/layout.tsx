@@ -3,6 +3,7 @@ import { SettingsProvider } from "../components/SettingsProvider";
 import { getContent, getSettings } from "@/lib/db";
 
 export async function generateMetadata() {
+  const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency.web.app");
   const [content, settings] = await Promise.all([
     getContent().catch(() => ({})),
     getSettings().catch(() => ({})),
@@ -12,6 +13,7 @@ export async function generateMetadata() {
   const logo = (settings as any)?.theme?.logo || "/logo.png";
   
   return {
+    metadataBase,
     title: meta.title || "The Polibrand Agency",
     description: meta.description || "Strategic branding and leadership development for women in governance.",
     keywords: meta.keywords || "political branding, women leaders, Africa",

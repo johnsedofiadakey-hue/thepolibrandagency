@@ -21,6 +21,10 @@ export default function DocumentsPage() {
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Reports & Research</p>
             </div>
 
+            <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '0.85rem 1rem', marginBottom: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', lineHeight: 1.5 }}>
+                Document storage is not connected yet. This page currently shows sample library data; upload, download, and delete controls are disabled until persistent document storage is implemented.
+            </div>
+
             {/* Upload Zone */}
             <div
                 onDragEnter={() => setDragging(true)}
@@ -40,7 +44,7 @@ export default function DocumentsPage() {
                     Supported: PDF, DOC, DOCX, PPTX · Maximum file size: 50MB
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <button className="btn-primary" style={{ fontSize: '0.75rem', padding: '8px 16px', whiteSpace: 'nowrap' }}>Browse Files</button>
+                    <button disabled className="btn-primary" style={{ fontSize: '0.75rem', padding: '8px 16px', whiteSpace: 'nowrap', opacity: 0.55, cursor: 'not-allowed' }}>Browse Files</button>
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
                         {['Research', 'Brochure', 'Report', 'Press Kit'].map((t) => (
                             <span key={t} className={`badge ${typeColors[t]}`} style={{ fontSize: '0.6rem', padding: '2px 6px' }}>+ {t}</span>
@@ -96,8 +100,8 @@ export default function DocumentsPage() {
                                     <td style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af', padding: '14px 1.25rem' }}>{doc.uploaded}</td>
                                     <td style={{ padding: '14px 1.25rem' }}>
                                         <div style={{ display: 'flex', gap: 6 }}>
-                                            <button style={{ padding: '5px 10px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>Download</button>
-                                            <button style={{ padding: '5px 10px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>Delete</button>
+                                            <button disabled style={{ padding: '5px 10px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, cursor: 'not-allowed', opacity: 0.55, fontFamily: 'Inter, sans-serif' }}>Download</button>
+                                            <button disabled style={{ padding: '5px 10px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, cursor: 'not-allowed', opacity: 0.55, fontFamily: 'Inter, sans-serif' }}>Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -123,8 +127,8 @@ export default function DocumentsPage() {
                                     <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.8rem', color: '#1F6F3E' }}>{doc.downloads} DLs</span>
                                 </div>
                                 <div style={{ display: 'flex', gap: 6 }}>
-                                    <button style={{ padding: '6px 12px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Download</button>
-                                    <button style={{ padding: '6px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Del</button>
+                                    <button disabled style={{ padding: '6px 12px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700, opacity: 0.55 }}>Download</button>
+                                    <button disabled style={{ padding: '6px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700, opacity: 0.55 }}>Del</button>
                                 </div>
                             </div>
                         </div>

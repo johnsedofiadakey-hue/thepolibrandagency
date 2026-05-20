@@ -7,17 +7,17 @@
     "build": "next build --webpack",
     "start": "next start",
     "export": "next export",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:firebase": "node scripts/seed-firebase.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
-    "@upstash/redis": "^1.36.3",
-    "@vercel/blob": "^2.3.3",
-    "@vercel/kv": "^3.0.0",
     "clsx": "^2.1.1",
+    "firebase": "^12.13.0",
+    "firebase-admin": "^13.10.0",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.575.0",
-    "next": "16.1.6",
+    "next": "^16.2.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.7.0"
@@ -28,8 +28,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "^16.2.6",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }

@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // The Next.js server uses Firebase Admin SDK. No direct browser reads/writes
+    // are required for this app yet, so client SDK access is denied by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,7 +1,9 @@
 'use client';
-import { useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
+import { getFirebaseClientAuth } from '@/lib/firebase-client';
+import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from 'firebase/auth';
 
 export default function PortalPage() {
     const { content } = useContext(PoliSettingsContext) as any;
@@ -11,13 +13,59 @@ export default function PortalPage() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [notice, setNotice] = useState<string | null>(null);
+    const [firebaseAuthReady] = useState(() => !!getFirebaseClientAuth());
 
-    const handleLogin = async (e: React.FormEvent, isDemo = false) => {
+    useEffect(() => {
+        const auth = getFirebaseClientAuth();
+        if (!auth || !isSignInWithEmailLink(auth, window.location.href)) return;
+
+        async function completeFirebaseLogin() {
+            setLoading(true);
+            setError(null);
+            try {
+                const storedEmail = window.localStorage.getItem('portalEmailForSignIn');
+                if (!storedEmail) {
+                    setError('Please enter your email again to complete sign-in.');
+                    setLoading(false);
+                    return;
+                }
+
+                const credential = await signInWithEmailLink(auth!, storedEmail, window.location.href);
+                const idToken = await credential.user.getIdToken();
+                const res = await fetch('/api/portal/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idToken }),
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    setError(data.error || 'Firebase authentication failed.');
+                    setLoading(false);
+                    return;
+                }
+
+                localStorage.setItem('fellowEmail', data.email || storedEmail);
+                localStorage.removeItem('portalEmailForSignIn');
+                window.location.href = '/portal/dashboard';
+            } catch (err) {
+                console.error('Firebase email-link login error:', err);
+                setError('Firebase sign-in could not be completed.');
+                setLoading(false);
+            }
+        }
+
+        completeFirebaseLogin();
+    }, []);
+
+    const handleLogin = async (e: React.FormEvent) => {
         if (e) e.preventDefault();
         setError(null);
+        setNotice(null);
         setLoading(true);
 
-        const targetEmail = isDemo ? 'jane@example.com' : email.trim();
+        const targetEmail = email.trim();
 
         if (!targetEmail) {
             setError('Please enter your registered email address.');
@@ -26,11 +74,33 @@ export default function PortalPage() {
         }
 
         try {
-            const res = await fetch(`/api/portal/profile?email=${encodeURIComponent(targetEmail)}`);
+            const auth = getFirebaseClientAuth();
+            if (auth && !password) {
+                await sendSignInLinkToEmail(auth, targetEmail, {
+                    url: `${window.location.origin}/portal`,
+                    handleCodeInApp: true,
+                });
+                localStorage.setItem('portalEmailForSignIn', targetEmail);
+                setNotice('A Firebase sign-in link has been sent to your email.');
+                setLoading(false);
+                return;
+            }
+
+            if (!password) {
+                setError('Please enter your access code.');
+                setLoading(false);
+                return;
+            }
+
+            const res = await fetch('/api/portal/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: targetEmail, password }),
+            });
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.error || 'Authentication failed. Please verify your email.');
+                setError(data.error || 'Authentication failed. Please verify your email and access code.');
                 setLoading(false);
                 return;
             }
@@ -75,11 +145,28 @@ export default function PortalPage() {
                         lineHeight: '1.4',
                         textAlign: 'left'
                     }}>
-                        ⚠️ <strong>Enrollment Notice:</strong> {error}
+                        <strong>Enrollment Notice:</strong> {error}
                     </div>
                 )}
 
-                <form onSubmit={(e) => handleLogin(e, false)}>
+                {notice && (
+                    <div style={{
+                        background: 'rgba(31, 111, 62, 0.08)',
+                        border: '1px solid rgba(31, 111, 62, 0.2)',
+                        borderRadius: 6,
+                        padding: '12px 14px',
+                        marginBottom: '1.5rem',
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '0.8rem',
+                        color: '#166534',
+                        lineHeight: '1.4',
+                        textAlign: 'left'
+                    }}>
+                        {notice}
+                    </div>
+                )}
+
+                <form onSubmit={handleLogin}>
                     <div style={{ marginBottom: '1.25rem' }}>
                         <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#374151', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>Email Address</label>
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" required
@@ -90,7 +177,7 @@ export default function PortalPage() {
                         />
                     </div>
                     <div style={{ marginBottom: '2rem' }}>
-                        <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#374151', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>Password <span style={{ color: '#9ca3af', textTransform: 'none', fontWeight: 400 }}>(Optional for verified applicant)</span></label>
+                        <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#374151', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>{firebaseAuthReady ? 'Access Code (Fallback)' : 'Access Code'}</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
                             style={{ width: '100%', padding: '12px 14px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box' }}
                             onFocus={(e: any) => { e.target.style.borderColor = '#1F6F3E'; }}
@@ -99,41 +186,9 @@ export default function PortalPage() {
                         />
                     </div>
                     <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', height: 46 }} disabled={loading}>
-                        {loading ? 'Authenticating...' : `${portal.login.button} →`}
+                        {loading ? 'Authenticating...' : firebaseAuthReady && !password ? 'Send Sign-In Link' : `${portal.login.button} →`}
                     </button>
                 </form>
-
-                <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0', color: '#e5e7eb' }}>
-                    <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
-                    <span style={{ margin: '0 10px', fontSize: '0.7rem', color: '#9ca3af', fontFamily: 'Inter, sans-serif', fontWeight: 500, letterSpacing: '0.5px' }}>OR</span>
-                    <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
-                </div>
-
-                <button 
-                    onClick={(e) => handleLogin(e, true)}
-                    style={{
-                        width: '100%',
-                        height: 46,
-                        background: '#f9fafb',
-                        border: '1.5px dashed #c9a227',
-                        borderRadius: 4,
-                        fontFamily: 'Inter, sans-serif',
-                        fontWeight: 600,
-                        fontSize: '0.84rem',
-                        color: '#c9a227',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        transition: 'background 0.2s'
-                    }}
-                    onMouseEnter={(e: any) => { e.target.style.background = '#fefdf6'; }}
-                    onMouseLeave={(e: any) => { e.target.style.background = '#f9fafb'; }}
-                    disabled={loading}
-                >
-                    ✨ Explore as Demo Fellow (Jane Doe)
-                </button>
 
                 <Link href="/" style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af', textDecoration: 'none' }}>
                     ← Back to Website

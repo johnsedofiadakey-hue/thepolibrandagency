@@ -80,7 +80,9 @@ function ApplyForm() {
                         </div>
                         <h2 className="font-display font-bold text-3xl text-[#111] mb-4">{apply.form.success.title}</h2>
                         <div className="divider-gold divider-gold-center" />
-                        <p className="font-sans text-[#444] mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: apply.form.success.text.replace('{name}', formData.firstName).replace('{program}', formData.program) }} />
+                        <p className="font-sans text-[#444] mb-8 leading-relaxed">
+                            {apply.form.success.text.replace('{name}', formData.firstName).replace('{program}', formData.program)}
+                        </p>
                         <div className="flex flex-col gap-3">
                             <Link href="/" className="btn-primary w-full justify-center">
                                 Return to Homepage

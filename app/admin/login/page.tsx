@@ -31,18 +31,37 @@ export default function AdminLoginPage() {
         loadBranding();
     }, []);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError('');
-        setTimeout(() => {
-            if (email && password) {
-                window.location.href = '/admin/dashboard';
-            } else {
-                setError('Please enter your email and password.');
+        
+        if (!email || !password) {
+            setError('Please enter your email and password.');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                setError(data.error || 'Invalid email or password.');
                 setLoading(false);
+                return;
             }
-        }, 1000);
+
+            const next = new URLSearchParams(window.location.search).get('next') || '/admin/dashboard';
+            window.location.href = next.startsWith('/admin') ? next : '/admin/dashboard';
+        } catch {
+            setError('Unable to sign in. Please try again.');
+            setLoading(false);
+        }
     };
 
     return (

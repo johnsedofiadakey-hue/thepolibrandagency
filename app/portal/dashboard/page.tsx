@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 // Simple relative time formatter for premium dynamic feel
@@ -53,25 +53,8 @@ export default function PortalDashboard() {
     const [submittingComment, setSubmittingComment] = useState<boolean>(false);
     const [newComment, setNewComment] = useState<string>('');
     const [commentError, setCommentError] = useState<string | null>(null);
-    const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
-    // Initial load
-    useEffect(() => {
-        let storedEmail = localStorage.getItem('fellowEmail');
-        if (!storedEmail) {
-            // Default to demo if no login is present to prevent blank screen
-            storedEmail = 'jane@example.com';
-            localStorage.setItem('fellowEmail', 'jane@example.com');
-            setIsDemoMode(true);
-        } else if (storedEmail === 'jane@example.com') {
-            setIsDemoMode(true);
-        }
-        
-        setEmail(storedEmail);
-        fetchProfileData(storedEmail);
-    }, []);
-
-    const fetchProfileData = async (targetEmail: string) => {
+    const fetchProfileData = useCallback(async (targetEmail: string) => {
         try {
             setLoading(true);
             const res = await fetch(`/api/portal/profile?email=${encodeURIComponent(targetEmail)}`);
@@ -92,7 +75,19 @@ export default function PortalDashboard() {
             console.error('Failed to load profile details:', err);
             setLoading(false);
         }
-    };
+    }, []);
+
+    // Initial load
+    useEffect(() => {
+        const storedEmail = localStorage.getItem('fellowEmail');
+        if (!storedEmail) {
+            window.location.href = '/portal';
+            return;
+        }
+        
+        setEmail(storedEmail);
+        fetchProfileData(storedEmail);
+    }, [fetchProfileData]);
 
     const handleToggleModule = async (moduleId: string) => {
         try {
@@ -170,6 +165,7 @@ export default function PortalDashboard() {
     };
 
     const handleLogout = () => {
+        fetch('/api/portal/login', { method: 'DELETE' }).catch(() => {});
         localStorage.removeItem('fellowEmail');
         window.location.href = '/portal';
     };
@@ -203,26 +199,6 @@ export default function PortalDashboard() {
     return (
         <div style={{ minHeight: '100vh', background: '#fcfbf7', fontFamily: 'Inter, sans-serif' }}>
             
-            {/* Demo Mode Notice */}
-            {isDemoMode && (
-                <div style={{
-                    background: 'linear-gradient(90deg, #c9a227 0%, #d4b242 100%)',
-                    color: '#fff',
-                    padding: '8px 16px',
-                    textAlign: 'center',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    boxShadow: '0 2px 10px rgba(201,162,39,0.15)'
-                }}>
-                    ✨ <span>You are currently exploring the portal as a <strong>Demo Fellow (Jane Doe)</strong>. Feel free to interactively toggle modules and write group comments!</span>
-                </div>
-            )}
-
             {/* Header */}
             <div style={{ background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 100%)', color: '#fff', padding: '0 2rem' }}>
                 <div style={{ maxWidth: 1100, margin: '0 auto', paddingTop: '1.5rem', paddingBottom: '2.5rem' }}>

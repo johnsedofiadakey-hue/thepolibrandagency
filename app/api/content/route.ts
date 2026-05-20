@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getContent, setContent } from '@/lib/db';
+import { requireAdmin } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+    const unauthorized = await requireAdmin(request);
+    if (unauthorized) return unauthorized;
+
     try {
         const body = await request.json();
         await setContent(body);

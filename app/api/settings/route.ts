@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSettings, setSettings, SiteSettings } from '@/lib/db';
+import { requireAdmin } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +18,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const unauthorized = await requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
   try {
     const body: SiteSettings = await request.json();
     await setSettings(body);

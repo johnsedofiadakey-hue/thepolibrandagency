@@ -24,6 +24,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const activeItem = navItems.find(item => item.href === pathname) || navItems[0];
 
+    const handleLogout = async () => {
+        await fetch('/api/admin/login', { method: 'DELETE' });
+        window.location.href = '/admin/login';
+    };
+
     return (
         <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
             {/* Desktop Sidebar / Mobile Bottom Nav */}
@@ -150,6 +155,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         }}>
                             Visit Site
                         </Link>
+                        <button
+                            onClick={handleLogout}
+                            style={{
+                                fontFamily: 'var(--font-body)',
+                                fontSize: '0.72rem',
+                                color: '#b22222',
+                                border: '1px solid rgba(178,34,34,0.18)',
+                                background: 'rgba(178,34,34,0.06)',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                                padding: '6px 12px',
+                                borderRadius: 20,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Log Out
+                        </button>
                     </div>
                 </header>
 

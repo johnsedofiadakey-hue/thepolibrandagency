@@ -43,6 +43,10 @@ export default function AdminAnalyticsPage() {
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af' }}>Performance metrics · Last 30 days</p>
             </div>
 
+            <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '0.85rem 1rem', marginBottom: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', lineHeight: 1.5 }}>
+                Analytics is not connected to a tracking provider yet. Values shown here are sample dashboard data and should not be treated as production metrics.
+            </div>
+
             {/* KPI Cards */}
             <div className="grid-cols-4-mobile-2" style={{ gap: '0.75rem', marginBottom: '1.5rem' }}>
                 {[

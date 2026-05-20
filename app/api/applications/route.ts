@@ -1,38 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getRedis } from '@/lib/db';
-import fs from 'fs';
-import path from 'path';
+import { getApplications, updateApplicationStatus } from '@/lib/db';
+import { requireAdmin } from '@/lib/session';
 
-// @ts-ignore
-import localApps from '@/data/applications.json';
+export async function GET(request: Request) {
+    const unauthorized = await requireAdmin(request);
+    if (unauthorized) return unauthorized;
 
-const APPS_KEY = 'poli:applications';
-const localAppsPath = path.join(process.cwd(), 'data', 'applications.json');
-
-export async function GET() {
     try {
-        let applications = [];
-        let hasRedisData = false;
-
-        try {
-            const redis = await getRedis();
-            if (redis) {
-                const rawApps = await redis.lrange(APPS_KEY, 0, -1);
-                applications = rawApps.map((a: string) => JSON.parse(a));
-                hasRedisData = true;
-            }
-        } catch (err) {
-            console.error('Redis applications GET error:', err);
-        }
-
-        if (!hasRedisData) {
-            if (fs.existsSync(localAppsPath)) {
-                applications = JSON.parse(fs.readFileSync(localAppsPath, 'utf-8'));
-            } else {
-                applications = localApps || [];
-            }
-        }
-
+        const applications = await getApplications();
         return NextResponse.json(applications);
     } catch (error) {
         console.error('Failed to fetch applications:', error);
@@ -41,41 +16,19 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
+    const unauthorized = await requireAdmin(request);
+    if (unauthorized) return unauthorized;
+
     try {
         const { id, status } = await request.json();
-        let updatedInRedis = false;
-
-        try {
-            const redis = await getRedis();
-            if (redis) {
-                const rawApps = await redis.lrange(APPS_KEY, 0, -1);
-                const applications = rawApps.map((a: string) => JSON.parse(a));
-                const index = applications.findIndex((a: any) => Number(a.id) === Number(id));
-                
-                if (index !== -1) {
-                    applications[index].status = status;
-                    await redis.del(APPS_KEY);
-                    for (const app of applications.reverse()) {
-                        await redis.lpush(APPS_KEY, JSON.stringify(app));
-                    }
-                    updatedInRedis = true;
-                }
-            }
-        } catch (err) {
-            console.error('Redis applications PATCH error:', err);
+        if (!id || typeof status !== 'string') {
+            return NextResponse.json({ error: 'id and status are required.' }, { status: 400 });
         }
 
-        // Local fallback (always update local if possible, or only if redis failed)
-        try {
-            if (fs.existsSync(localAppsPath)) {
-                const applications = JSON.parse(fs.readFileSync(localAppsPath, 'utf-8'));
-                const index = applications.findIndex((a: any) => Number(a.id) === Number(id));
-                if (index !== -1) {
-                    applications[index].status = status;
-                    fs.writeFileSync(localAppsPath, JSON.stringify(applications, null, 2));
-                }
-            }
-        } catch (e) {}
+        const updated = await updateApplicationStatus(id, status);
+        if (!updated) {
+            return NextResponse.json({ error: 'Application not found.' }, { status: 404 });
+        }
 
         return NextResponse.json({ success: true });
     } catch (error) {

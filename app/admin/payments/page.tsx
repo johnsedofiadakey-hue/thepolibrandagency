@@ -98,6 +98,10 @@ export default function PaymentsPage() {
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Pricing & Transactions</p>
             </div>
 
+            <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '0.85rem 1rem', marginBottom: '1rem', fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.5 }}>
+                Payment processing is not connected yet. Figures below are derived from approved applications for planning only; pricing, coupons, exports, and transaction controls are disabled until a payment provider is integrated.
+            </div>
+
             <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
                 {/* Program Pricing - High Density */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
@@ -118,7 +122,7 @@ export default function PaymentsPage() {
                                         style={{ padding: '6px 4px', border: 'none', fontFamily: 'var(--font-body)', fontSize: '0.85rem', outline: 'none', width: '100%' }}
                                     />
                                 </div>
-                                <button className="btn-primary" style={{ fontSize: '0.65rem', padding: '8px 12px' }}>Save</button>
+                                <button disabled className="btn-primary" style={{ fontSize: '0.65rem', padding: '8px 12px', opacity: 0.55, cursor: 'not-allowed' }}>Save</button>
                             </div>
                         </div>
                     ))}
@@ -133,7 +137,7 @@ export default function PaymentsPage() {
                             <input type="text" placeholder="Code" style={{ flex: 1, padding: '8px 10px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.8rem', outline: 'none' }} />
                             <input type="text" placeholder="%" style={{ width: 60, padding: '8px 10px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.8rem', outline: 'none' }} />
                         </div>
-                        <button className="btn-primary" style={{ width: '100%', fontSize: '0.75rem', padding: '10px' }}>Create New Code</button>
+                        <button disabled className="btn-primary" style={{ width: '100%', fontSize: '0.75rem', padding: '10px', opacity: 0.55, cursor: 'not-allowed' }}>Create New Code</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +146,7 @@ export default function PaymentsPage() {
             <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 1px 4px rgba(0,0,0,0.03)', overflow: 'hidden' }}>
                 <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111' }}>Transactions</h3>
-                    <button className="hide-mobile" style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--color-primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700 }}>EXPORT</button>
+                    <button disabled className="hide-mobile" style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af', background: 'none', border: 'none', cursor: 'not-allowed', fontWeight: 700 }}>EXPORT</button>
                 </div>
 
                 {/* Desktop Table */}
