@@ -2,6 +2,8 @@ import "./globals.css";
 import { SettingsProvider } from "../components/SettingsProvider";
 import { getContent, getSettings } from "@/lib/db";
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency-d4263.web.app");
   const [content, settings] = await Promise.all([
