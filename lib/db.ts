@@ -7,10 +7,7 @@
 import path from 'path';
 import fs from 'fs';
 import { randomUUID } from 'crypto';
-import { cert, getApps, initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
-import { getStorage } from 'firebase-admin/storage';
+import { createRequire } from 'module';
 
 // @ts-ignore
 import localContent from '../data/content.json';
@@ -26,6 +23,23 @@ const APPLICATIONS_COLLECTION = 'applications';
 const SUBSCRIBERS_COLLECTION = 'subscribers';
 const DISCUSSIONS_COLLECTION = 'portal_discussions';
 const PROGRESS_COLLECTION = 'portal_progress';
+const nodeRequire = createRequire(import.meta.url);
+
+function firebaseAppModule() {
+    return nodeRequire('firebase-admin/app') as typeof import('firebase-admin/app');
+}
+
+function firebaseAuthModule() {
+    return nodeRequire('firebase-admin/auth') as typeof import('firebase-admin/auth');
+}
+
+function firebaseFirestoreModule() {
+    return nodeRequire('firebase-admin/firestore') as typeof import('firebase-admin/firestore');
+}
+
+function firebaseStorageModule() {
+    return nodeRequire('firebase-admin/storage') as typeof import('firebase-admin/storage');
+}
 
 const localContentPath = path.join(process.cwd(), 'data', 'content.json');
 const localSettingsPath = path.join(process.cwd(), 'data', 'settings.json');
@@ -57,6 +71,7 @@ function hasFirebaseConfig(): boolean {
 }
 
 function initializeFirebaseApp() {
+    const { cert, getApps, initializeApp, applicationDefault } = firebaseAppModule();
     if (getApps().length) return getApps()[0];
 
     const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
@@ -80,6 +95,9 @@ function initializeFirebaseApp() {
 export function getFirebaseAdmin() {
     if (!hasFirebaseConfig()) return null;
     try {
+        const { getAuth } = firebaseAuthModule();
+        const { getFirestore } = firebaseFirestoreModule();
+        const { getStorage } = firebaseStorageModule();
         const app = initializeFirebaseApp();
         return {
             app,
@@ -323,6 +341,7 @@ export async function saveFellowProgress(email: string, completedModuleIds: stri
     const cleanEmail = email.toLowerCase().trim();
     try {
         const firebase = requireFirebaseAdmin();
+        const { FieldValue } = firebaseFirestoreModule();
         await firebase.db.collection(PROGRESS_COLLECTION).doc(cleanEmail).set({
             email: cleanEmail,
             completedModuleIds,

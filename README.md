@@ -9,7 +9,7 @@ The leading political branding partner for women leaders across Africa. This pla
 - **Global Settings**: Instant synchronization between admin settings and public-facing pages.
 
 ## 🚀 Live Deployment
-- **Production URL**: [https://thepolibrandagency.web.app](https://thepolibrandagency.web.app)
+- **Production URL**: [https://thepolibrandagency-d4263.web.app](https://thepolibrandagency-d4263.web.app)
 - **Deployment Platform**: Firebase Hosting / Firebase App Hosting
 - **Version Control**: GitHub
 
