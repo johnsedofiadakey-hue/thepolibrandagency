@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 const typographyPresets = [
+    { id: 'modern_minimalist', label: 'Modern Minimalist', headline: 'Outfit', body: 'Inter' },
     { id: 'institutional', label: 'Institutional', headline: 'Cinzel', body: 'Inter' },
     { id: 'modern', label: 'Modern', headline: 'Playfair Display', body: 'Inter' },
     { id: 'classic', label: 'Classic', headline: 'Cinzel', body: 'Georgia' },
@@ -60,7 +61,7 @@ export default function BrandPage() {
     }
 
     const presetColors: Record<string, { primary: string; secondary: string; accent: string; background: string; text: string; logo: string; heroImage: string }> = {
-        polibrand: { primary: '#1F6F3E', secondary: '#C9A227', accent: '#B22222', background: '#F9F6F1', text: '#111111', logo: '/logo.png', heroImage: '' },
+        polibrand: { primary: '#1A2B4C', secondary: '#F1E5D1', accent: '#FF6B6B', background: '#FAFAFC', text: '#2C3E50', logo: '/logo.png', heroImage: '' },
         midnight: { primary: '#1e3a5f', secondary: '#d4af37', accent: '#c0392b', background: '#f0f4f8', text: '#0f172a', logo: '/logo.png', heroImage: '' },
         royal: { primary: '#4a235a', secondary: '#d4ac0d', accent: '#922b21', background: '#fdf9f0', text: '#1a1a2e', logo: '/logo.png', heroImage: '' },
     };

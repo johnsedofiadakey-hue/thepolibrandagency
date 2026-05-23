@@ -119,7 +119,7 @@ export default function PortalPage() {
     return (
         <div style={{
             minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 100%)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
             padding: '2rem', position: 'relative', overflow: 'hidden',
         }}>
             <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', border: '1px solid rgba(201,162,39,0.12)' }} />
@@ -151,14 +151,14 @@ export default function PortalPage() {
 
                 {notice && (
                     <div style={{
-                        background: 'rgba(31, 111, 62, 0.08)',
-                        border: '1px solid rgba(31, 111, 62, 0.2)',
+                        background: 'var(--color-bg)',
+                        border: '1px solid var(--color-primary)',
                         borderRadius: 6,
                         padding: '12px 14px',
                         marginBottom: '1.5rem',
                         fontFamily: 'Inter, sans-serif',
                         fontSize: '0.8rem',
-                        color: '#166534',
+                        color: 'var(--color-primary)',
                         lineHeight: '1.4',
                         textAlign: 'left'
                     }}>
@@ -171,7 +171,7 @@ export default function PortalPage() {
                         <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#374151', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>Email Address</label>
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" required
                             style={{ width: '100%', padding: '12px 14px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box' }}
-                            onFocus={(e: any) => { e.target.style.borderColor = '#1F6F3E'; }}
+                            onFocus={(e: any) => { e.target.style.borderColor = 'var(--color-primary)'; }}
                             onBlur={(e: any) => { e.target.style.borderColor = '#e5e0d6'; }}
                             disabled={loading}
                         />
@@ -180,7 +180,7 @@ export default function PortalPage() {
                         <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#374151', letterSpacing: '0.5px', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>{firebaseAuthReady ? 'Access Code (Fallback)' : 'Access Code'}</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
                             style={{ width: '100%', padding: '12px 14px', border: '1.5px solid #e5e0d6', borderRadius: 4, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box' }}
-                            onFocus={(e: any) => { e.target.style.borderColor = '#1F6F3E'; }}
+                            onFocus={(e: any) => { e.target.style.borderColor = 'var(--color-primary)'; }}
                             onBlur={(e: any) => { e.target.style.borderColor = '#e5e0d6'; }}
                             disabled={loading}
                         />

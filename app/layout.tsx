@@ -45,15 +45,15 @@ export default async function RootLayout({
 
   const activeSettings = settings || {
     theme: {
-      primary: '#1F6F3E',
-      secondary: '#C9A227',
-      accent: '#B22222',
-      background: '#F9F6F1',
-      text: '#111111',
+      primary: '#1A2B4C',
+      secondary: '#F1E5D1',
+      accent: '#FF6B6B',
+      background: '#FAFAFC',
+      text: '#2C3E50',
       heroImage: '',
       logo: '/logo.png',
     },
-    typography: 'institutional',
+    typography: 'modern_minimalist',
   };
 
   const logo = activeSettings.theme?.logo || "/logo.png";
@@ -65,6 +65,10 @@ export default async function RootLayout({
       display: "'Cinzel', 'Playfair Display', serif",
       body: "'Inter', sans-serif"
     },
+    modern_minimalist: {
+      display: "'Outfit', system-ui, sans-serif",
+      body: "'Inter', system-ui, sans-serif"
+    },
     modern: {
       display: "'Inter', sans-serif",
       body: "'Inter', sans-serif"
@@ -75,7 +79,7 @@ export default async function RootLayout({
     }
   };
 
-  const set = fonts[typography] || fonts.institutional;
+  const set = fonts[typography] || fonts.modern_minimalist;
 
   const styleVariables = `
     :root {
@@ -101,17 +105,11 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="PoliBrand" />
-        
-        {/* Force Favicon Sync */}
-        <link rel="icon" href={logo} />
-        <link rel="shortcut icon" href={logo} />
-        <link rel="apple-touch-icon" href={logo} />
-        
         <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <style dangerouslySetInnerHTML={{ __html: styleVariables }} />

@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
     return (
         <div className="login-container" style={{
             minHeight: '100vh', display: 'flex',
-            background: 'linear-gradient(135deg, #0c3d1e 0%, #1F6F3E 60%, #154e2b 100%)',
+            background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-primary-dark) 100%)',
             position: 'relative', overflow: 'hidden',
         }}>
             <style>{`
@@ -171,7 +171,7 @@ export default function AdminLoginPage() {
                                     outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
                                     background: '#f9f9f9'
                                 }}
-                                onFocus={(e) => { e.target.style.borderColor = '#1F6F3E'; e.target.style.background = '#fff'; }}
+                                onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.background = '#fff'; }}
                                 onBlur={(e) => { e.target.style.borderColor = '#e5e0d6'; e.target.style.background = '#f9f9f9'; }}
                             />
                         </div>
@@ -190,7 +190,7 @@ export default function AdminLoginPage() {
                                     outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
                                     background: '#f9f9f9'
                                 }}
-                                onFocus={(e) => { e.target.style.borderColor = '#1F6F3E'; e.target.style.background = '#fff'; }}
+                                onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.background = '#fff'; }}
                                 onBlur={(e) => { e.target.style.borderColor = '#e5e0d6'; e.target.style.background = '#f9f9f9'; }}
                             />
                         </div>

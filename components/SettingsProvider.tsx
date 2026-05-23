@@ -5,15 +5,15 @@ import initialContent from '../data/content.json';
 
 export const PoliSettingsContext = React.createContext({
   theme: {
-    primary: '#1F6F3E',
-    secondary: '#C9A227',
-    accent: '#B22222',
-    background: '#F9F6F1',
-    text: '#111111',
+    primary: '#1A2B4C',
+    secondary: '#F1E5D1',
+    accent: '#FF6B6B',
+    background: '#FAFAFC',
+    text: '#2C3E50',
     heroImage: '',
     logo: '/logo.png',
   },
-  typography: 'institutional',
+  typography: 'modern_minimalist',
   content: initialContent as any,
   updateSettings: (newSettings: any) => { },
   updateContent: (newContent: any) => { },
@@ -32,15 +32,15 @@ export function SettingsProvider({
   const [settings, setSettings] = React.useState(() => {
     return serverSettings || {
       theme: {
-        primary: '#1F6F3E',
-        secondary: '#C9A227',
-        accent: '#B22222',
-        background: '#F9F6F1',
-        text: '#111111',
+        primary: '#1A2B4C',
+        secondary: '#F1E5D1',
+        accent: '#FF6B6B',
+        background: '#FAFAFC',
+        text: '#2C3E50',
         heroImage: '',
         logo: '/logo.png',
       },
-      typography: 'institutional',
+      typography: 'modern_minimalist',
     };
   });
 
@@ -129,6 +129,10 @@ export function SettingsProvider({
           display: "'Cinzel', 'Playfair Display', serif",
           body: "'Inter', sans-serif"
         },
+        modern_minimalist: {
+          display: "'Outfit', system-ui, sans-serif",
+          body: "'Inter', system-ui, sans-serif"
+        },
         modern: {
           display: "'Inter', sans-serif",
           body: "'Inter', sans-serif"
@@ -139,7 +143,7 @@ export function SettingsProvider({
         }
       };
 
-      const set = fonts[settings.typography] || fonts.institutional;
+      const set = fonts[settings.typography] || fonts.modern_minimalist;
       root.style.setProperty('--font-display', set.display);
       root.style.setProperty('--font-body', set.body);
     }

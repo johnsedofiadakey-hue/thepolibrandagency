@@ -2,36 +2,36 @@
 
 /* ─── Brand Design Tokens ─── */
 :root {
-  /* Default fallbacks */
-  --color-primary: #1F6F3E;
-  --color-secondary: #C9A227;
-  --color-accent: #B22222;
-  --color-bg: #FDFBFA;
-  --color-text: #231f20;
+  /* Default fallbacks - Modern Minimalist Theme */
+  --color-primary: #1A2B4C;
+  --color-secondary: #F1E5D1;
+  --color-accent: #FF6B6B;
+  --color-bg: #FAFAFC;
+  --color-text: #2C3E50;
 
   /* Derived variables (set via SettingsProvider or CSS) */
   --color-primary-dark: color-mix(in srgb, var(--color-primary), black 20%);
   --color-primary-light: color-mix(in srgb, var(--color-primary), white 20%);
-  --color-secondary-dark: color-mix(in srgb, var(--color-secondary), black 20%);
+  --color-secondary-dark: color-mix(in srgb, var(--color-secondary), black 40%);
   --color-white: #FFFFFF;
-  --color-muted: #8b7d7b;
-  --color-border: #f0ebe2;
+  --color-muted: #64748B;
+  --color-border: #E2E8F0;
 
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
   --radius-pill: 9999px;
 
   /* Typography - now handled by SettingsProvider but with defaults */
-  --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-serif: 'Outfit', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Shadows scale with primary color */
-  --shadow-soft: 0 10px 40px color-mix(in srgb, var(--color-primary), transparent 95%);
-  --shadow-card: 0 12px 32px rgba(118, 97, 83, 0.08);
-  --shadow-card-hover: 0 20px 48px rgba(118, 97, 83, 0.15);
-  --shadow-gold: 0 8px 32px color-mix(in srgb, var(--color-secondary), transparent 75%);
+  --shadow-soft: 0 4px 20px rgba(26, 43, 76, 0.05);
+  --shadow-card: 0 8px 30px rgba(26, 43, 76, 0.06);
+  --shadow-card-hover: 0 12px 40px rgba(26, 43, 76, 0.1);
+  --shadow-gold: 0 8px 32px color-mix(in srgb, var(--color-secondary), transparent 50%);
 }
 
 /* ─── Base Styles ─── */
@@ -88,7 +88,7 @@ body {
   .btn-outline-dark:active,
   .btn:active {
     background: var(--color-primary-dark);
-    box-shadow: 0 4px 16px rgba(31, 111, 62, 0.12);
+    box-shadow: 0 4px 16px rgba(26, 43, 76, 0.12);
   }
 
   button:focus,
@@ -249,7 +249,7 @@ h6 {
   background: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(31, 111, 62, 0.3);
+  box-shadow: 0 8px 24px rgba(26, 43, 76, 0.3);
 }
 
 .btn-secondary {
@@ -433,17 +433,17 @@ h6 {
 }
 
 .badge-green {
-  background: rgba(31, 111, 62, 0.12);
+  background: rgba(26, 43, 76, 0.12);
   color: var(--color-primary);
 }
 
 .badge-gold {
-  background: rgba(201, 162, 39, 0.15);
+  background: rgba(241, 229, 209, 0.5);
   color: var(--color-secondary-dark);
 }
 
 .badge-red {
-  background: rgba(178, 34, 34, 0.12);
+  background: rgba(255, 107, 107, 0.12);
   color: var(--color-accent);
 }
 

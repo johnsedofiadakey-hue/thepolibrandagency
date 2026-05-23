@@ -1,13 +1,13 @@
 {
   "theme": {
-    "primary": "#1F6F3E",
-    "secondary": "#C9A227",
-    "accent": "#B22222",
-    "background": "#F9F6F1",
-    "text": "#111111",
+    "primary": "#1A2B4C",
+    "secondary": "#F1E5D1",
+    "accent": "#FF6B6B",
+    "background": "#FAFAFC",
+    "text": "#2C3E50",
     "heroImage": "",
     "logo": "/logo.png"
   },
-  "typography": "institutional",
+  "typography": "modern_minimalist",
   "_source": "local_disk"
 }
