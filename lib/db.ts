@@ -23,22 +23,13 @@ const APPLICATIONS_COLLECTION = 'applications';
 const SUBSCRIBERS_COLLECTION = 'subscribers';
 const DISCUSSIONS_COLLECTION = 'portal_discussions';
 const PROGRESS_COLLECTION = 'portal_progress';
+const DEFAULT_FIREBASE_PROJECT_ID = 'thepolibrandagency-d4263';
+const DEFAULT_FIREBASE_STORAGE_BUCKET = `${DEFAULT_FIREBASE_PROJECT_ID}.firebasestorage.app`;
 const nodeRequire = createRequire(import.meta.url);
+let lastFirebaseAdminError: string | null = null;
 
-function firebaseAppModule() {
-    return nodeRequire('firebase-admin/app') as typeof import('firebase-admin/app');
-}
-
-function firebaseAuthModule() {
-    return nodeRequire('firebase-admin/auth') as typeof import('firebase-admin/auth');
-}
-
-function firebaseFirestoreModule() {
-    return nodeRequire('firebase-admin/firestore') as typeof import('firebase-admin/firestore');
-}
-
-function firebaseStorageModule() {
-    return nodeRequire('firebase-admin/storage') as typeof import('firebase-admin/storage');
+function firebaseAdminModule(): any {
+    return nodeRequire('firebase-admin');
 }
 
 const localContentPath = path.join(process.cwd(), 'data', 'content.json');
@@ -47,6 +38,34 @@ const localAppsPath = path.join(process.cwd(), 'data', 'applications.json');
 const localSubscribersPath = path.join(process.cwd(), 'data', 'subscribers.json');
 const localDiscussionsPath = path.join(process.cwd(), 'data', 'discussions.json');
 const localProgressPath = path.join(process.cwd(), 'data', 'fellow_progress.json');
+const METADATA_TOKEN_URL = 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token';
+
+function getFirebaseRuntimeConfig(): Record<string, string> {
+    try {
+        return process.env.FIREBASE_CONFIG ? JSON.parse(process.env.FIREBASE_CONFIG) : {};
+    } catch {
+        return {};
+    }
+}
+
+export function describePersistenceError(error: unknown, resource = 'Firebase'): string {
+    const message = error instanceof Error ? error.message : String(error || '');
+    const code = typeof error === 'object' && error && 'code' in error ? String((error as { code?: unknown }).code) : '';
+
+    if (message.includes('Firebase Admin is not configured')) {
+        return `${resource} is not configured. Set Firebase Admin environment variables before saving from the admin portal.`;
+    }
+
+    if (code === '5' || message.includes('5 NOT_FOUND')) {
+        return `${resource} is not initialized for this Firebase project. Create the Firestore database and seed it before saving admin changes.`;
+    }
+
+    if (message.toLowerCase().includes('bucket') || message.toLowerCase().includes('storage')) {
+        return `${resource} storage is not initialized. Enable Firebase Storage before uploading images.`;
+    }
+
+    return message || `${resource} operation failed.`;
+}
 
 function stripInternalSource<T extends Record<string, unknown>>(data: T): T {
     const next = { ...data };
@@ -55,58 +74,69 @@ function stripInternalSource<T extends Record<string, unknown>>(data: T): T {
 }
 
 function getFirebaseProjectId(): string | undefined {
-    return process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+    const runtimeConfig = getFirebaseRuntimeConfig();
+    return process.env.POLI_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || runtimeConfig.projectId || DEFAULT_FIREBASE_PROJECT_ID;
 }
 
 function getFirebaseStorageBucket(): string | undefined {
-    return process.env.FIREBASE_STORAGE_BUCKET || (getFirebaseProjectId() ? `${getFirebaseProjectId()}.appspot.com` : undefined);
+    const runtimeConfig = getFirebaseRuntimeConfig();
+    return process.env.POLI_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET || runtimeConfig.storageBucket || DEFAULT_FIREBASE_STORAGE_BUCKET;
 }
 
 function hasFirebaseConfig(): boolean {
     return !!(
         getFirebaseProjectId() ||
         process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
-        process.env.GOOGLE_APPLICATION_CREDENTIALS
+        process.env.GOOGLE_APPLICATION_CREDENTIALS ||
+        process.env.FIREBASE_CONFIG ||
+        process.env.K_SERVICE
     );
 }
 
 function initializeFirebaseApp() {
-    const { cert, getApps, initializeApp, applicationDefault } = firebaseAppModule();
-    if (getApps().length) return getApps()[0];
+    const admin = firebaseAdminModule();
+    if (admin.apps.length) return admin.apps[0];
 
     const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
     const storageBucket = getFirebaseStorageBucket();
 
     if (serviceAccount) {
-        return initializeApp({
-            credential: cert(JSON.parse(serviceAccount)),
+        return admin.initializeApp({
+            credential: admin.credential.cert(JSON.parse(serviceAccount)),
             storageBucket,
             projectId: getFirebaseProjectId(),
         });
     }
 
-    return initializeApp({
-        credential: applicationDefault(),
-        storageBucket,
-        projectId: getFirebaseProjectId(),
-    });
+    const projectId = getFirebaseProjectId();
+    const config: Record<string, string> = {};
+    if (storageBucket) config.storageBucket = storageBucket;
+    if (projectId) config.projectId = projectId;
+
+    return admin.initializeApp(Object.keys(config).length ? config : undefined);
 }
 
 export function getFirebaseAdmin() {
     if (!hasFirebaseConfig()) return null;
     try {
-        const { getAuth } = firebaseAuthModule();
-        const { getFirestore } = firebaseFirestoreModule();
-        const { getStorage } = firebaseStorageModule();
+        const admin = firebaseAdminModule();
         const app = initializeFirebaseApp();
+        let bucket = null;
+        try {
+            bucket = admin.storage(app).bucket(getFirebaseStorageBucket());
+        } catch (error) {
+            console.error('Firebase Storage initialization failed:', error);
+        }
+        lastFirebaseAdminError = null;
         return {
             app,
-            auth: getAuth(app),
-            db: getFirestore(app),
-            bucket: getStorage(app).bucket(),
+            auth: admin.auth(app),
+            db: admin.firestore(app),
+            bucket,
         };
     } catch (error) {
         console.error('Firebase Admin initialization failed:', error);
+        lastFirebaseAdminError = error instanceof Error ? error.message : String(error || 'Unknown Firebase Admin initialization failure');
         return null;
     }
 }
@@ -144,6 +174,120 @@ function writeLocalDevJson(filePath: string, data: unknown) {
     }
 }
 
+function firestoreRestDocUrl(collection: string, doc: string): string {
+    const projectId = getFirebaseProjectId();
+    return `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}/${doc}`;
+}
+
+async function getGoogleAccessToken(): Promise<string | null> {
+    if (!process.env.K_SERVICE && !process.env.FIREBASE_CONFIG) return null;
+
+    try {
+        const response = await fetch(METADATA_TOKEN_URL, {
+            headers: { 'Metadata-Flavor': 'Google' },
+            cache: 'no-store',
+        });
+        if (!response.ok) throw new Error(`Metadata token request failed with ${response.status}`);
+        const data = await response.json() as { access_token?: string };
+        return data.access_token || null;
+    } catch (error) {
+        console.error('Failed to get Google metadata access token:', error);
+        return null;
+    }
+}
+
+async function getFirestoreRestJson(collection: string, doc: string): Promise<Record<string, unknown> | null> {
+    const token = await getGoogleAccessToken();
+    if (!token) return null;
+
+    const response = await fetch(firestoreRestDocUrl(collection, doc), {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+    });
+
+    if (response.status === 404) return null;
+    if (!response.ok) throw new Error(`Firestore REST read failed with ${response.status}: ${await response.text()}`);
+
+    const data = await response.json() as { fields?: { json?: { stringValue?: string } } };
+    const json = data.fields?.json?.stringValue;
+    return json ? JSON.parse(json) as Record<string, unknown> : null;
+}
+
+async function setFirestoreRestJson(collection: string, doc: string, data: Record<string, unknown>): Promise<void> {
+    const token = await getGoogleAccessToken();
+    if (!token) throw new Error('Firestore REST is not configured in this runtime.');
+
+    const response = await fetch(firestoreRestDocUrl(collection, doc), {
+        method: 'PATCH',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            fields: {
+                json: { stringValue: JSON.stringify(data) },
+                updatedAt: { timestampValue: new Date().toISOString() },
+            },
+        }),
+        cache: 'no-store',
+    });
+
+    if (!response.ok) throw new Error(`Firestore REST write failed with ${response.status}: ${await response.text()}`);
+}
+
+async function storageBucketExistsRest(): Promise<boolean> {
+    const token = await getGoogleAccessToken();
+    const bucket = getFirebaseStorageBucket();
+    if (!token || !bucket) return false;
+
+    const response = await fetch(`https://storage.googleapis.com/storage/v1/b/${bucket}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+    });
+    if (response.status === 404) return false;
+    if (!response.ok) throw new Error(`Firebase Storage REST check failed with ${response.status}: ${await response.text()}`);
+    return true;
+}
+
+async function uploadImageToStorageRest(file: File): Promise<string> {
+    const token = await getGoogleAccessToken();
+    const bucket = getFirebaseStorageBucket();
+    if (!token || !bucket) throw new Error('Firebase Storage REST is not configured in this runtime.');
+
+    const safeName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+    const filename = `uploads/${Date.now()}_${safeName}`;
+    const downloadToken = randomUUID();
+    const boundary = `poli_${randomUUID()}`;
+    const metadata = JSON.stringify({
+        name: filename,
+        contentType: file.type,
+        metadata: {
+            firebaseStorageDownloadTokens: downloadToken,
+        },
+    });
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const body = Buffer.concat([
+        Buffer.from(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n`),
+        Buffer.from(`--${boundary}\r\nContent-Type: ${file.type}\r\n\r\n`),
+        buffer,
+        Buffer.from(`\r\n--${boundary}--`),
+    ]);
+
+    const response = await fetch(`https://storage.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=multipart`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': `multipart/related; boundary=${boundary}`,
+            'Content-Length': String(body.length),
+        },
+        body,
+    });
+
+    if (!response.ok) throw new Error(`Firebase Storage REST upload failed with ${response.status}: ${await response.text()}`);
+
+    return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(filename)}?alt=media&token=${downloadToken}`;
+}
+
 export async function getContent(): Promise<Record<string, unknown>> {
     try {
         const firebase = getFirebaseAdmin();
@@ -153,6 +297,13 @@ export async function getContent(): Promise<Record<string, unknown>> {
         }
     } catch (error) {
         console.error('Firebase getContent error:', error);
+    }
+
+    try {
+        const data = await getFirestoreRestJson(CONFIG_COLLECTION, CONTENT_DOC);
+        if (data) return { ...data, _source: 'firestore_rest' };
+    } catch (error) {
+        console.error('Firestore REST getContent error:', error);
     }
 
     const data = readJsonFile<Record<string, unknown>>(localContentPath, localContent as Record<string, unknown>);
@@ -166,10 +317,113 @@ export async function setContent(data: Record<string, unknown>): Promise<void> {
         const firebase = requireFirebaseAdmin();
         await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).set(cleanData, { merge: false });
     } catch (error) {
+        try {
+            await setFirestoreRestJson(CONFIG_COLLECTION, CONTENT_DOC, cleanData);
+            return;
+        } catch (restError) {
+            console.error('Firestore REST setContent error:', restError);
+        }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase setContent error; using local dev fallback:', error);
         writeLocalDevJson(localContentPath, cleanData);
     }
+}
+
+export async function getPersistenceHealth() {
+    const firebase = getFirebaseAdmin();
+    const health = {
+        firebaseAdminConfigured: !!firebase,
+        firestoreConfigured: false,
+        storageConfigured: false,
+        contentSource: 'unknown',
+        settingsSource: 'unknown',
+        contentWritable: false,
+        settingsWritable: false,
+        storageWritable: false,
+        errors: [] as string[],
+        diagnostics: {
+            projectIdConfigured: !!getFirebaseProjectId(),
+            serviceAccountConfigured: !!process.env.FIREBASE_SERVICE_ACCOUNT_KEY,
+            googleCredentialsConfigured: !!process.env.GOOGLE_APPLICATION_CREDENTIALS,
+            firebaseConfigConfigured: !!process.env.FIREBASE_CONFIG,
+            functionRuntimeDetected: !!process.env.K_SERVICE,
+            adminInitError: lastFirebaseAdminError,
+        },
+    };
+
+    if (!firebase) {
+        health.errors.push('Firebase Admin is not configured in this runtime.');
+        const [content, settings] = await Promise.all([getContent(), getSettings()]);
+        health.contentSource = String((content as { _source?: string })._source || 'unknown');
+        health.settingsSource = String((settings as { _source?: string })._source || 'unknown');
+        health.firestoreConfigured = health.contentSource === 'firestore_rest' || health.settingsSource === 'firestore_rest';
+        try {
+            await setFirestoreRestJson(CONFIG_COLLECTION, '__healthcheck', { checkedAt: new Date().toISOString() });
+            health.contentWritable = true;
+            health.settingsWritable = true;
+            health.firestoreConfigured = true;
+        } catch (error) {
+            health.errors.push(describePersistenceError(error, 'Firestore REST'));
+        }
+        try {
+            const exists = await storageBucketExistsRest();
+            health.storageConfigured = exists;
+            health.storageWritable = exists;
+        } catch (error) {
+            health.errors.push(describePersistenceError(error, 'Firebase Storage REST'));
+        }
+        return health;
+    }
+
+    try {
+        const content = await getContent();
+        health.contentSource = String((content as { _source?: string })._source || 'unknown');
+        health.firestoreConfigured = health.contentSource === 'firebase';
+    } catch (error) {
+        health.errors.push(describePersistenceError(error, 'Firestore content'));
+    }
+
+    try {
+        const settings = await getSettings();
+        health.settingsSource = String((settings as { _source?: string })._source || 'unknown');
+        health.firestoreConfigured = health.firestoreConfigured || health.settingsSource === 'firebase';
+    } catch (error) {
+        health.errors.push(describePersistenceError(error, 'Firestore settings'));
+    }
+
+    try {
+        await firebase.db.collection(CONFIG_COLLECTION).doc('__healthcheck').set(
+            { checkedAt: new Date().toISOString() },
+            { merge: true }
+        );
+        health.contentWritable = true;
+        health.settingsWritable = true;
+        health.firestoreConfigured = true;
+    } catch (error) {
+        health.errors.push(describePersistenceError(error, 'Firestore'));
+    }
+
+    try {
+        if (!firebase.bucket) {
+            throw new Error('Firebase Storage bucket is not configured.');
+        }
+        await firebase.bucket.exists();
+        health.storageConfigured = true;
+        health.storageWritable = true;
+    } catch (error) {
+        try {
+            const exists = await storageBucketExistsRest();
+            health.storageConfigured = exists;
+            health.storageWritable = exists;
+        } catch (restError) {
+            health.errors.push(describePersistenceError(restError, 'Firebase Storage REST'));
+        }
+        if (!health.storageConfigured) {
+            health.errors.push(describePersistenceError(error, 'Firebase Storage'));
+        }
+    }
+
+    return health;
 }
 
 export interface ThemeSettings {
@@ -198,6 +452,13 @@ export async function getSettings(): Promise<SiteSettings & { _source?: string }
         console.error('Firebase getSettings error:', error);
     }
 
+    try {
+        const data = await getFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC);
+        if (data) return { ...(data as unknown as SiteSettings), _source: 'firestore_rest' };
+    } catch (error) {
+        console.error('Firestore REST getSettings error:', error);
+    }
+
     const data = readJsonFile<SiteSettings>(localSettingsPath, localSettings as SiteSettings);
     return { ...data, _source: fs.existsSync(localSettingsPath) ? 'local_disk' : 'local_fallback' };
 }
@@ -209,6 +470,12 @@ export async function setSettings(data: SiteSettings): Promise<void> {
         const firebase = requireFirebaseAdmin();
         await firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC).set(cleanData, { merge: false });
     } catch (error) {
+        try {
+            await setFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC, cleanData as unknown as Record<string, unknown>);
+            return;
+        } catch (restError) {
+            console.error('Firestore REST setSettings error:', restError);
+        }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase setSettings error; using local dev fallback:', error);
         writeLocalDevJson(localSettingsPath, cleanData);
@@ -220,7 +487,7 @@ export async function getApplications(): Promise<any[]> {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(APPLICATIONS_COLLECTION).orderBy('timestamp', 'desc').get();
-            return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            return snap.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
         }
     } catch (error) {
         console.error('Firebase getApplications error:', error);
@@ -282,7 +549,7 @@ export async function getSubscribers(): Promise<any[]> {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(SUBSCRIBERS_COLLECTION).orderBy('timestamp', 'desc').get();
-            return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            return snap.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
         }
     } catch (error) {
         console.error('Firebase getSubscribers error:', error);
@@ -296,7 +563,7 @@ export async function getDiscussions(defaultDiscussions: any[]): Promise<any[]> 
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(DISCUSSIONS_COLLECTION).orderBy('timestamp', 'desc').get();
-            if (!snap.empty) return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            if (!snap.empty) return snap.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
         }
     } catch (error) {
         console.error('Firebase getDiscussions error:', error);
@@ -341,11 +608,11 @@ export async function saveFellowProgress(email: string, completedModuleIds: stri
     const cleanEmail = email.toLowerCase().trim();
     try {
         const firebase = requireFirebaseAdmin();
-        const { FieldValue } = firebaseFirestoreModule();
+        const admin = firebaseAdminModule();
         await firebase.db.collection(PROGRESS_COLLECTION).doc(cleanEmail).set({
             email: cleanEmail,
             completedModuleIds,
-            updatedAt: FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
     } catch (error) {
         if (process.env.NODE_ENV === 'production') throw error;
@@ -357,8 +624,18 @@ export async function saveFellowProgress(email: string, completedModuleIds: stri
 }
 
 export async function uploadImageToStorage(file: File): Promise<string> {
-    const firebase = requireFirebaseAdmin();
-    const bucket = firebase.bucket;
+    let firebase = null;
+    try {
+        firebase = getFirebaseAdmin();
+    } catch (error) {
+        console.error('Firebase Admin upload path unavailable:', error);
+    }
+
+    const bucket = firebase?.bucket;
+    if (!bucket) {
+        return uploadImageToStorageRest(file);
+    }
+
     const safeName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
     const filename = `uploads/${Date.now()}_${safeName}`;
     const buffer = Buffer.from(await file.arrayBuffer());

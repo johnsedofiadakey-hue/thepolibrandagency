@@ -16,22 +16,36 @@ export default function BrandPage() {
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     // Save settings to API and Context
     const handleSave = async (updatedColors = colors, updatedTypography = typography) => {
-        setSaved(true);
+        setLoading(true);
+        setError(null);
         const newSettings = { theme: updatedColors, typography: updatedTypography };
 
-        await fetch('/api/settings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newSettings),
-        });
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newSettings),
+            });
+            const data = await res.json().catch(() => null);
 
-        // Update global context instantly
-        updateSettings(newSettings);
+            if (!res.ok) {
+                throw new Error(data?.error || 'Firebase refused the settings save request.');
+            }
 
-        setTimeout(() => setSaved(false), 2000);
+            // Update global context instantly
+            updateSettings(newSettings);
+
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+        } catch (err: any) {
+            setError(err.message || 'Failed to save brand settings.');
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'heroImage') => {
@@ -48,13 +62,17 @@ export default function BrandPage() {
                 body: formData,
             });
             const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error || 'Firebase Storage refused the upload.');
+            }
             if (data.url) {
                 const newColors = { ...colors, [type === 'logo' ? 'logo' : 'heroImage']: data.url };
                 setColors(newColors);
                 handleSave(newColors);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Upload failed:', error);
+            setError(error.message || 'Upload failed.');
         } finally {
             setUploading(null);
         }
@@ -77,11 +95,18 @@ export default function BrandPage() {
                     <button
                         onClick={() => handleSave()}
                         className="btn-primary"
-                        style={{ background: saved ? colors.primary : colors.secondary, color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 4, cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', whiteSpace: 'nowrap' }}
+                        disabled={loading}
+                        style={{ background: saved ? colors.primary : colors.secondary, color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 4, cursor: loading ? 'wait' : 'pointer', fontWeight: 600, fontSize: '0.8rem', whiteSpace: 'nowrap', opacity: loading ? 0.7 : 1 }}
                     >
-                        {saved ? '✓ Saved!' : 'Save Changes'}
+                        {loading ? 'Saving...' : saved ? '✓ Saved!' : 'Save Changes'}
                     </button>
                 </div>
+
+                {error && (
+                    <div style={{ background: '#fef2f2', color: '#991b1b', border: '1px solid #fecaca', padding: '0.75rem 1rem', borderRadius: 6, marginBottom: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', lineHeight: 1.5 }}>
+                        <strong>Save failed:</strong> {error}
+                    </div>
+                )}
 
                 <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem' }}>
                     {/* Color Settings */}

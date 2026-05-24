@@ -74,21 +74,25 @@ function Field({ label, value, onChange, type = 'text' }: {
 
 function ImageUploadField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
     const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
     
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         
         setUploading(true);
+        setUploadError(null);
         const formData = new FormData();
         formData.append('file', file);
         
         try {
             const res = await fetch('/api/upload', { method: 'POST', body: formData });
             const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Firebase Storage refused the upload.');
             if (data.url) onChange(data.url);
-        } catch (err) {
+        } catch (err: any) {
             console.error('Upload failed', err);
+            setUploadError(err.message || 'Upload failed.');
         } finally {
             setUploading(false);
         }
@@ -112,6 +116,11 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
                             <input type="file" onChange={handleUpload} style={{ display: 'none' }} accept="image/*" />
                         </label>
                     </div>
+                    {uploadError && (
+                        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#991b1b', margin: 0 }}>
+                            {uploadError}
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
@@ -1018,15 +1027,25 @@ export default function ContentPage() {
     const [localTheme, setLocalTheme] = useState<any>(theme);
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [saveError, setSaveError] = useState<string | null>(null);
+    const [persistenceStatus, setPersistenceStatus] = useState<any>(null);
 
     useEffect(() => {
         if (content && Object.keys(content).length > 0) setLocalContent(content);
         if (theme) setLocalTheme(theme);
     }, [content, theme]);
 
+    useEffect(() => {
+        fetch('/api/admin/persistence', { cache: 'no-store' })
+            .then(async (res) => ({ ok: res.ok, data: await res.json().catch(() => null) }))
+            .then(({ data }) => setPersistenceStatus(data))
+            .catch(() => setPersistenceStatus({ ready: false, errors: ['Unable to check Firebase persistence status.'] }));
+    }, []);
+
     const handleSave = async () => {
         setLoading(true);
         setSaved(false);
+        setSaveError(null);
         try {
             const [contentRes, settingsRes] = await Promise.all([
                 fetch('/api/content', {
@@ -1041,29 +1060,41 @@ export default function ContentPage() {
                 }),
             ]);
 
-            if (contentRes.ok && settingsRes.ok) {
-                // Update the context immediately
-                updateContent(localContent);
-                updateSettings({ theme: localTheme });
-                
-                // Persistence proof: Ensure fresh load
-                const [freshContent, freshSettings] = await Promise.all([
-                    fetch('/api/content', { cache: 'no-store' }).then(r => r.json()),
-                    fetch('/api/settings', { cache: 'no-store' }).then(r => r.json())
+            if (!contentRes.ok || !settingsRes.ok) {
+                const [contentError, settingsError] = await Promise.all([
+                    contentRes.json().catch(() => null),
+                    settingsRes.json().catch(() => null),
                 ]);
-                
-                if (freshContent && !freshContent.error) setLocalContent(freshContent);
-                if (freshSettings && freshSettings.theme) setLocalTheme(freshSettings.theme);
-
-                setSaved(true);
-                setTimeout(() => setSaved(false), 5000);
-            } else {
-                const errData = await contentRes.json().catch(() => ({ error: 'Unknown server error' }));
-                throw new Error(errData.error || 'Server responded with error');
+                throw new Error(contentError?.error || settingsError?.error || 'Firebase refused the save request.');
             }
+
+            // Update the context immediately
+            updateContent(localContent);
+            updateSettings({ theme: localTheme });
+
+            // Persistence proof: Ensure fresh load
+            const [freshContent, freshSettings] = await Promise.all([
+                fetch('/api/content', { cache: 'no-store' }).then(r => r.json()),
+                fetch('/api/settings', { cache: 'no-store' }).then(r => r.json())
+            ]);
+
+            if (freshContent && !freshContent.error) setLocalContent(freshContent);
+            if (freshSettings && freshSettings.theme) setLocalTheme(freshSettings.theme);
+
+            const contentPersisted = freshContent?._source === 'firebase' || freshContent?._source === 'firestore_rest';
+            const settingsPersisted = freshSettings?._source === 'firebase' || freshSettings?._source === 'firestore_rest';
+
+            setPersistenceStatus({
+                ready: contentPersisted && settingsPersisted,
+                contentSource: freshContent?._source,
+                settingsSource: freshSettings?._source,
+                errors: contentPersisted && settingsPersisted ? [] : ['Saved response did not come back from Firebase.'],
+            });
+            setSaved(true);
+            setTimeout(() => setSaved(false), 5000);
         } catch (error: any) {
             console.error('Failed to save content:', error);
-            alert(`Error: ${error.message || 'Failed to save changes'}.\n\nPlease check your internet connection and try again.`);
+            setSaveError(error.message || 'Failed to save changes.');
         } finally {
             setLoading(false);
         }
@@ -1114,6 +1145,18 @@ export default function ContentPage() {
                     </button>
                 </div>
             </div>
+
+            {persistenceStatus && !persistenceStatus.ready && (
+                <div style={{ background: '#fff7ed', color: '#9a3412', border: '1px solid #fed7aa', padding: '0.75rem 1rem', borderRadius: 6, marginBottom: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', lineHeight: 1.5 }}>
+                    <strong>Firebase persistence is not ready.</strong> Public content is reading from <code>{persistenceStatus.contentSource || 'unknown'}</code> and settings from <code>{persistenceStatus.settingsSource || 'unknown'}</code>. {persistenceStatus.errors?.[0] || 'Create and seed Firestore before publishing admin changes.'}
+                </div>
+            )}
+
+            {saveError && (
+                <div style={{ background: '#fef2f2', color: '#991b1b', border: '1px solid #fecaca', padding: '0.75rem 1rem', borderRadius: 6, marginBottom: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', lineHeight: 1.5 }}>
+                    <strong>Save failed:</strong> {saveError}
+                </div>
+            )}
 
             {/* Two-Column Layout */}
             <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '1.25rem', flex: 1, minHeight: 0 }}>

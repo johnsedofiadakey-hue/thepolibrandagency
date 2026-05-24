@@ -9,6 +9,13 @@ import {
 import { rateLimit } from '@/lib/rate-limit';
 import { verifyFirebaseIdToken } from '@/lib/db';
 
+function getAllowedAdminUids(): string[] {
+    return (process.env.ADMIN_UIDS || '')
+        .split(',')
+        .map((uid) => uid.trim())
+        .filter(Boolean);
+}
+
 export async function POST(request: Request) {
     const limited = rateLimit(request, { scope: 'admin-login', limit: 8, windowMs: 15 * 60 * 1000 });
     if (limited) return limited;
@@ -21,7 +28,7 @@ export async function POST(request: Request) {
         try {
             const decoded = await verifyFirebaseIdToken(String(idToken));
             const tokenEmail = decoded.email?.toLowerCase().trim();
-            const isAdmin = decoded.admin === true || tokenEmail === expectedEmail || decoded.uid === '0SABdqN228PRSifaimo0Anb3S2b2';
+            const isAdmin = decoded.admin === true || tokenEmail === expectedEmail || getAllowedAdminUids().includes(decoded.uid);
             if (!tokenEmail || !isAdmin) {
                 return NextResponse.json({ error: 'Firebase user is not authorized as an admin.' }, { status: 403 });
             }

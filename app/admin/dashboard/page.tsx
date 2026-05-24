@@ -22,6 +22,10 @@ export default function AdminDashboard() {
                     fetch('/api/applications'),
                     fetch('/api/newsletter')
                 ]);
+                if (appsRes.status === 401 || subsRes.status === 401) {
+                    window.location.href = '/admin/login';
+                    return;
+                }
                 if (appsRes.ok) {
                     const appsData = await appsRes.json();
                     setApplications(appsData);

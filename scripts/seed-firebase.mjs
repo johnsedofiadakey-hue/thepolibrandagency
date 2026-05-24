@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { cert, getApps, initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import admin from 'firebase-admin';
 
 const root = process.cwd();
 
@@ -12,23 +11,23 @@ function readJson(relativePath, fallback) {
 }
 
 function initializeFirebase() {
-  if (getApps().length) return getApps()[0];
+  if (admin.apps.length) return admin.apps[0];
 
-  const projectId = process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+  const projectId = process.env.POLI_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
   const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
   if (serviceAccount) {
-    return initializeApp({
-      credential: cert(JSON.parse(serviceAccount)),
+    return admin.initializeApp({
+      credential: admin.credential.cert(JSON.parse(serviceAccount)),
       projectId,
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      storageBucket: process.env.POLI_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET,
     });
   }
 
-  return initializeApp({
-    credential: applicationDefault(),
+  return admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
     projectId,
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    storageBucket: process.env.POLI_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET,
   });
 }
 
@@ -40,7 +39,7 @@ function stripSource(data) {
 }
 
 const app = initializeFirebase();
-const db = getFirestore(app);
+const db = admin.firestore(app);
 
 const content = stripSource(readJson('data/content.json', {}));
 const settings = stripSource(readJson('data/settings.json', {}));

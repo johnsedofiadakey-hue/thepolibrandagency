@@ -1,5 +1,5 @@
-export const ADMIN_SESSION_COOKIE = 'poli_admin_session';
-export const PORTAL_SESSION_COOKIE = 'poli_portal_session';
+export const ADMIN_SESSION_COOKIE = '__session';
+export const PORTAL_SESSION_COOKIE = '__session';
 export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
 export const PORTAL_SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
 

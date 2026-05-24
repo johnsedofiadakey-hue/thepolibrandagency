@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadImageToStorage } from '@/lib/db';
+import { describePersistenceError, uploadImageToStorage } from '@/lib/db';
 import { requireAdmin } from '@/lib/session';
 import path from 'path';
 import fs from 'fs/promises';
@@ -43,6 +43,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true, url: `/uploads/${filename}` });
     } catch (error: any) {
         console.error('Upload error:', error);
-        return NextResponse.json({ error: `Upload failed: ${error.message}` }, { status: 500 });
+        return NextResponse.json({ error: describePersistenceError(error, 'Firebase Storage') }, { status: 503 });
     }
 }

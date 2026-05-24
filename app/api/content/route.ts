@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getContent, setContent } from '@/lib/db';
+import { describePersistenceError, getContent, setContent } from '@/lib/db';
 import { requireAdmin } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -28,6 +28,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Failed to save content:', error);
-        return NextResponse.json({ error: 'Failed to save content' }, { status: 500 });
+        return NextResponse.json({ error: describePersistenceError(error, 'Website content') }, { status: 503 });
     }
 }

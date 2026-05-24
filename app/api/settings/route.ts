@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSettings, setSettings, SiteSettings } from '@/lib/db';
+import { describePersistenceError, getSettings, setSettings, SiteSettings } from '@/lib/db';
 import { requireAdmin } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -27,6 +27,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to save settings:', error);
-    return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 });
+    return NextResponse.json({ error: describePersistenceError(error, 'Website settings') }, { status: 503 });
   }
 }
