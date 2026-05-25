@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createApplication } from '@/lib/db';
+import { createApplication, describePersistenceError } from '@/lib/db';
 import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
@@ -43,6 +43,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Failed to submit application:', error);
-        return NextResponse.json({ error: 'Failed to submit application' }, { status: 500 });
+        return NextResponse.json({ error: describePersistenceError(error, 'Application submission') }, { status: 503 });
     }
 }

@@ -12,6 +12,7 @@ function ApplyForm() {
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     const searchParams = useSearchParams();
     const paramScore = searchParams.get('score');
@@ -46,6 +47,7 @@ function ApplyForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setSubmitError(null);
         try {
             const res = await fetch('/api/apply', {
                 method: 'POST',
@@ -56,11 +58,12 @@ function ApplyForm() {
                 setSubmitted(true);
                 window.scrollTo(0, 0);
             } else {
-                alert('Submission failed. Please try again.');
+                const data = await res.json().catch(() => null);
+                setSubmitError(data?.error || 'Submission failed. Please try again.');
             }
         } catch (error) {
             console.error('Submit error:', error);
-            alert('An error occurred. Please check your connection.');
+            setSubmitError('An error occurred while submitting. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -175,6 +178,11 @@ function ApplyForm() {
                         </div>
 
                         <form onSubmit={step === 2 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
+                            {submitError && (
+                                <div className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 font-sans text-sm font-medium text-red-700">
+                                    {submitError}
+                                </div>
+                            )}
 
                             {/* STEP 1 */}
                             {step === 1 && (

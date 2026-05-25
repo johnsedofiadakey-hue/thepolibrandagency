@@ -235,6 +235,34 @@ async function setFirestoreRestJson(collection: string, doc: string, data: Recor
     if (!response.ok) throw new Error(`Firestore REST write failed with ${response.status}: ${await response.text()}`);
 }
 
+function getFirestoreRestDocumentId(documentName = ''): string {
+    return documentName.split('/').pop() || '';
+}
+
+async function getFirestoreRestCollectionJson(collection: string): Promise<Array<Record<string, unknown>>> {
+    const token = await getGoogleAccessToken();
+    const projectId = getFirebaseProjectId();
+    if (!token || !projectId) return [];
+
+    const response = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}?pageSize=100`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+    });
+
+    if (response.status === 404) return [];
+    if (!response.ok) throw new Error(`Firestore REST collection read failed with ${response.status}: ${await response.text()}`);
+
+    const data = await response.json() as { documents?: Array<{ name?: string; fields?: { json?: { stringValue?: string } } }> };
+    return (data.documents || [])
+        .map((doc) => {
+            const json = doc.fields?.json?.stringValue;
+            if (!json) return null;
+            const parsed = JSON.parse(json) as Record<string, unknown>;
+            return { id: parsed.id || getFirestoreRestDocumentId(doc.name), ...parsed };
+        })
+        .filter(Boolean) as Array<Record<string, unknown>>;
+}
+
 async function storageBucketExistsRest(): Promise<boolean> {
     const token = await getGoogleAccessToken();
     const bucket = getFirebaseStorageBucket();
@@ -493,6 +521,15 @@ export async function getApplications(): Promise<any[]> {
         console.error('Firebase getApplications error:', error);
     }
 
+    try {
+        const applications = await getFirestoreRestCollectionJson(APPLICATIONS_COLLECTION);
+        if (applications.length) {
+            return applications.sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')));
+        }
+    } catch (error) {
+        console.error('Firestore REST getApplications error:', error);
+    }
+
     return readJsonFile<any[]>(localAppsPath, localApps || []);
 }
 
@@ -502,6 +539,13 @@ export async function createApplication(application: Record<string, unknown>): P
         const id = String(application.id || Date.now());
         await firebase.db.collection(APPLICATIONS_COLLECTION).doc(id).set(application, { merge: false });
     } catch (error) {
+        try {
+            const id = String(application.id || Date.now());
+            await setFirestoreRestJson(APPLICATIONS_COLLECTION, id, { ...application, id });
+            return;
+        } catch (restError) {
+            console.error('Firestore REST createApplication error:', restError);
+        }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase createApplication error; using local dev fallback:', error);
         const apps = readJsonFile<any[]>(localAppsPath, []);
@@ -516,6 +560,14 @@ export async function updateApplicationStatus(id: string | number, status: strin
         await firebase.db.collection(APPLICATIONS_COLLECTION).doc(String(id)).set({ status }, { merge: true });
         return true;
     } catch (error) {
+        try {
+            const existing = await getFirestoreRestJson(APPLICATIONS_COLLECTION, String(id));
+            if (!existing) return false;
+            await setFirestoreRestJson(APPLICATIONS_COLLECTION, String(id), { ...existing, id: String(id), status });
+            return true;
+        } catch (restError) {
+            console.error('Firestore REST updateApplicationStatus error:', restError);
+        }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase updateApplicationStatus error; using local dev fallback:', error);
         const apps = readJsonFile<any[]>(localAppsPath, []);
@@ -533,6 +585,17 @@ export async function createSubscriber(subscriber: Record<string, unknown>): Pro
         const id = String(subscriber.id || Date.now());
         await firebase.db.collection(SUBSCRIBERS_COLLECTION).doc(id).set(subscriber, { merge: false });
     } catch (error) {
+        try {
+            const email = String(subscriber.email || '').toLowerCase();
+            const existing = await getFirestoreRestCollectionJson(SUBSCRIBERS_COLLECTION);
+            if (!existing.some((item) => String(item.email || '').toLowerCase() === email)) {
+                const id = String(subscriber.id || Date.now());
+                await setFirestoreRestJson(SUBSCRIBERS_COLLECTION, id, { ...subscriber, id });
+            }
+            return;
+        } catch (restError) {
+            console.error('Firestore REST createSubscriber error:', restError);
+        }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase createSubscriber error; using local dev fallback:', error);
         const subscribers = readJsonFile<any[]>(localSubscribersPath, []);
@@ -553,6 +616,15 @@ export async function getSubscribers(): Promise<any[]> {
         }
     } catch (error) {
         console.error('Firebase getSubscribers error:', error);
+    }
+
+    try {
+        const subscribers = await getFirestoreRestCollectionJson(SUBSCRIBERS_COLLECTION);
+        if (subscribers.length) {
+            return subscribers.sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')));
+        }
+    } catch (error) {
+        console.error('Firestore REST getSubscribers error:', error);
     }
 
     return readJsonFile<any[]>(localSubscribersPath, []);
