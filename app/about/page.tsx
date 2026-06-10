@@ -69,7 +69,7 @@ export default function AboutPage() {
                         </div>
                         <div className="relative">
                             <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl relative z-10">
-                                <img src="/vision.jpg" alt="Vision" className="w-full h-full object-cover opacity-80" />
+                                <img src={about.vision.image || '/vision.svg'} alt="Vision" className="w-full h-full object-cover opacity-80" />
                             </div>
                             <div className="absolute -top-10 -right-10 w-48 h-48 border-2 border-[var(--color-secondary)]/20 rounded-lg animate-float pointer-events-none" />
                         </div>

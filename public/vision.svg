@@ -1,0 +1,87 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1b2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1A2B4C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f2240;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#C9A227;stop-opacity:0" />
+      <stop offset="50%" style="stop-color:#C9A227;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C9A227;stop-opacity:0" />
+    </linearGradient>
+    <linearGradient id="arcGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#C9A227;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#C9A227;stop-opacity:0.1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bgGrad)" />
+
+  <!-- Subtle grid lines -->
+  <line x1="0" y1="150" x2="800" y2="150" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+  <line x1="0" y1="450" x2="800" y2="450" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+  <line x1="200" y1="0" x2="200" y2="600" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+  <line x1="400" y1="0" x2="400" y2="600" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+  <line x1="600" y1="0" x2="600" y2="600" stroke="#C9A227" stroke-width="0.3" stroke-opacity="0.15" />
+
+  <!-- Africa continent silhouette (simplified) -->
+  <path d="M340,80 L390,70 L440,85 L470,120 L490,160 L495,200 L480,240 L475,280 L490,310 L500,350 L490,390 L470,420 L450,450 L420,470 L390,480 L360,470 L340,450 L320,420 L300,390 L290,350 L300,310 L315,280 L310,240 L295,200 L300,160 L320,120 Z"
+        fill="#1F6F3E" fill-opacity="0.15" stroke="#C9A227" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Radiating arcs from center -->
+  <circle cx="415" cy="275" r="80" fill="none" stroke="#C9A227" stroke-width="1" stroke-opacity="0.2" stroke-dasharray="4 6"/>
+  <circle cx="415" cy="275" r="140" fill="none" stroke="#C9A227" stroke-width="1" stroke-opacity="0.15" stroke-dasharray="4 8"/>
+  <circle cx="415" cy="275" r="200" fill="none" stroke="#C9A227" stroke-width="0.8" stroke-opacity="0.1" stroke-dasharray="3 10"/>
+
+  <!-- Central figure (stylized woman silhouette) -->
+  <!-- Head -->
+  <circle cx="415" cy="210" r="32" fill="#C9A227" fill-opacity="0.9" filter="url(#glow)"/>
+  <!-- Crown/halo detail -->
+  <circle cx="415" cy="210" r="38" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Crown points -->
+  <polygon points="415,168 409,182 415,176 421,182" fill="#C9A227" fill-opacity="0.7"/>
+  <polygon points="398,174 396,189 401,184 406,189" fill="#C9A227" fill-opacity="0.5"/>
+  <polygon points="432,174 434,189 429,184 424,189" fill="#C9A227" fill-opacity="0.5"/>
+
+  <!-- Body/torso -->
+  <path d="M385,242 Q400,238 415,240 Q430,238 445,242 L452,310 Q415,320 378,310 Z" fill="#C9A227" fill-opacity="0.25" stroke="#C9A227" stroke-width="1" stroke-opacity="0.5"/>
+
+  <!-- Decorative kente-inspired collar pattern -->
+  <rect x="395" y="242" width="40" height="8" rx="1" fill="#C9A227" fill-opacity="0.6"/>
+  <rect x="398" y="250" width="7" height="20" rx="1" fill="#1F6F3E" fill-opacity="0.8"/>
+  <rect x="407" y="250" width="7" height="20" rx="1" fill="#C9A227" fill-opacity="0.6"/>
+  <rect x="416" y="250" width="7" height="20" rx="1" fill="#1F6F3E" fill-opacity="0.8"/>
+  <rect x="425" y="250" width="7" height="20" rx="1" fill="#C9A227" fill-opacity="0.6"/>
+
+  <!-- Stars scattered (representing African nations) -->
+  <polygon points="150,100 152,107 160,107 154,112 156,119 150,115 144,119 146,112 140,107 148,107" fill="#C9A227" fill-opacity="0.6"/>
+  <polygon points="650,140 651,145 657,145 652,148 654,153 650,150 646,153 648,148 643,145 649,145" fill="#C9A227" fill-opacity="0.5"/>
+  <polygon points="120,400 122,407 130,407 124,412 126,419 120,415 114,419 116,412 110,407 118,407" fill="#C9A227" fill-opacity="0.4"/>
+  <polygon points="680,380 681,384 686,384 682,387 684,391 680,389 676,391 678,387 674,384 679,384" fill="#C9A227" fill-opacity="0.5"/>
+  <polygon points="200,500 201,504 206,504 202,507 204,511 200,509 196,511 198,507 194,504 199,504" fill="#C9A227" fill-opacity="0.4"/>
+  <polygon points="600,480 601,484 606,484 602,487 604,491 600,489 596,491 598,487 594,484 599,484" fill="#C9A227" fill-opacity="0.4"/>
+
+  <!-- Bottom gold divider line -->
+  <rect x="100" y="530" width="600" height="1.5" fill="url(#goldGrad)"/>
+
+  <!-- Text: 50% parity vision -->
+  <text x="415" y="570" font-family="Georgia, 'Times New Roman', serif" font-size="13" fill="#C9A227" fill-opacity="0.7" text-anchor="middle" letter-spacing="4">VISION · LEADERSHIP · GOVERNANCE</text>
+
+  <!-- Top decorative bar -->
+  <rect x="0" y="0" width="800" height="4" fill="#C9A227" fill-opacity="0.5"/>
+
+  <!-- Left side accent -->
+  <rect x="0" y="0" width="4" height="600" fill="#1F6F3E" fill-opacity="0.4"/>
+  <!-- Right side accent -->
+  <rect x="796" y="0" width="4" height="600" fill="#1F6F3E" fill-opacity="0.4"/>
+</svg>
