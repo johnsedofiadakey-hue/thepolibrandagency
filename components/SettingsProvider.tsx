@@ -1,51 +1,43 @@
 "use client";
 import React from 'react';
+import type { PoliSettingsContextValue, SiteSettings, SiteContent } from '@/lib/types';
 
 import initialContent from '../data/content.json';
 
-export const PoliSettingsContext = React.createContext({
-  theme: {
-    primary: '#1A2B4C',
-    secondary: '#F1E5D1',
-    accent: '#FF6B6B',
-    background: '#FAFAFC',
-    text: '#2C3E50',
-    heroImage: '',
-    logo: '/logo.png',
-  },
+const DEFAULT_THEME: SiteSettings['theme'] = {
+  primary: '#1A2B4C',
+  secondary: '#F1E5D1',
+  accent: '#FF6B6B',
+  background: '#FAFAFC',
+  text: '#2C3E50',
+  heroImage: '',
+  logo: '/logo.svg',
+};
+
+export const PoliSettingsContext = React.createContext<PoliSettingsContextValue>({
+  theme: DEFAULT_THEME,
   typography: 'modern_minimalist',
-  content: initialContent as any,
-  updateSettings: (newSettings: any) => { },
-  updateContent: (newContent: any) => { },
+  content: initialContent as SiteContent,
+  updateSettings: () => {},
+  updateContent: () => {},
   refresh: () => Promise.resolve(),
 });
 
-export function SettingsProvider({ 
+export function SettingsProvider({
   children,
   serverSettings,
-  serverContent
-}: { 
+  serverContent,
+}: {
   children: React.ReactNode;
-  serverSettings?: any;
-  serverContent?: any;
+  serverSettings?: SiteSettings;
+  serverContent?: SiteContent;
 }) {
-  const [settings, setSettings] = React.useState(() => {
-    return serverSettings || {
-      theme: {
-        primary: '#1A2B4C',
-        secondary: '#F1E5D1',
-        accent: '#FF6B6B',
-        background: '#FAFAFC',
-        text: '#2C3E50',
-        heroImage: '',
-        logo: '/logo.png',
-      },
-      typography: 'modern_minimalist',
-    };
+  const [settings, setSettings] = React.useState<SiteSettings>(() => {
+    return serverSettings || { theme: DEFAULT_THEME, typography: 'modern_minimalist' };
   });
 
-  const [content, setContent] = React.useState<any>(() => {
-    return serverContent || initialContent;
+  const [content, setContent] = React.useState<SiteContent>(() => {
+    return serverContent || (initialContent as SiteContent);
   });
 
   const loadAll = React.useCallback(async () => {
@@ -90,16 +82,16 @@ export function SettingsProvider({
     loadAll();
   }, [loadAll]);
 
-  const updateSettings = (newSettings: any) => {
-    setSettings((prev: any) => {
+  const updateSettings = (newSettings: Partial<SiteSettings>) => {
+    setSettings((prev) => {
       const next = { ...prev, ...newSettings };
       localStorage.setItem('poli_settings', JSON.stringify(next));
       return next;
     });
   };
 
-  const updateContent = (newContent: any) => {
-    setContent((prev: any) => {
+  const updateContent = (newContent: Partial<SiteContent>) => {
+    setContent((prev) => {
       const next = { ...prev, ...newContent };
       localStorage.setItem('poli_content', JSON.stringify(next));
       return next;
@@ -150,7 +142,7 @@ export function SettingsProvider({
   }, [settings]);
 
   return (
-    <PoliSettingsContext.Provider value={{ ...settings, content, updateSettings, updateContent, refresh: loadAll }}>
+    <PoliSettingsContext.Provider value={{ ...settings, content, updateSettings, updateContent, refresh: loadAll } as PoliSettingsContextValue}>
       {children}
     </PoliSettingsContext.Provider>
   );

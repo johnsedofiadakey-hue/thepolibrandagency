@@ -182,7 +182,7 @@ export default function PortalDashboard() {
         return (
             <div style={{ minHeight: '100vh', background: '#fcfbf7', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
                 <div style={{ textAlign: 'center' }}>
-                    <img src="/logo.png" alt="Loading..." style={{ width: 60, height: 60, objectFit: 'contain', animation: 'pulse 1.8s infinite ease-in-out', marginBottom: '1rem' }} />
+                    <img src="/logo.svg" alt="Loading..." style={{ width: 60, height: 60, objectFit: 'contain', animation: 'pulse 1.8s infinite ease-in-out', marginBottom: '1rem' }} />
                     <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 600, fontSize: '1rem', color: '#1F6F3E', letterSpacing: '1px' }}>SYNCHRONIZING SYLLABUS...</h2>
                     <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginTop: 4 }}>Loading personalized learning dashboard</p>
                 </div>
@@ -204,7 +204,7 @@ export default function PortalDashboard() {
                 <div style={{ maxWidth: 1100, margin: '0 auto', paddingTop: '1.5rem', paddingBottom: '2.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
                         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-                            <img src="/logo.png" alt="Logo" style={{ width: 44, height: 44, objectFit: 'contain' }} />
+                            <img src="/logo.svg" alt="Logo" style={{ width: 44, height: 44, objectFit: 'contain' }} />
                             <div>
                                 <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.85rem', color: '#c9a227', letterSpacing: '0.5px' }}>FELLOWS PORTAL</div>
                                 <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.58rem', color: 'rgba(255,255,255,0.5)', letterSpacing: '1.5px', fontWeight: 600 }}>THE POLIBRAND AGENCY</div>

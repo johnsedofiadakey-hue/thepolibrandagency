@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Logo Section - Hidden on Mobile */}
                 <div className="hide-mobile" style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                     <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-                        <img src="/logo.png" alt="Logo" style={{ width: 38, height: 38, objectFit: 'contain' }} />
+                        <img src="/logo.svg" alt="Logo" style={{ width: 38, height: 38, objectFit: 'contain' }} />
                         <div>
                             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.75rem', color: 'var(--color-secondary)', letterSpacing: '0.5px', lineHeight: 1 }}>POLIBRAND</div>
                             <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.6rem', color: 'rgba(255,255,255,0.5)', letterSpacing: '1px' }}>ADMIN PANEL</div>

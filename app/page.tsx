@@ -29,76 +29,164 @@ export default function Page() {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'var(--color-bg)',
+        backgroundColor: 'var(--color-primary)',
         backgroundImage: 'var(--hero-image)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
+        {/* Primary dark overlay — always present for readability */}
         <div style={{
-          position: 'absolute', inset: 0,
+          position: 'absolute', inset: 0, zIndex: 1,
           background: theme.heroImage
-            ? 'linear-gradient(to right, rgba(17,17,17,0.8) 0%, rgba(17,17,17,0.4) 100%)'
-            : `linear-gradient(135deg, var(--color-bg) 0%, var(--color-primary) 40%, var(--color-primary) 70%, var(--color-accent) 100%)`,
-          zIndex: 1
+            ? 'linear-gradient(110deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.2) 100%)'
+            : 'linear-gradient(110deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 100%)',
         }} />
 
+        {/* Subtle geometric grid pattern */}
         <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(201,162,39,0.06) 0%, transparent 60%)',
-          pointerEvents: 'none',
-          zIndex: 1
+          position: 'absolute', inset: 0, zIndex: 1, opacity: 0.04,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
         }} />
 
-        <div className="container-brand" style={{ position: 'relative', zIndex: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '100px', width: '100%' }}>
-          <div style={{ maxWidth: 800 }}>
-            <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.5rem' }}>
-              <div style={{ width: 40, height: 1, background: 'var(--color-secondary)' }} />
-              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '4px', textTransform: 'uppercase' }}>
+        {/* Gold radial glow — top left anchor */}
+        <div style={{
+          position: 'absolute', top: '-10%', left: '-5%', zIndex: 1,
+          width: '55vw', height: '55vw', borderRadius: '50%',
+          background: `radial-gradient(circle, ${theme.secondary || '#C9A227'}18 0%, transparent 65%)`,
+          pointerEvents: 'none',
+        }} />
+
+        {/* Diagonal accent stripe — right side */}
+        <div style={{
+          position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1,
+          width: '38%', clipPath: 'polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)',
+          background: `linear-gradient(160deg, ${theme.secondary || '#C9A227'}08 0%, ${theme.secondary || '#C9A227'}04 100%)`,
+          borderLeft: `1px solid ${theme.secondary || '#C9A227'}14`,
+        }} />
+
+        {/* Decorative corner mark — top right */}
+        <div style={{ position: 'absolute', top: 100, right: 80, zIndex: 2, opacity: 0.18, pointerEvents: 'none' }}>
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+            <circle cx="90" cy="90" r="88" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
+            <circle cx="90" cy="90" r="64" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="4 6" />
+            <circle cx="90" cy="90" r="38" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
+            <line x1="90" y1="2" x2="90" y2="178" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
+            <line x1="2" y1="90" x2="178" y2="90" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
+          </svg>
+        </div>
+
+        {/* Main hero content */}
+        <div className="container-brand" style={{ position: 'relative', zIndex: 3, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 40 }}>
+          <div style={{ maxWidth: 740 }}>
+
+            {/* Tag line */}
+            <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.25rem' }}>
+              <div style={{ width: 36, height: 1.5, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
+              <span style={{
+                fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700,
+                color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase',
+              }}>
                 {home.hero.tag}
               </span>
             </div>
 
+            {/* Headline */}
             <h1 className="animate-fade-up-delay-1" style={{
-              fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)',
-              color: '#fff', lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-1px',
+              fontFamily: 'var(--font-display)', fontWeight: 800,
+              fontSize: 'clamp(2.8rem, 5.5vw, 5rem)',
+              color: '#fff', lineHeight: 1.08, marginBottom: '1.75rem',
+              letterSpacing: '-1.5px',
             }}>
               {home.hero.headline.split('\n').map((line: string, i: number) => (
-                <span key={i}>{line}<br /></span>
+                <span key={i} style={{ display: 'block' }}>{line}</span>
               ))}
             </h1>
 
+            {/* Divider */}
+            <div className="animate-fade-up-delay-1" style={{
+              display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.75rem',
+            }}>
+              <div style={{ width: 48, height: 2, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: theme.secondary || '#C9A227', opacity: 0.6 }} />
+            </div>
+
+            {/* Subheadline */}
             <p className="animate-fade-up-delay-2" style={{
-              fontFamily: 'Inter, sans-serif', fontSize: '1.1rem', fontWeight: 400,
-              color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, maxWidth: 580, marginBottom: '2.5rem',
+              fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', fontWeight: 400,
+              color: 'rgba(255,255,255,0.78)', lineHeight: 1.85, maxWidth: 520, marginBottom: '2.75rem',
+              letterSpacing: '0.2px',
             }}>
               {home.hero.subheadline}
             </p>
 
-            <div className="animate-fade-up-delay-3" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/apply" className="btn-gold">
-                {home.cta?.apply || "Apply Now"}
+            {/* CTAs */}
+            <div className="animate-fade-up-delay-3" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <Link href="/apply" style={{
+                fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.72rem',
+                letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
+                background: theme.secondary || '#C9A227', color: '#0a0a0a',
+                padding: '14px 32px', borderRadius: 3,
+                boxShadow: `0 8px 32px ${theme.secondary || '#C9A227'}35`,
+                transition: 'all 0.25s',
+                display: 'inline-block',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${theme.secondary || '#C9A227'}50`; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${theme.secondary || '#C9A227'}35`; }}
+              >
+                {home.cta?.apply || "Apply for Fellowship →"}
               </Link>
-              <Link href="/institutional-clients" className="btn-secondary">
+              <Link href="/institutional-clients" style={{
+                fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
+                letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
+                color: '#fff', padding: '13px 28px', borderRadius: 3,
+                border: '1px solid rgba(255,255,255,0.25)',
+                background: 'rgba(255,255,255,0.06)',
+                backdropFilter: 'blur(8px)',
+                transition: 'all 0.25s',
+                display: 'inline-block',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+              >
                 {home.cta?.partner || "Partner With Us"}
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="relative mt-12 md:mt-0 w-full" style={{
-          background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(12px)',
-          borderTop: '1px solid rgba(201,162,39,0.2)',
-        }}>
-          <div className="container-brand grid grid-cols-2 md:grid-cols-4 gap-4 p-6 md:p-0" style={{ padding: '24px 24px' }}>
-            {home.stats.map((s: any, i: number) => (
-              <div key={i} className="text-center py-2 md:border-r border-white/10 last:border-0" style={{ padding: '8px 0' }}>
-                <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.8rem', color: '#C9A227' }}>{s.number}</div>
-                <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '1px', textTransform: 'uppercase', marginTop: 4 }}>{s.label}</div>
-              </div>
-            ))}
+        {/* Stats bar */}
+        {home.stats.length > 0 && (
+          <div style={{
+            position: 'relative', zIndex: 3,
+            borderTop: `1px solid rgba(255,255,255,0.08)`,
+            background: 'rgba(0,0,0,0.35)',
+            backdropFilter: 'blur(16px)',
+          }}>
+            <div className="container-brand" style={{
+              display: 'grid', gridTemplateColumns: `repeat(${home.stats.length}, 1fr)`,
+              padding: '20px 0',
+            }}>
+              {home.stats.map((s: any, i: number) => (
+                <div key={i} style={{
+                  textAlign: 'center', padding: '12px 8px',
+                  borderRight: i < home.stats.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                }}>
+                  <div style={{
+                    fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)',
+                    color: theme.secondary || '#C9A227', lineHeight: 1,
+                  }}>{s.number}</div>
+                  <div style={{
+                    fontFamily: 'Inter, sans-serif', fontSize: '0.62rem', fontWeight: 500,
+                    color: 'rgba(255,255,255,0.45)', letterSpacing: '1.5px',
+                    textTransform: 'uppercase', marginTop: 6,
+                  }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* ─── STRATEGIC GAP ─── */}
