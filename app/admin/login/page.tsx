@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirebaseClientAuth } from '@/lib/firebase-client';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -43,10 +45,20 @@ export default function AdminLoginPage() {
         }
 
         try {
+            const auth = getFirebaseClientAuth();
+            let requestBody: { email?: string; password?: string; idToken?: string };
+
+            if (auth) {
+                const credential = await signInWithEmailAndPassword(auth, email.trim(), password);
+                requestBody = { idToken: await credential.user.getIdToken(true) };
+            } else {
+                requestBody = { email, password };
+            }
+
             const res = await fetch('/api/admin/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(requestBody),
             });
             const data = await res.json().catch(() => ({}));
 
@@ -58,8 +70,15 @@ export default function AdminLoginPage() {
 
             const next = new URLSearchParams(window.location.search).get('next') || '/admin/dashboard';
             window.location.href = next.startsWith('/admin') ? next : '/admin/dashboard';
-        } catch {
-            setError('Unable to sign in. Please try again.');
+        } catch (error: any) {
+            const code = String(error?.code || '');
+            if (code.includes('auth/invalid-credential') || code.includes('auth/wrong-password') || code.includes('auth/user-not-found')) {
+                setError('Invalid Firebase email or password.');
+            } else if (code.includes('auth/too-many-requests')) {
+                setError('Too many sign-in attempts. Please wait and try again.');
+            } else {
+                setError(error?.message || 'Unable to sign in. Please try again.');
+            }
             setLoading(false);
         }
     };

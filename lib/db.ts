@@ -142,8 +142,57 @@ export function getFirebaseAdmin() {
 }
 
 export async function verifyFirebaseIdToken(idToken: string) {
-    const firebase = requireFirebaseAdmin();
-    return firebase.auth.verifyIdToken(idToken);
+    const firebase = getFirebaseAdmin();
+    if (firebase) {
+        try {
+            return await firebase.auth.verifyIdToken(idToken);
+        } catch (error) {
+            console.error('Firebase Admin token verification failed; trying Identity Toolkit:', error);
+        }
+    }
+
+    const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+    if (!apiKey) {
+        throw new Error('Firebase web API key is not configured.');
+    }
+
+    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+        cache: 'no-store',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Firebase token verification failed with ${response.status}.`);
+    }
+
+    const data = await response.json() as {
+        users?: Array<{
+            localId?: string;
+            email?: string;
+            emailVerified?: boolean;
+            customAttributes?: string;
+        }>;
+    };
+    const user = data.users?.[0];
+    if (!user?.localId || !user.email) {
+        throw new Error('Firebase token did not resolve to a user.');
+    }
+
+    let claims: Record<string, unknown> = {};
+    try {
+        claims = user.customAttributes ? JSON.parse(user.customAttributes) : {};
+    } catch {
+        claims = {};
+    }
+
+    return {
+        uid: user.localId,
+        email: user.email,
+        email_verified: !!user.emailVerified,
+        ...claims,
+    };
 }
 
 function requireFirebaseAdmin() {
