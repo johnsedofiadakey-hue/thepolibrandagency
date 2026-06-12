@@ -138,7 +138,7 @@ export default async function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: styleVariables }} />
       </head>
       <body>
-        <SettingsProvider serverSettings={activeSettings} serverContent={content}>
+        <SettingsProvider serverSettings={activeSettings} serverContent={(content ?? undefined) as import('@/lib/types').SiteContent | undefined}>
           {children}
         </SettingsProvider>
       </body>
