@@ -421,7 +421,8 @@
       "hero": {
         "tag": "Learning & Growth",
         "title": "Elite Programs for Political Advancement.",
-        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable."
+        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable.",
+        "image": ""
       },
       "bootcamp": {
         "tag": "Flagship Program",
@@ -558,6 +559,7 @@
         "tag": "Diagnostic Tool",
         "title": "Political Readiness Index (PRI)",
         "description": "Measure your strategic communication clarity, narrative strength, and visibility readiness.",
+        "image": "",
         "details": [
           {
             "icon": "📝",
@@ -690,7 +692,8 @@
       "hero": {
         "tag": "Take the Next Step",
         "title": "Apply to Polibrand",
-        "description": "Complete the application to be considered for our elite leadership programs."
+        "description": "Complete the application to be considered for our elite leadership programs.",
+        "image": ""
       },
       "form": {
         "step1_title": "Personal details",

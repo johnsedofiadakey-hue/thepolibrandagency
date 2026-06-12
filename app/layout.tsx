@@ -81,16 +81,39 @@ export default async function RootLayout({
 
   const set = fonts[typography] || fonts.modern_minimalist;
 
+  function sanitizeColor(value: string): string {
+    if (/^#([0-9a-fA-F]{3,8})$/.test(value)) return value;
+    if (/^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+(\s*,\s*[\d.]+)?\s*\)$/.test(value)) return value;
+    return '#000000';
+  }
+
+  function sanitizeImageUrl(value: string): string {
+    if (!value) return '';
+    if (value.startsWith('/')) return value;
+    if (/^https:\/\/firebasestorage\.googleapis\.com\//.test(value)) return value;
+    if (/^https:\/\/[^/]+\.firebasestorage\.app\//.test(value)) return value;
+    return '';
+  }
+
+  const safeTheme = {
+    primary: sanitizeColor(theme.primary),
+    secondary: sanitizeColor(theme.secondary),
+    accent: sanitizeColor(theme.accent),
+    background: sanitizeColor(theme.background),
+    text: sanitizeColor(theme.text),
+    heroImage: sanitizeImageUrl(theme.heroImage || ''),
+  };
+
   const styleVariables = `
     :root {
-      --color-primary: ${theme.primary};
-      --color-secondary: ${theme.secondary};
-      --color-accent: ${theme.accent};
-      --color-bg: ${theme.background};
-      --color-text: ${theme.text};
-      --hero-image: ${theme.heroImage ? `url(${theme.heroImage})` : 'none'};
-      --color-border: ${theme.secondary}20;
-      --color-primary-dark: ${theme.primary}e6;
+      --color-primary: ${safeTheme.primary};
+      --color-secondary: ${safeTheme.secondary};
+      --color-accent: ${safeTheme.accent};
+      --color-bg: ${safeTheme.background};
+      --color-text: ${safeTheme.text};
+      --hero-image: ${safeTheme.heroImage ? `url(${safeTheme.heroImage})` : 'none'};
+      --color-border: ${safeTheme.secondary}20;
+      --color-primary-dark: ${safeTheme.primary}e6;
       --font-display: ${set.display};
       --font-body: ${set.body};
     }
