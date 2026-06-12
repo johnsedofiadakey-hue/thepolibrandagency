@@ -12,7 +12,7 @@ export async function generateMetadata() {
   ]);
   
   const meta = (content as any)?.metadata || {};
-  const logo = (settings as any)?.theme?.logo || "/logo.png";
+  const logo = (settings as any)?.theme?.logo || "/logo.svg";
   
   return {
     metadataBase,
@@ -51,12 +51,12 @@ export default async function RootLayout({
       background: '#FAFAFC',
       text: '#2C3E50',
       heroImage: '',
-      logo: '/logo.png',
+      logo: '/logo.svg',
     },
     typography: 'modern_minimalist',
   };
 
-  const logo = activeSettings.theme?.logo || "/logo.png";
+  const logo = activeSettings.theme?.logo || "/logo.svg";
   const theme = activeSettings.theme;
   const typography = activeSettings.typography || 'institutional';
 

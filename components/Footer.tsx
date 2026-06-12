@@ -106,7 +106,7 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="footer-brand-col">
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-                            <img src={theme.logo || "/logo.png"} alt="The Polibrand Agency" style={{ height: 56, width: 56, objectFit: 'contain', background: 'var(--color-bg)', borderRadius: 8, border: `2px solid var(--color-secondary)` }} />
+                            <img src={theme.logo || "/logo.svg"} alt="The Polibrand Agency" style={{ height: 56, width: 56, objectFit: 'contain', background: 'var(--color-bg)', borderRadius: 8, border: `2px solid var(--color-secondary)` }} />
                             <div style={{ textAlign: 'left' }}>
                                 <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-secondary)', letterSpacing: '1px' }}>{navbar.brand.line1}</div>
                                 <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.6rem', color: '#fff', letterSpacing: '2px' }}>{navbar.brand.line2}</div>

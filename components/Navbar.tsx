@@ -31,7 +31,7 @@ export default function Navbar() {
                 <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
                     <div style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
                         <img
-                            src={theme.logo || '/logo.png'}
+                            src={theme.logo || '/logo.svg'}
                             alt="Logo"
                             style={{
                                 width: '100%', height: '100%', objectFit: 'contain',

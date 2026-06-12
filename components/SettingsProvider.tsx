@@ -11,7 +11,7 @@ const DEFAULT_THEME: SiteSettings['theme'] = {
   background: '#FAFAFC',
   text: '#2C3E50',
   heroImage: '',
-  logo: '/logo.png',
+  logo: '/logo.svg',
 };
 
 export const PoliSettingsContext = React.createContext<PoliSettingsContextValue>({

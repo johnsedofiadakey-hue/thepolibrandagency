@@ -127,7 +127,7 @@ export default function PortalPage() {
 
             <div style={{ background: '#fff', borderRadius: 8, padding: '3.5rem 2.5rem', width: '100%', maxWidth: 460, position: 'relative', zIndex: 1, boxShadow: '0 24px 80px rgba(0,0,0,0.3)' }}>
                 <div style={{ textAlign: 'center', marginBottom: '2.25rem' }}>
-                    <img src="/logo.png" alt="The Polibrand Agency" style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: '1.25rem' }} />
+                    <img src="/logo.svg" alt="The Polibrand Agency" style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: '1.25rem' }} />
                     <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.3rem', color: '#111', marginBottom: '0.25rem' }}>{portal.login.title}</h1>
                     <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#9ca3af' }}>{portal.login.subtitle}</p>
                 </div>

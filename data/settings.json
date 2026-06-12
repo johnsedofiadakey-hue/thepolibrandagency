@@ -6,7 +6,7 @@
     "background": "#FAFAFC",
     "text": "#2C3E50",
     "heroImage": "",
-    "logo": "/logo.png"
+    "logo": "/logo.svg"
   },
   "typography": "modern_minimalist",
   "_source": "local_disk"

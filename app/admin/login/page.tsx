@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
                 const s = await settingsRes.json();
                 
                 setBranding({
-                    logo: s.theme?.logo || '/logo.png',
+                    logo: s.theme?.logo || '/logo.svg',
                     line1: c.navbar?.brand?.line1 || 'THE POLIBRAND.',
                     line2: c.navbar?.brand?.line2 || 'AGENCY'
                 });
@@ -129,7 +129,7 @@ export default function AdminLoginPage() {
             {/* Left Brand Panel */}
             <div className="brand-panel">
                 <div>
-                    <img src={branding?.logo || "/logo.png"} alt="Brand Logo" style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: '2rem' }} />
+                    <img src={branding?.logo || "/logo.svg"} alt="Brand Logo" style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: '2rem' }} />
                     <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.2rem', color: '#fff', lineHeight: 1.25, marginBottom: '1rem' }}>
                         {branding?.line1 || "THE POLIBRAND."}<br />
                         {branding?.line2 || "AGENCY"} Admin

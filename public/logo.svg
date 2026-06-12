@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 120" width="260" height="120">
+  <!-- T — red -->
+  <!-- top crossbar -->
+  <rect x="8"  y="12" width="84" height="20" fill="#C41426"/>
+  <!-- stem -->
+  <rect x="37" y="12" width="26" height="96" fill="#C41426"/>
+
+  <!-- P — dark charcoal -->
+  <!-- stem -->
+  <rect x="94" y="12" width="24" height="96" fill="#232323"/>
+  <!-- top rail -->
+  <rect x="94" y="12" width="56" height="20" fill="#232323"/>
+  <!-- mid rail -->
+  <rect x="94" y="52" width="56" height="20" fill="#232323"/>
+  <!-- curved bowl right side (two rects + end cap) -->
+  <rect x="126" y="12" width="24" height="60" fill="#232323"/>
+  <ellipse cx="138" cy="42" rx="12" ry="30" fill="#232323"/>
+
+  <!-- A — dark charcoal body -->
+  <!-- left diagonal leg -->
+  <polygon points="154,108  174,12  194,12  204,108" fill="#232323"/>
+  <!-- right diagonal leg -->
+  <polygon points="204,108  234,12  254,12  234,108" fill="#232323"/>
+  <!-- crossbar -->
+  <rect x="174" y="68" width="60" height="18" fill="#232323"/>
+
+  <!-- Red triangle inside A counter -->
+  <polygon points="184,62  204,18  224,62" fill="#C41426"/>
+</svg>
