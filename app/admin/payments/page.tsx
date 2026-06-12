@@ -31,9 +31,9 @@ export default function PaymentsPage() {
             .map((app: any) => {
                 let amount = 0;
                 const prog = (app.program || '').toLowerCase();
-                if (prog.includes('fellowship')) amount = 500;
-                else if (prog.includes('bootcamp') || prog.includes('leadership')) amount = 250;
-                else if (prog.includes('digital') || prog.includes('course')) amount = 120;
+                if (prog.includes('fellowship')) amount = 7500;
+                else if (prog.includes('bootcamp') || prog.includes('leadership')) amount = 3750;
+                else if (prog.includes('digital') || prog.includes('course')) amount = 1800;
                 else return null;
 
                 return {
@@ -62,9 +62,9 @@ export default function PaymentsPage() {
         });
 
         const programs = [
-            { name: 'Fellowship Program', price: 500, currency: 'USD', enrolled: fellowshipCount },
-            { name: 'Leadership Bootcamp', price: 250, currency: 'USD', enrolled: bootcampCount },
-            { name: 'Digital Courses', price: 120, currency: 'USD', enrolled: courseCount },
+            { name: 'Fellowship Program', price: 7500, currency: 'GHS', enrolled: fellowshipCount },
+            { name: 'Leadership Bootcamp', price: 3750, currency: 'GHS', enrolled: bootcampCount },
+            { name: 'Digital Courses', price: 1800, currency: 'GHS', enrolled: courseCount },
         ];
 
         return {
@@ -114,7 +114,7 @@ export default function PaymentsPage() {
                             </div>
                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #e5e0d6', background: '#fff', borderRadius: 6, overflow: 'hidden', flex: 1 }}>
-                                    <span style={{ padding: '6px 8px', background: '#f9fafb', fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#9ca3af', fontWeight: 700 }}>$</span>
+                                    <span style={{ padding: '6px 8px', background: '#f9fafb', fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#9ca3af', fontWeight: 700 }}>₵</span>
                                     <input
                                         type="number"
                                         value={newPrice[p.name] ?? p.price}
@@ -164,7 +164,7 @@ export default function PaymentsPage() {
                                 <tr key={tx.id} style={{ borderTop: '1px solid #f3f4f6' }}>
                                     <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#111', padding: '12px 1.25rem' }}>{tx.name}</td>
                                     <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6b7280', padding: '12px 1.25rem' }}>{tx.program}</td>
-                                    <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontWeight: 700, color: '#111', padding: '12px 1.25rem' }}>${tx.amount}</td>
+                                    <td style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontWeight: 700, color: '#111', padding: '12px 1.25rem' }}>₵{tx.amount.toLocaleString()}</td>
                                     <td style={{ padding: '12px 1.25rem' }}>
                                         <span className={`badge ${tx.status === 'Completed' ? 'badge-green' : 'badge-gold'}`}>{tx.status}</span>
                                     </td>
@@ -184,7 +184,7 @@ export default function PaymentsPage() {
                                 <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af' }}>{tx.program} · {tx.date}</div>
                             </div>
                             <div style={{ textAlign: 'right' }}>
-                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 800, color: '#111' }}>${tx.amount}</div>
+                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 800, color: '#111' }}>₵{tx.amount.toLocaleString()}</div>
                                 <span className={`badge ${tx.status === 'Completed' ? 'badge-green' : 'badge-gold'}`} style={{ fontSize: '0.55rem', padding: '1px 6px' }}>{tx.status}</span>
                             </div>
                         </div>
