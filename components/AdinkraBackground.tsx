@@ -167,21 +167,21 @@ interface SymbolConfig {
 
 const SYMBOLS: SymbolConfig[] = [
   // Large Gye Nyame — top-left, partially clipped
-  { symbol: 'gye-nyame', size: 300, style: { top: -70, left: -80 }, opacity: 0.07, animation: 'adinkraFloat', duration: '14s', delay: '0s' },
+  { symbol: 'gye-nyame', size: 300, style: { top: -70, left: -80 }, opacity: 0.15, animation: 'adinkraFloat', duration: '14s', delay: '0s' },
   // Adinkrahene — top-right, spins slowly
-  { symbol: 'adinkrahene-lg', size: 260, style: { top: -60, right: -60 }, opacity: 0.055, animation: 'adinkraSpin', duration: '90s', delay: '-22s' },
+  { symbol: 'adinkrahene-lg', size: 260, style: { top: -60, right: -60 }, opacity: 0.13, animation: 'adinkraSpin', duration: '90s', delay: '-22s' },
   // Sankofa — left mid, drifts
-  { symbol: 'sankofa', size: 210, style: { top: '32%', left: -65 }, opacity: 0.065, animation: 'adinkraFloat', duration: '11s', delay: '-4s' },
+  { symbol: 'sankofa', size: 210, style: { top: '32%', left: -65 }, opacity: 0.14, animation: 'adinkraFloat', duration: '11s', delay: '-4s' },
   // Nkyinkyim — right mid
-  { symbol: 'nkyinkyim', size: 200, style: { top: '52%', right: -55 }, opacity: 0.06, animation: 'adinkraFloatAlt', duration: '13s', delay: '-8s' },
+  { symbol: 'nkyinkyim', size: 200, style: { top: '52%', right: -55 }, opacity: 0.13, animation: 'adinkraFloatAlt', duration: '13s', delay: '-8s' },
   // Aya — bottom-left, partially clipped
-  { symbol: 'aya', size: 240, style: { bottom: -70, left: 40 }, opacity: 0.065, animation: 'adinkraFloatAlt', duration: '16s', delay: '-12s' },
+  { symbol: 'aya', size: 240, style: { bottom: -70, left: 40 }, opacity: 0.14, animation: 'adinkraFloatAlt', duration: '16s', delay: '-12s' },
   // Dwennimmen — bottom-right, spins
-  { symbol: 'dwennimmen', size: 280, style: { bottom: -80, right: -60 }, opacity: 0.055, animation: 'adinkraSpin', duration: '75s', delay: '-40s' },
+  { symbol: 'dwennimmen', size: 280, style: { bottom: -80, right: -60 }, opacity: 0.12, animation: 'adinkraSpin', duration: '75s', delay: '-40s' },
   // Small Adinkrahene — center-right, accent pulse
-  { symbol: 'adinkrahene-sm', size: 150, style: { top: '18%', right: '14%' }, opacity: 0.04, animation: 'adinkraPulse', duration: '7s', delay: '-2s' },
+  { symbol: 'adinkrahene-sm', size: 150, style: { top: '18%', right: '14%' }, opacity: 0.10, animation: 'adinkraPulse', duration: '7s', delay: '-2s' },
   // Small Gye Nyame — center-left, accent pulse
-  { symbol: 'gye-nyame-sm', size: 130, style: { top: '70%', left: '8%' }, opacity: 0.04, animation: 'adinkraPulse', duration: '9s', delay: '-6s' },
+  { symbol: 'gye-nyame-sm', size: 130, style: { top: '70%', left: '8%' }, opacity: 0.10, animation: 'adinkraPulse', duration: '9s', delay: '-6s' },
 ];
 
 function renderSymbol(id: string, size: number) {
@@ -222,7 +222,7 @@ export default function AdinkraBackground() {
         aria-hidden="true"
         style={{
           position: 'fixed', inset: 0,
-          zIndex: 1, pointerEvents: 'none', overflow: 'hidden',
+          zIndex: 50, pointerEvents: 'none', overflow: 'hidden',
         }}
       >
         {SYMBOLS.map((s) => (
