@@ -695,49 +695,6 @@ export async function saveFellowProgress(email: string, completedModuleIds: stri
     }
 }
 
-const INTEGRATIONS_DOC = 'integrations';
-const localIntegrationsPath = path.join(process.cwd(), 'data', 'integrations.json');
-
-export async function getIntegrations(): Promise<Record<string, any>> {
-    try {
-        const firebase = getFirebaseAdmin();
-        if (firebase) {
-            const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).get();
-            if (snap.exists) return snap.data() as Record<string, any>;
-        }
-    } catch (error) {
-        console.error('Firebase getIntegrations error:', error);
-    }
-
-    try {
-        const data = await getFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC);
-        if (data) return data as Record<string, any>;
-    } catch (error) {
-        console.error('Firestore REST getIntegrations error:', error);
-    }
-
-    return readJsonFile<Record<string, any>>(localIntegrationsPath, {});
-}
-
-export async function setIntegrations(data: Record<string, unknown>): Promise<void> {
-    const cleanData = stripInternalSource(data);
-
-    try {
-        const firebase = requireFirebaseAdmin();
-        await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).set(cleanData, { merge: false });
-    } catch (error) {
-        try {
-            await setFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC, cleanData);
-            return;
-        } catch (restError) {
-            console.error('Firestore REST setIntegrations error:', restError);
-        }
-        if (process.env.NODE_ENV === 'production') throw error;
-        console.error('Firebase setIntegrations error; using local dev fallback:', error);
-        writeLocalDevJson(localIntegrationsPath, cleanData);
-    }
-}
-
 export async function uploadImageToStorage(file: File): Promise<string> {
     let firebase = null;
     try {
