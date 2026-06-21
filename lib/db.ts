@@ -579,6 +579,51 @@ export async function updateApplicationStatus(id: string | number, status: strin
     }
 }
 
+async function deleteFirestoreRestDoc(collection: string, doc: string): Promise<void> {
+    const token = await getGoogleAccessToken();
+    if (!token) throw new Error('Firestore REST is not configured in this runtime.');
+
+    const response = await fetch(firestoreRestDocUrl(collection, doc), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+    });
+
+    if (!response.ok && response.status !== 404) {
+        throw new Error(`Firestore REST delete failed with ${response.status}: ${await response.text()}`);
+    }
+}
+
+export async function deleteApplication(id: string | number): Promise<boolean> {
+    try {
+        const firebase = requireFirebaseAdmin();
+        await firebase.db.collection(APPLICATIONS_COLLECTION).doc(String(id)).delete();
+        return true;
+    } catch (error) {
+        try {
+            await deleteFirestoreRestDoc(APPLICATIONS_COLLECTION, String(id));
+            return true;
+        } catch (restError) {
+            console.error('Firestore REST deleteApplication error:', restError);
+        }
+        if (process.env.NODE_ENV === 'production') throw error;
+        console.error('Firebase deleteApplication error; using local dev fallback:', error);
+        const apps = readJsonFile<any[]>(localAppsPath, []);
+        const filtered = apps.filter((app) => Number(app.id) !== Number(id));
+        writeLocalDevJson(localAppsPath, filtered);
+        return true;
+    }
+}
+
+export async function clearApplications(): Promise<void> {
+    const apps = await getApplications();
+    await Promise.all(apps.map((app) => deleteApplication(app.id)));
+    // Also clear local file in dev
+    if (process.env.NODE_ENV !== 'production') {
+        writeLocalDevJson(localAppsPath, []);
+    }
+}
+
 export async function createSubscriber(subscriber: Record<string, unknown>): Promise<void> {
     try {
         const firebase = requireFirebaseAdmin();
