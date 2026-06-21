@@ -19,10 +19,10 @@ export default function Navbar() {
         <nav
             style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? 'rgba(17,17,17,0.95)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(12px)' : 'none',
-                borderBottom: scrolled ? `1px solid ${theme.secondary}30` : 'none',
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                background: scrolled ? theme.primary : 'rgba(17,17,17,0.6)',
+                backdropFilter: 'blur(16px)',
+                borderBottom: scrolled ? `1px solid ${theme.secondary}` : 'none',
+                transition: 'all 0.35s ease',
                 padding: scrolled ? '0.75rem 24px' : '1.25rem 24px',
             }}
         >
