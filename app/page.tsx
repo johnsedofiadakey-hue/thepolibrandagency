@@ -135,7 +135,7 @@ export default function Page() {
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${theme.secondary || '#C9A227'}50`; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${theme.secondary || '#C9A227'}35`; }}
               >
-                {home.cta?.apply || "Apply for Fellowship →"}
+                {home.cta?.apply || "Apply Now"}
               </Link>
               <Link href="/institutional-clients" style={{
                 fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
