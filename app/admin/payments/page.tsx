@@ -7,12 +7,20 @@ export default function PaymentsPage() {
     const [loading, setLoading] = useState(true);
     const [newPrice, setNewPrice] = useState<Record<string, string>>({});
 
+    // Paystack integration
+    const [publicKey, setPublicKey] = useState('');
+    const [secretKey, setSecretKey] = useState('');
+    const [showSecret, setShowSecret] = useState(false);
+    const [keySaving, setKeySaving] = useState(false);
+    const [keySaved, setKeySaved] = useState(false);
+    const [keyError, setKeyError] = useState('');
+
     useEffect(() => {
         const fetchApps = async () => {
             try {
                 const res = await fetch('/api/applications');
                 if (res.ok) {
-                    const data = await res.ok ? await res.json() : [];
+                    const data = await res.json();
                     setApplications(data);
                 }
             } catch (err) {
@@ -21,8 +29,44 @@ export default function PaymentsPage() {
                 setLoading(false);
             }
         };
+
+        const fetchKeys = async () => {
+            try {
+                const res = await fetch('/api/integrations');
+                if (res.ok) {
+                    const d = await res.json();
+                    setPublicKey(d?.paystack?.publicKey || '');
+                    setSecretKey(d?.paystack?.secretKey || '');
+                }
+            } catch { /* silent */ }
+        };
+
         fetchApps();
+        fetchKeys();
     }, []);
+
+    const handleSaveKeys = async () => {
+        setKeySaving(true);
+        setKeyError('');
+        setKeySaved(false);
+        try {
+            const res = await fetch('/api/integrations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paystack: { publicKey, secretKey } }),
+            });
+            if (res.ok) {
+                setKeySaved(true);
+                setTimeout(() => setKeySaved(false), 3000);
+            } else {
+                const d = await res.json().catch(() => null);
+                setKeyError(d?.error || 'Failed to save.');
+            }
+        } catch { setKeyError('Network error. Please try again.'); }
+        finally { setKeySaving(false); }
+    };
+
+    const isConfigured = publicKey.startsWith('pk_') && secretKey.length > 8;
 
     const data = useMemo(() => {
         // Derive dynamic transactions from Approved applications
@@ -98,8 +142,44 @@ export default function PaymentsPage() {
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Pricing & Transactions</p>
             </div>
 
+            {/* Paystack Integration */}
+            <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.25rem', marginBottom: '1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                    <div>
+                        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: 2 }}>Payment Integration · Paystack</h3>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af' }}>Enter your Paystack keys to enable ₵1,500 payment collection on the application form.</p>
+                    </div>
+                    <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: '0.65rem', fontWeight: 700, fontFamily: 'var(--font-body)', background: isConfigured ? '#dcfce7' : '#f3f4f6', color: isConfigured ? '#166534' : '#6b7280' }}>
+                        {isConfigured ? '● ACTIVE' : '● NOT SET'}
+                    </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                    <div>
+                        <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 5 }}>Public Key</label>
+                        <input type="text" value={publicKey} onChange={e => setPublicKey(e.target.value)} placeholder="pk_live_..." style={{ width: '100%', padding: '9px 12px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.78rem', outline: 'none', boxSizing: 'border-box' }} />
+                    </div>
+                    <div>
+                        <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 5 }}>Secret Key</label>
+                        <div style={{ position: 'relative' }}>
+                            <input type={showSecret ? 'text' : 'password'} value={secretKey} onChange={e => setSecretKey(e.target.value)} placeholder="sk_live_..." style={{ width: '100%', padding: '9px 40px 9px 12px', border: '1.5px solid #e5e0d6', borderRadius: 6, fontFamily: 'var(--font-body)', fontSize: '0.78rem', outline: 'none', boxSizing: 'border-box' }} />
+                            <button type="button" onClick={() => setShowSecret(v => !v)} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af', fontSize: '0.65rem', fontWeight: 700 }}>{showSecret ? 'HIDE' : 'SHOW'}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                    <button onClick={handleSaveKeys} disabled={keySaving} className="btn-primary" style={{ fontSize: '0.72rem', padding: '8px 18px', opacity: keySaving ? 0.6 : 1 }}>
+                        {keySaving ? 'Saving...' : 'Save Keys'}
+                    </button>
+                    {keySaved && <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#166534', fontWeight: 600 }}>✓ Saved</span>}
+                    {keyError && <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#b91c1c' }}>{keyError}</span>}
+                    <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-body)', fontSize: '0.68rem', color: '#9ca3af' }}>Find keys at <strong>dashboard.paystack.com</strong> → Settings → API Keys</span>
+                </div>
+            </div>
+
             <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '0.85rem 1rem', marginBottom: '1rem', fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.5 }}>
-                Payment processing is not connected yet. Figures below are derived from approved applications for planning only; pricing, coupons, exports, and transaction controls are disabled until a payment provider is integrated.
+                {isConfigured ? 'Payment gateway active — applications now require ₵1,500 via Paystack before submission.' : 'Payment gateway not connected. Add Paystack keys above to activate. Figures below are from approved applications only.'}
             </div>
 
             <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
