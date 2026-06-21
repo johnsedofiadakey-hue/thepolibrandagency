@@ -256,7 +256,7 @@
         ]
       },
       "cta": {
-        "apply": "Apply for Fellowship →",
+        "apply": "Apply",
         "partner": "Partner With Us",
         "mission": "Polibrand exists to equip women with these structural tools.",
         "services": "Explore All Services →",
@@ -413,7 +413,7 @@
       "cta": {
         "title": "Ready to Build Your Political Power?",
         "description": "Join women leaders across Africa who are transforming their political futures through strategic communication and branding.",
-        "apply": "Apply for Fellowship →",
+        "apply": "Apply",
         "assessment": "Take the Assessment"
       }
     },
