@@ -586,11 +586,57 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
                 onChange={v => setField('philosophy.cards', v)}
             />
 
+            <SectionTitle>Founders / Team Section</SectionTitle>
+            <Field label="Tag" value={about.founders?.tag} onChange={v => setField('founders.tag', v)} />
+            <Field label="Section Title" value={about.founders?.title} onChange={v => setField('founders.title', v)} />
+            <Field label="Section Description" value={about.founders?.description} onChange={v => setField('founders.description', v)} type="textarea" />
+            <div style={{ marginTop: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Team Members</span>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const team = [...(about.founders?.team || []), { name: '', title: '', bio: '', image: '' }];
+                            setField('founders.team', team);
+                        }}
+                        style={{ padding: '4px 10px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 4, fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer' }}
+                    >+ Add Member</button>
+                </div>
+                {(about.founders?.team || []).map((member: any, i: number) => (
+                    <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: '1rem', marginBottom: '0.75rem', background: '#fafafa', position: 'relative' }}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const team = (about.founders?.team || []).filter((_: any, idx: number) => idx !== i);
+                                setField('founders.team', team);
+                            }}
+                            style={{ position: 'absolute', top: 8, right: 8, background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, padding: '2px 8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}
+                        >Remove</button>
+                        <Field label="Full Name" value={member.name} onChange={v => {
+                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, name: v } : m);
+                            setField('founders.team', team);
+                        }} />
+                        <Field label="Title / Role" value={member.title} onChange={v => {
+                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, title: v } : m);
+                            setField('founders.team', team);
+                        }} />
+                        <Field label="Bio" value={member.bio} onChange={v => {
+                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, bio: v } : m);
+                            setField('founders.team', team);
+                        }} type="textarea" />
+                        <ImageUploadField label="Photo" value={member.image} onChange={v => {
+                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, image: v } : m);
+                            setField('founders.team', team);
+                        }} />
+                    </div>
+                ))}
+            </div>
+
             <SectionTitle>Impact Timeline</SectionTitle>
-            <ObjectListField 
-                label="Timeline Events" 
-                items={about.timeline || []} 
-                fields={[{ key: 'year', label: 'Year' }, { key: 'event', label: 'Event Description', type: 'textarea' }]} 
+            <ObjectListField
+                label="Timeline Events"
+                items={about.timeline || []}
+                fields={[{ key: 'year', label: 'Year' }, { key: 'event', label: 'Event Description', type: 'textarea' }]}
                 onChange={v => setField('timeline', v)}
             />
         </>

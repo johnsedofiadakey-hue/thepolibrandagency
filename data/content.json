@@ -329,6 +329,25 @@
             "text": "Creating high-impact presence in the right spaces at the right time."
           }
         ]
+      },
+      "founders": {
+        "tag": "Meet the Founders",
+        "title": "The Leadership Behind Polibrand",
+        "description": "Built by women who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
+        "team": [
+          {
+            "name": "Founder Name",
+            "title": "Founder & Executive Director",
+            "bio": "A seasoned political strategist with over 15 years of experience advising women leaders across West Africa. She has designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
+            "image": ""
+          },
+          {
+            "name": "Co-Founder Name",
+            "title": "Co-Founder & Director of Programs",
+            "bio": "Former policy advisor and communications architect with deep roots in gender equity advocacy. She leads curriculum design and program delivery across all Polibrand initiatives.",
+            "image": ""
+          }
+        ]
       }
     },
     "services": {
