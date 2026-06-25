@@ -776,12 +776,21 @@ export async function uploadImageToStorage(file: File): Promise<string> {
 const INTEGRATIONS_DOC = 'integrations';
 const localIntegrationsPath = path.join(process.cwd(), 'data', 'integrations.json');
 
+function getEnvPaystackIntegrations(): Record<string, any> {
+    const secretKey = process.env.PAYSTACK_SECRET_KEY || '';
+    const publicKey = process.env.PAYSTACK_PUBLIC_KEY || '';
+    if (!secretKey && !publicKey) return {};
+    return { paystack: { secretKey, publicKey } };
+}
+
 export async function getIntegrations(): Promise<Record<string, any>> {
+    const envDefaults = getEnvPaystackIntegrations();
+
     try {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).get();
-            if (snap.exists) return snap.data() as Record<string, any>;
+            if (snap.exists) return { ...envDefaults, ...snap.data() as Record<string, any> };
         }
     } catch (error) {
         console.error('Firebase getIntegrations error:', error);
@@ -789,12 +798,13 @@ export async function getIntegrations(): Promise<Record<string, any>> {
 
     try {
         const data = await getFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC);
-        if (data) return data as Record<string, any>;
+        if (data) return { ...envDefaults, ...data as Record<string, any> };
     } catch (error) {
         console.error('Firestore REST getIntegrations error:', error);
     }
 
-    return readJsonFile<Record<string, any>>(localIntegrationsPath, {});
+    const local = readJsonFile<Record<string, any>>(localIntegrationsPath, {});
+    return { ...envDefaults, ...local };
 }
 
 export async function setIntegrations(data: Record<string, unknown>): Promise<void> {
