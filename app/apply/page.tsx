@@ -13,6 +13,7 @@ function ApplyForm() {
     const [submitted, setSubmitted] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [paystackPublicKey, setPaystackPublicKey] = useState('');
+    const [paystackReady, setPaystackReady] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [paymentError, setPaymentError] = useState<string | null>(null);
 
@@ -42,9 +43,17 @@ function ApplyForm() {
             .then(d => setPaystackPublicKey(d.paystackPublicKey || ''))
             .catch(() => {});
 
+        // If script already loaded (e.g. back-navigation), mark ready immediately
+        if ((window as any).PaystackPop) {
+            setPaystackReady(true);
+            return;
+        }
+
         const script = document.createElement('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
         script.async = true;
+        script.onload = () => setPaystackReady(true);
+        script.onerror = () => setPaymentError('Failed to load payment system. Please refresh and try again.');
         document.head.appendChild(script);
         return () => { try { document.head.removeChild(script); } catch { /* already removed */ } };
     }, []);
@@ -337,10 +346,10 @@ function ApplyForm() {
                                         <button
                                             type="button"
                                             onClick={handlePayment}
-                                            disabled={paymentLoading}
+                                            disabled={paymentLoading || !paystackReady}
                                             className="btn-gold w-full md:w-auto justify-center shadow-[var(--shadow-gold)] hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                                         >
-                                            {paymentLoading ? 'Processing...' : 'Pay ₵1,500 & Submit →'}
+                                            {paymentLoading ? 'Processing...' : !paystackReady ? 'Loading...' : 'Pay ₵1,500 & Submit →'}
                                         </button>
                                     ) : (
                                         <div className="font-sans text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-4 py-3 w-full md:w-auto text-center">

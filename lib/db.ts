@@ -783,6 +783,20 @@ function getEnvPaystackIntegrations(): Record<string, any> {
     return { paystack: { secretKey, publicKey } };
 }
 
+function mergeIntegrations(base: Record<string, any>, override: Record<string, any>): Record<string, any> {
+    const merged = { ...base, ...override };
+    // Deep merge paystack: prefer override values only when non-empty, fall back to base
+    const baseP = base.paystack || {};
+    const overrideP = override.paystack || {};
+    merged.paystack = {
+        ...baseP,
+        ...overrideP,
+        secretKey: overrideP.secretKey || baseP.secretKey || '',
+        publicKey: overrideP.publicKey || baseP.publicKey || '',
+    };
+    return merged;
+}
+
 export async function getIntegrations(): Promise<Record<string, any>> {
     const envDefaults = getEnvPaystackIntegrations();
 
@@ -790,7 +804,7 @@ export async function getIntegrations(): Promise<Record<string, any>> {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).get();
-            if (snap.exists) return { ...envDefaults, ...snap.data() as Record<string, any> };
+            if (snap.exists) return mergeIntegrations(envDefaults, snap.data() as Record<string, any>);
         }
     } catch (error) {
         console.error('Firebase getIntegrations error:', error);
@@ -798,13 +812,13 @@ export async function getIntegrations(): Promise<Record<string, any>> {
 
     try {
         const data = await getFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC);
-        if (data) return { ...envDefaults, ...data as Record<string, any> };
+        if (data) return mergeIntegrations(envDefaults, data as Record<string, any>);
     } catch (error) {
         console.error('Firestore REST getIntegrations error:', error);
     }
 
     const local = readJsonFile<Record<string, any>>(localIntegrationsPath, {});
-    return { ...envDefaults, ...local };
+    return mergeIntegrations(envDefaults, local);
 }
 
 export async function setIntegrations(data: Record<string, unknown>): Promise<void> {
