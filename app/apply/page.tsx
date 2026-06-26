@@ -1,5 +1,6 @@
 'use client';
 import { Suspense, useState, useContext, useEffect } from 'react';
+import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
@@ -103,14 +104,8 @@ function ApplyForm() {
             .then(d => setPaystackPublicKey(d.paystackPublicKey || ''))
             .catch(() => {});
 
-        if ((window as any).PaystackPop) { setPaystackReady(true); return; }
-        const script = document.createElement('script');
-        script.src = 'https://js.paystack.co/v1/inline.js';
-        script.async = true;
-        script.onload = () => setPaystackReady(true);
-        script.onerror = () => setPaymentError('Failed to load payment system. Please refresh and try again.');
-        document.head.appendChild(script);
-        return () => { try { document.head.removeChild(script); } catch { /* removed */ } };
+        // Script loads via <Script> component below; mark ready if already loaded
+        if ((window as any).PaystackPop) setPaystackReady(true);
     }, []);
 
     const toggleService = (id: string) => {
@@ -143,57 +138,72 @@ function ApplyForm() {
     const handlePayment = () => {
         setPaymentError(null);
         setPaymentLoading(true);
-        const PaystackPop = (window as any).PaystackPop;
-        if (!PaystackPop) {
-            setPaymentError('Payment system is still loading. Please wait a moment and try again.');
-            setPaymentLoading(false);
-            return;
-        }
-        const handler = PaystackPop.setup({
-            key: paystackPublicKey,
-            email: formData.email,
-            amount: 150000,
-            currency: 'GHS',
-            ref: `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
-            metadata: {
-                custom_fields: [
-                    { display_name: 'Applicant', variable_name: 'applicant', value: `${formData.firstName} ${formData.lastName}` },
-                    { display_name: 'Services', variable_name: 'services', value: getSelectedLabels().join(', ') },
-                ],
-            },
-            callback: async (response: any) => {
-                try {
-                    const res = await fetch('/api/payment/verify', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            reference: response.reference,
-                            firstName: formData.firstName,
-                            lastName: formData.lastName,
-                            email: formData.email,
-                            phone: formData.phone,
-                            country: formData.country,
-                            role: formData.role,
-                            program: getSelectedLabels().join(', '),
-                            essay: formData.essay,
-                            services: formData.services,
-                            assessmentScore: formData.assessmentScore,
-                        }),
-                    });
-                    if (res.ok) { setSubmitted(true); window.scrollTo(0, 0); }
-                    else {
-                        const d = await res.json().catch(() => null);
-                        setPaymentError((d?.error || 'Payment verification failed.') + ` (Ref: ${response.reference})`);
+
+        try {
+            const PaystackPop = (window as any).PaystackPop;
+            if (!PaystackPop || typeof PaystackPop.setup !== 'function') {
+                setPaymentError('Payment system is not ready. Please refresh the page and try again.');
+                setPaymentLoading(false);
+                return;
+            }
+
+            if (!paystackPublicKey) {
+                setPaymentError('Payment is not configured. Please contact the administrator.');
+                setPaymentLoading(false);
+                return;
+            }
+
+            const handler = PaystackPop.setup({
+                key: paystackPublicKey,
+                email: formData.email,
+                amount: 150000,
+                currency: 'GHS',
+                ref: `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+                label: `${formData.firstName} ${formData.lastName}`,
+                metadata: {
+                    custom_fields: [
+                        { display_name: 'Applicant', variable_name: 'applicant', value: `${formData.firstName} ${formData.lastName}` },
+                        { display_name: 'Services', variable_name: 'services', value: getSelectedLabels().join(', ') },
+                    ],
+                },
+                callback: async (response: any) => {
+                    try {
+                        const res = await fetch('/api/payment/verify', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                reference: response.reference,
+                                firstName: formData.firstName,
+                                lastName: formData.lastName,
+                                email: formData.email,
+                                phone: formData.phone,
+                                country: formData.country,
+                                role: formData.role,
+                                program: getSelectedLabels().join(', '),
+                                essay: formData.essay,
+                                services: formData.services,
+                                assessmentScore: formData.assessmentScore,
+                            }),
+                        });
+                        if (res.ok) { setSubmitted(true); window.scrollTo(0, 0); }
+                        else {
+                            const d = await res.json().catch(() => null);
+                            setPaymentError((d?.error || 'Payment verification failed.') + ` (Ref: ${response.reference})`);
+                            setPaymentLoading(false);
+                        }
+                    } catch {
+                        setPaymentError(`Network error after payment. Please save your reference: ${response.reference} and contact us.`);
                         setPaymentLoading(false);
                     }
-                } catch {
-                    setPaymentError(`Network error. Reference: ${response.reference} — please contact us.`);
-                    setPaymentLoading(false);
-                }
-            },
-            onClose: () => setPaymentLoading(false),
-        });
-        handler.openIframe();
+                },
+                onClose: () => { setPaymentLoading(false); },
+            });
+
+            handler.openIframe();
+        } catch (err: any) {
+            setPaymentError(`Payment error: ${err?.message || 'Unknown error. Please refresh and try again.'}`);
+            setPaymentLoading(false);
+        }
     };
 
     if (submitted) {
@@ -492,6 +502,12 @@ function ApplyForm() {
                 </div>
             </section>
 
+            <Script
+                src="https://js.paystack.co/v1/inline.js"
+                strategy="afterInteractive"
+                onLoad={() => setPaystackReady(true)}
+                onError={() => setPaymentError('Failed to load payment system. Please refresh the page and try again.')}
+            />
             <Footer />
         </div>
     );
