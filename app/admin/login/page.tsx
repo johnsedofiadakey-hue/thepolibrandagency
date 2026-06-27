@@ -48,18 +48,22 @@ export default function AdminLoginPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-            const data = await res.json().catch(() => ({}));
+
+            let data: any = {};
+            const text = await res.text();
+            try { data = JSON.parse(text); } catch { /* non-JSON response */ }
 
             if (!res.ok) {
-                setError(data.error || 'Invalid email or password.');
+                const msg = data.error || (res.status === 503 ? 'Admin login is not configured on this server.' : res.status === 429 ? 'Too many attempts. Please wait a few minutes.' : `Sign-in failed (${res.status}). Check credentials and try again.`);
+                setError(msg);
                 setLoading(false);
                 return;
             }
 
             const next = new URLSearchParams(window.location.search).get('next') || '/admin/dashboard';
             window.location.href = next.startsWith('/admin') ? next : '/admin/dashboard';
-        } catch {
-            setError('Unable to sign in. Please try again.');
+        } catch (err: any) {
+            setError(`Network error: ${err?.message || 'Unable to reach server. Please try again.'}`);
             setLoading(false);
         }
     };
@@ -165,6 +169,7 @@ export default function AdminLoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="admin@polibrand.co"
+                                autoComplete="email"
                                 style={{
                                     width: '100%', padding: '15px 18px', border: '1.5px solid #e5e0d6',
                                     borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#111',
@@ -184,6 +189,7 @@ export default function AdminLoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
+                                autoComplete="current-password"
                                 style={{
                                     width: '100%', padding: '15px 18px', border: '1.5px solid #e5e0d6',
                                     borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#111',

@@ -579,6 +579,51 @@ export async function updateApplicationStatus(id: string | number, status: strin
     }
 }
 
+async function deleteFirestoreRestDoc(collection: string, doc: string): Promise<void> {
+    const token = await getGoogleAccessToken();
+    if (!token) throw new Error('Firestore REST is not configured in this runtime.');
+
+    const response = await fetch(firestoreRestDocUrl(collection, doc), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+    });
+
+    if (!response.ok && response.status !== 404) {
+        throw new Error(`Firestore REST delete failed with ${response.status}: ${await response.text()}`);
+    }
+}
+
+export async function deleteApplication(id: string | number): Promise<boolean> {
+    try {
+        const firebase = requireFirebaseAdmin();
+        await firebase.db.collection(APPLICATIONS_COLLECTION).doc(String(id)).delete();
+        return true;
+    } catch (error) {
+        try {
+            await deleteFirestoreRestDoc(APPLICATIONS_COLLECTION, String(id));
+            return true;
+        } catch (restError) {
+            console.error('Firestore REST deleteApplication error:', restError);
+        }
+        if (process.env.NODE_ENV === 'production') throw error;
+        console.error('Firebase deleteApplication error; using local dev fallback:', error);
+        const apps = readJsonFile<any[]>(localAppsPath, []);
+        const filtered = apps.filter((app) => Number(app.id) !== Number(id));
+        writeLocalDevJson(localAppsPath, filtered);
+        return true;
+    }
+}
+
+export async function clearApplications(): Promise<void> {
+    const apps = await getApplications();
+    await Promise.all(apps.map((app) => deleteApplication(app.id)));
+    // Also clear local file in dev
+    if (process.env.NODE_ENV !== 'production') {
+        writeLocalDevJson(localAppsPath, []);
+    }
+}
+
 export async function createSubscriber(subscriber: Record<string, unknown>): Promise<void> {
     try {
         const firebase = requireFirebaseAdmin();
@@ -726,4 +771,71 @@ export async function uploadImageToStorage(file: File): Promise<string> {
     });
 
     return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filename)}?alt=media&token=${downloadToken}`;
+}
+
+const INTEGRATIONS_DOC = 'integrations';
+const localIntegrationsPath = path.join(process.cwd(), 'data', 'integrations.json');
+
+function getEnvPaystackIntegrations(): Record<string, any> {
+    const secretKey = process.env.PAYSTACK_SECRET_KEY || '';
+    const publicKey = process.env.PAYSTACK_PUBLIC_KEY || '';
+    if (!secretKey && !publicKey) return {};
+    return { paystack: { secretKey, publicKey } };
+}
+
+function mergeIntegrations(base: Record<string, any>, override: Record<string, any>): Record<string, any> {
+    const merged = { ...base, ...override };
+    // Deep merge paystack: prefer override values only when non-empty, fall back to base
+    const baseP = base.paystack || {};
+    const overrideP = override.paystack || {};
+    merged.paystack = {
+        ...baseP,
+        ...overrideP,
+        secretKey: overrideP.secretKey || baseP.secretKey || '',
+        publicKey: overrideP.publicKey || baseP.publicKey || '',
+    };
+    return merged;
+}
+
+export async function getIntegrations(): Promise<Record<string, any>> {
+    const envDefaults = getEnvPaystackIntegrations();
+
+    try {
+        const firebase = getFirebaseAdmin();
+        if (firebase) {
+            const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).get();
+            if (snap.exists) return mergeIntegrations(envDefaults, snap.data() as Record<string, any>);
+        }
+    } catch (error) {
+        console.error('Firebase getIntegrations error:', error);
+    }
+
+    try {
+        const data = await getFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC);
+        if (data) return mergeIntegrations(envDefaults, data as Record<string, any>);
+    } catch (error) {
+        console.error('Firestore REST getIntegrations error:', error);
+    }
+
+    const local = readJsonFile<Record<string, any>>(localIntegrationsPath, {});
+    return mergeIntegrations(envDefaults, local);
+}
+
+export async function setIntegrations(data: Record<string, unknown>): Promise<void> {
+    const cleanData = stripInternalSource(data);
+
+    try {
+        const firebase = requireFirebaseAdmin();
+        await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).set(cleanData, { merge: false });
+    } catch (error) {
+        try {
+            await setFirestoreRestJson(CONFIG_COLLECTION, INTEGRATIONS_DOC, cleanData);
+            return;
+        } catch (restError) {
+            console.error('Firestore REST setIntegrations error:', restError);
+        }
+        if (process.env.NODE_ENV === 'production') throw error;
+        console.error('Firebase setIntegrations error; using local dev fallback:', error);
+        writeLocalDevJson(localIntegrationsPath, cleanData);
+    }
 }

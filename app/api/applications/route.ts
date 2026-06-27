@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getApplications, updateApplicationStatus } from '@/lib/db';
+import { getApplications, updateApplicationStatus, deleteApplication, clearApplications } from '@/lib/db';
 import { requireAdmin } from '@/lib/session';
 
 export async function GET(request: Request) {
@@ -12,6 +12,28 @@ export async function GET(request: Request) {
     } catch (error) {
         console.error('Failed to fetch applications:', error);
         return NextResponse.json({ error: 'Failed to fetch applications' }, { status: 500 });
+    }
+}
+
+export async function DELETE(request: Request) {
+    const unauthorized = await requireAdmin(request);
+    if (unauthorized) return unauthorized;
+
+    try {
+        const url = new URL(request.url);
+        const id = url.searchParams.get('id');
+
+        if (id) {
+            const deleted = await deleteApplication(id);
+            if (!deleted) return NextResponse.json({ error: 'Application not found.' }, { status: 404 });
+        } else {
+            await clearApplications();
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Failed to delete application(s):', error);
+        return NextResponse.json({ error: 'Failed to delete application(s)' }, { status: 500 });
     }
 }
 

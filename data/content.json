@@ -256,7 +256,7 @@
         ]
       },
       "cta": {
-        "apply": "Apply for Fellowship →",
+        "apply": "Apply",
         "partner": "Partner With Us",
         "mission": "Polibrand exists to equip women with these structural tools.",
         "services": "Explore All Services →",
@@ -329,6 +329,31 @@
             "text": "Creating high-impact presence in the right spaces at the right time."
           }
         ]
+      },
+      "founders": {
+        "tag": "Meet the Founders",
+        "title": "The Leadership Behind Polibrand",
+        "description": "Built by women who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
+        "team": [
+          {
+            "name": "Founder Name",
+            "title": "Founder & Executive Director",
+            "bio": "A seasoned political strategist with over 15 years of experience advising women leaders across West Africa. She has designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
+            "image": ""
+          },
+          {
+            "name": "Co-Founder Name",
+            "title": "Co-Founder & Director of Programs",
+            "bio": "Former policy advisor and communications architect with deep roots in gender equity advocacy. She leads curriculum design and program delivery across all Polibrand initiatives.",
+            "image": ""
+          }
+        ]
+      },
+      "foundersStory": {
+        "tag": "Our Origin",
+        "title": "The Polibrand Story",
+        "story": "Polibrand was born from a simple observation: African women leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant women candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that.",
+        "image": ""
       }
     },
     "services": {
@@ -413,7 +438,7 @@
       "cta": {
         "title": "Ready to Build Your Political Power?",
         "description": "Join women leaders across Africa who are transforming their political futures through strategic communication and branding.",
-        "apply": "Apply for Fellowship →",
+        "apply": "Apply",
         "assessment": "Take the Assessment"
       }
     },
@@ -421,8 +446,7 @@
       "hero": {
         "tag": "Learning & Growth",
         "title": "Elite Programs for Political Advancement.",
-        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable.",
-        "image": ""
+        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable."
       },
       "bootcamp": {
         "tag": "Flagship Program",
@@ -559,7 +583,6 @@
         "tag": "Diagnostic Tool",
         "title": "Political Readiness Index (PRI)",
         "description": "Measure your strategic communication clarity, narrative strength, and visibility readiness.",
-        "image": "",
         "details": [
           {
             "icon": "📝",
@@ -692,8 +715,7 @@
       "hero": {
         "tag": "Take the Next Step",
         "title": "Apply to Polibrand",
-        "description": "Complete the application to be considered for our elite leadership programs.",
-        "image": ""
+        "description": "Complete the application to book for an in-person or online consultation with our political communication strategists."
       },
       "form": {
         "step1_title": "Personal details",
@@ -706,19 +728,24 @@
           "country": "Country",
           "program": "Program of Interest",
           "role": "Current Role",
-          "essay": "Why are you applying?"
+          "essay": "Why are you seeking strategic communication support?"
         },
         "placeholders": {
           "firstName": "e.g. Grace",
           "lastName": "Mutuku",
           "email": "grace@example.com",
           "phone": "+254...",
-          "role": "e.g. Candidate",
-          "essay": "Describe your journey..."
+          "role": "e.g. MP Candidate, NGO Director",
+          "essay": "Tell us about your political ambitions, the challenges you face in gaining visibility or influence, and what a strategic brand would help you achieve. What's your biggest communication gap right now?"
+        },
+        "consultationFee": {
+          "amount": "1,500",
+          "currency": "GHS",
+          "description": "50% of your consultation fee will be refunded when we begin working on your brand or enroll you in a program."
         },
         "success": {
           "title": "Application Received",
-          "text": "Thank you, {name}. We will contact you within 5-7 business days."
+          "text": "Thank you, {name}. We will contact you within 5-7 business days to schedule your consultation and discuss how we can amplify your political brand."
         }
       }
     },

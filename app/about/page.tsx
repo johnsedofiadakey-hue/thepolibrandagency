@@ -112,9 +112,6 @@ export default function AboutPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                         {about.philosophy.cards.map((card: any, i: number) => (
                             <div key={i} className="card-brand text-center">
-                                <div className="w-16 h-16 bg-[var(--color-secondary)]/10 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
-                                    {i === 0 ? '◈' : i === 1 ? '◆' : '▣'}
-                                </div>
                                 <h3 className="font-display font-bold text-xl text-[#111] mb-4">{card.title}</h3>
                                 <p className="font-sans text-[var(--color-muted)] leading-relaxed">{card.text}</p>
                             </div>
@@ -122,6 +119,87 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ─── FOUNDERS ─── */}
+            {about.founders && (
+                <section className="section-pad bg-white">
+                    <div className="container-brand">
+                        <div className="text-center mb-16">
+                            <div className="inline-flex items-center gap-3 mb-4">
+                                <div className="w-8 h-px bg-[var(--color-primary)]" />
+                                <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">{about.founders.tag}</span>
+                                <div className="w-8 h-px bg-[var(--color-primary)]" />
+                            </div>
+                            <h2 className="font-display font-bold text-4xl text-[#111] mb-4">{about.founders.title}</h2>
+                            <div className="divider-gold divider-gold-center" />
+                            {about.founders.description && (
+                                <p className="font-sans text-lg text-[var(--color-muted)] max-w-3xl mx-auto mt-6 leading-relaxed">{about.founders.description}</p>
+                            )}
+                        </div>
+                        <div className={`grid grid-cols-1 ${(about.founders.team || []).length === 1 ? 'max-w-lg mx-auto' : (about.founders.team || []).length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-3'} gap-10`}>
+                            {(about.founders.team || []).map((member: any, i: number) => (
+                                <div key={i} className="card-brand text-center hover:-translate-y-2 transition-transform duration-300">
+                                    <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[var(--color-secondary)]/20 shadow-lg bg-[var(--color-bg)]">
+                                        {member.image ? (
+                                            <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)]">
+                                                <span className="font-display font-bold text-3xl text-white">
+                                                    {(member.name || '?').charAt(0)}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <h3 className="font-display font-bold text-xl text-[#111] mb-1">{member.name}</h3>
+                                    <p className="font-sans text-xs font-semibold text-[var(--color-primary)] uppercase tracking-widest mb-4">{member.title}</p>
+                                    <div className="w-8 h-px bg-[var(--color-secondary)] mx-auto mb-4" />
+                                    <p className="font-sans text-sm text-[var(--color-muted)] leading-relaxed">{member.bio}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── FOUNDERS STORY ─── */}
+            {about.foundersStory && (
+                <section className="section-pad bg-white">
+                    <div className="container-brand max-w-4xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+                            {/* Text */}
+                            <div>
+                                <div className="inline-flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-px bg-[var(--color-secondary)]" />
+                                    <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.foundersStory.tag}</span>
+                                </div>
+                                <h2 className="font-display font-bold text-4xl text-[#111] mb-6 leading-tight">{about.foundersStory.title}</h2>
+                                <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed mb-6">
+                                    {about.foundersStory.story}
+                                </p>
+                                <p className="font-sans text-sm text-gray-500 italic">
+                                    We started Polibrand to close that gap.
+                                </p>
+                            </div>
+
+                            {/* Image */}
+                            <div className="relative">
+                                {about.foundersStory.image ? (
+                                    <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl">
+                                        <img src={about.foundersStory.image} alt="Founders Story" className="w-full h-full object-cover" />
+                                    </div>
+                                ) : (
+                                    <div className="aspect-square bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-lg overflow-hidden shadow-xl flex items-center justify-center">
+                                        <p className="font-sans text-white/40 text-center px-8">Story image to be added</p>
+                                    </div>
+                                )}
+                                <div className="absolute -bottom-6 -right-6 w-40 h-40 border-2 border-[var(--color-secondary)]/20 rounded-lg pointer-events-none" />
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ─── JOURNEY ─── */}
             <section className="section-pad bg-[var(--color-bg)]">
@@ -163,7 +241,7 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link href="/apply" className="btn-gold justify-center">
-                            {about.cta?.apply || "Apply for Fellowship →"}
+                            {(about.cta?.apply && !about.cta.apply.toLowerCase().includes('fellowship')) ? about.cta.apply : "Apply"}
                         </Link>
                         <Link href="/assessment" className="btn-secondary justify-center">
                             {about.cta?.assessment || "Take the Assessment"}

@@ -56,7 +56,6 @@ export default function AssessmentPage() {
                 setCurrentCatIdx(nextCatIdx);
                 setCurrentQIdx(0);
             } else {
-                // Done — compute and go to results
                 const scores: Record<string, number> = {};
                 categories.forEach((cat: Category) => {
                     const catAnswers = cat.questions.map((q: Question) => newAnswers[q.id] ?? 0);
@@ -76,57 +75,65 @@ export default function AssessmentPage() {
         }
     };
 
+    /* ─── INTRO SCREEN ─── */
     if (!started) {
         return (
             <>
                 <Navbar />
-                <section style={{
-                    minHeight: '100vh', 
-                    background: assessment.hero.image 
-                        ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${assessment.hero.image})`
-                        : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    display: 'flex', alignItems: 'center', padding: '120px 0 80px', position: 'relative', overflow: 'hidden',
-                }}>
+                <section
+                    className="min-h-screen flex items-center pt-24 pb-16 md:pt-32 md:pb-20 relative overflow-hidden"
+                    style={{
+                        background: assessment.hero.image
+                            ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${assessment.hero.image})`
+                            : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                >
                     <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
-                    <div className="container-brand" style={{ position: 'relative', zIndex: 1 }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+
+                    <div className="container-brand relative z-10 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
+
+                            {/* Left: text */}
                             <div>
-                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
+                                <div className="inline-flex items-center gap-2.5 mb-6">
                                     <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
                                     <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>{assessment.hero.tag}</span>
                                 </div>
-                                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', lineHeight: 1.2, marginBottom: '1.25rem' }}>
+                                <h1 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-5">
                                     {assessment.hero.title}
                                 </h1>
                                 <div style={{ width: 60, height: 2, background: 'var(--color-secondary)', marginBottom: '1.5rem' }} />
                                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, marginBottom: '2rem' }}>
                                     {assessment.hero.description}
                                 </p>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: '2.5rem' }}>
+                                <div className="flex flex-col gap-3 mb-8">
                                     {assessment.hero.details.map((item: any) => (
                                         <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)' }}>
                                             <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>{item.text}
                                         </div>
                                     ))}
                                 </div>
-                                <button onClick={() => setStarted(true)} className="btn-gold" style={{ fontSize: '0.9rem', padding: '16px 36px' }}>
+                                <button onClick={() => setStarted(true)} className="btn-gold w-full sm:w-auto" style={{ fontSize: '0.9rem', padding: '16px 36px' }}>
                                     Begin Assessment →
                                 </button>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+
+                            {/* Right: category stat cards */}
+                            <div className="grid grid-cols-2 gap-3 mt-2 md:mt-0">
                                 {categories.map((cat: Category) => (
                                     <div key={cat.id} style={{
                                         background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)',
-                                        border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '1.25rem',
+                                        border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, padding: '1rem',
                                     }}>
                                         <div style={{ width: 36, height: 4, background: cat.color === '#1F6F3E' ? 'var(--color-secondary)' : cat.color, borderRadius: 2, marginBottom: '0.75rem' }} />
-                                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.6rem', color: '#fff', marginBottom: 4 }}>{cat.weight}%</div>
-                                        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgba(255,255,255,0.65)', letterSpacing: '0.5px' }}>{cat.label}</div>
+                                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.5rem', color: '#fff', marginBottom: 4 }}>{cat.weight}%</div>
+                                        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)', letterSpacing: '0.5px' }}>{cat.label}</div>
                                     </div>
                                 ))}
                             </div>
+
                         </div>
                     </div>
                 </section>
@@ -134,18 +141,16 @@ export default function AssessmentPage() {
         );
     }
 
+    /* ─── QUESTION SCREEN ─── */
     return (
         <>
             <Navbar />
-            <section style={{
-                minHeight: '100vh', background: 'var(--color-bg)',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                padding: '120px 24px 80px',
-            }}>
-                <div style={{ width: '100%', maxWidth: 720 }}>
+            <section className="min-h-screen bg-[var(--color-bg)] flex flex-col items-center justify-center pt-24 pb-16 px-4 md:pt-32 md:pb-20">
+                <div className="w-full" style={{ maxWidth: 720 }}>
+
                     {/* Progress */}
-                    <div style={{ marginBottom: '2.5rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div className="mb-8">
+                        <div className="flex justify-between mb-2">
                             <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#888', fontWeight: 500 }}>
                                 Question {answeredCount + 1} of {totalQuestions}
                             </span>
@@ -156,8 +161,8 @@ export default function AssessmentPage() {
                         <div style={{ height: 6, background: '#e5e0d6', borderRadius: 3 }}>
                             <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))', borderRadius: 3, transition: 'width 0.4s ease' }} />
                         </div>
-                        {/* Category tabs */}
-                        <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+                        {/* Category segment tabs */}
+                        <div className="flex gap-1.5 mt-3">
                             {categories.map((cat: Category, i: number) => (
                                 <div key={cat.id} style={{
                                     flex: 1, height: 4, borderRadius: 2,
@@ -169,37 +174,35 @@ export default function AssessmentPage() {
                     </div>
 
                     {/* Category Badge */}
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <span className="badge badge-green" style={{ background: `${currentCat.color}15`, color: currentCat.color, border: `1px solid ${currentCat.color}30` }}>
-                            {currentCat.label} · {currentCat.weight}% Weight
+                    <div className="mb-5">
+                        <span className="badge badge-green inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full" style={{ background: `${currentCat.color}15`, color: currentCat.color, border: `1px solid ${currentCat.color}30` }}>
+                            {currentCat.label}
+                            <span className="opacity-50">·</span>
+                            <span>{currentCat.weight}% Weight</span>
                         </span>
                     </div>
 
                     {/* Question Card */}
-                    <div style={{
-                        background: '#fff', border: '1px solid var(--color-border)', borderRadius: 4,
-                        padding: '3rem', boxShadow: 'var(--shadow-card)', marginBottom: '1.5rem',
-                    }}>
-                        <h2 style={{
-                            fontFamily: 'var(--font-display)', fontWeight: 700,
-                            fontSize: '1.35rem', color: '#111', lineHeight: 1.5, marginBottom: '2rem',
-                        }}>
+                    <div className="bg-white border border-[var(--color-border)] rounded-md p-5 sm:p-8 md:p-12 shadow-[var(--shadow-card)] mb-5">
+                        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1rem, 3vw, 1.35rem)', color: '#111', lineHeight: 1.5, marginBottom: '1.5rem' }}>
                             {currentQ.text}
                         </h2>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div className="flex flex-col gap-3">
                             {currentQ.options.map((opt: Option, i: number) => (
                                 <button
                                     key={i}
                                     onClick={() => setSelected(opt.score)}
+                                    className="text-left rounded-md transition-all duration-200"
                                     style={{
-                                        textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 4, cursor: 'pointer',
+                                        padding: '0.875rem 1.1rem',
+                                        cursor: 'pointer',
                                         border: `2px solid ${selected === opt.score ? currentCat.color : '#e5e0d6'}`,
                                         background: selected === opt.score ? `${currentCat.color}0d` : '#fff',
-                                        transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: 12,
+                                        display: 'flex', alignItems: 'flex-start', gap: 12,
                                     }}
                                 >
                                     <div style={{
-                                        width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                                        width: 22, height: 22, borderRadius: '50%', flexShrink: 0, marginTop: 1,
                                         border: `2px solid ${selected === opt.score ? currentCat.color : '#ccc'}`,
                                         background: selected === opt.score ? currentCat.color : 'transparent',
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -207,7 +210,7 @@ export default function AssessmentPage() {
                                     }}>
                                         {selected === opt.score && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
                                     </div>
-                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: selected === opt.score ? currentCat.color : '#333', fontWeight: selected === opt.score ? 600 : 400 }}>
+                                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: selected === opt.score ? currentCat.color : '#333', fontWeight: selected === opt.score ? 600 : 400, lineHeight: 1.5 }}>
                                         {opt.text}
                                     </span>
                                 </button>
@@ -215,16 +218,18 @@ export default function AssessmentPage() {
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    {/* Next button — full-width on mobile */}
+                    <div className="flex justify-stretch sm:justify-end">
                         <button
                             onClick={handleNext}
                             disabled={selected === null}
-                            className="btn-primary"
+                            className="btn-primary w-full sm:w-auto justify-center"
                             style={{ opacity: selected === null ? 0.5 : 1, cursor: selected === null ? 'not-allowed' : 'pointer' }}
                         >
                             {answeredCount + 1 === totalQuestions ? 'View My Results →' : 'Next Question →'}
                         </button>
                     </div>
+
                 </div>
             </section>
         </>

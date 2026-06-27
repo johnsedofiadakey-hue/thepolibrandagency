@@ -49,6 +49,33 @@ export default function ApplicationsPage() {
         }
     };
 
+    const handleDeleteAll = async () => {
+        if (!confirm('Delete ALL applications? This cannot be undone.')) return;
+        try {
+            const res = await fetch('/api/applications', { method: 'DELETE' });
+            if (res.ok) {
+                setApplications([]);
+            } else {
+                alert('Failed to clear applications');
+            }
+        } catch {
+            alert('Failed to clear applications');
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            const res = await fetch(`/api/applications?id=${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                setApplications(prev => prev.filter(app => app.id !== id));
+            } else {
+                alert('Failed to delete application');
+            }
+        } catch {
+            alert('Failed to delete application');
+        }
+    };
+
     const filtered = applications.filter((a) =>
         (filter === 'All' || a.status === filter) &&
         (a.name.toLowerCase().includes(search.toLowerCase()) || a.country.toLowerCase().includes(search.toLowerCase()))
@@ -58,9 +85,19 @@ export default function ApplicationsPage() {
 
     return (
         <div>
-            <div style={{ marginBottom: '1.25rem' }}>
-                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Applications</h1>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Manage program applicants</p>
+            <div style={{ marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                    <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem', color: '#111', marginBottom: '0.15rem' }}>Applications</h1>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#9ca3af' }}>Manage program applicants</p>
+                </div>
+                {applications.length > 0 && (
+                    <button
+                        onClick={handleDeleteAll}
+                        style={{ padding: '8px 16px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--font-body)' }}
+                    >
+                        Clear All
+                    </button>
+                )}
             </div>
 
             {/* Filters */}
@@ -128,6 +165,7 @@ export default function ApplicationsPage() {
                                         <div style={{ display: 'flex', gap: 6 }}>
                                             <button onClick={() => handleStatusUpdate(app.id, 'Approved')} style={{ padding: '4px 8px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Approve</button>
                                             <button onClick={() => handleStatusUpdate(app.id, 'Rejected')} style={{ padding: '4px 8px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Reject</button>
+                                            <button onClick={() => handleDelete(app.id)} style={{ padding: '4px 8px', background: '#f9fafb', color: '#9ca3af', border: '1px solid #e5e7eb', borderRadius: 4, fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}>Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -153,6 +191,7 @@ export default function ApplicationsPage() {
                             <div style={{ display: 'flex', gap: 6 }}>
                                 <button onClick={() => handleStatusUpdate(app.id, 'Approved')} style={{ flex: 1, padding: '7px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Approve</button>
                                 <button onClick={() => handleStatusUpdate(app.id, 'Rejected')} style={{ flex: 1, padding: '7px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Reject</button>
+                                <button onClick={() => handleDelete(app.id)} style={{ padding: '7px 10px', background: '#f9fafb', color: '#9ca3af', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700 }}>Del</button>
                             </div>
                         </div>
                     ))}
