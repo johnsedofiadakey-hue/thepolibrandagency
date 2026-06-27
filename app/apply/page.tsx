@@ -1,6 +1,5 @@
 'use client';
 import { Suspense, useState, useContext, useEffect } from 'react';
-import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
@@ -65,14 +64,16 @@ function ServiceCard({ item, selected, onToggle }: { item: typeof SERVICE_OPTION
     );
 }
 
+// Public key is safe to embed — it's a Paystack publishable key (like Stripe pk_live_*)
+const PAYSTACK_PK_FALLBACK = 'pk_live_8ed2906bfdd2f7f064f4c2f171e2aa603b5690c7';
+
 function ApplyForm() {
     const { content } = useContext(PoliSettingsContext) as any;
     const apply = content.pages.apply;
 
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
-    const [paystackPublicKey, setPaystackPublicKey] = useState('');
-    const [paystackReady, setPaystackReady] = useState(false);
+    const [paystackPublicKey, setPaystackPublicKey] = useState(PAYSTACK_PK_FALLBACK);
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [paymentError, setPaymentError] = useState<string | null>(null);
     const [serviceError, setServiceError] = useState('');
@@ -99,13 +100,20 @@ function ApplyForm() {
     });
 
     useEffect(() => {
+        // Fetch key from API; fall back to hardcoded public key if empty/unavailable
         fetch('/api/payment/config')
             .then(r => r.json())
-            .then(d => setPaystackPublicKey(d.paystackPublicKey || ''))
+            .then(d => { if (d.paystackPublicKey) setPaystackPublicKey(d.paystackPublicKey); })
             .catch(() => {});
 
-        // Script loads via <Script> component below; mark ready if already loaded
-        if ((window as any).PaystackPop) setPaystackReady(true);
+        // Load Paystack inline.js once
+        if ((window as any).PaystackPop) return;
+        if (document.getElementById('paystack-js')) return;
+        const script = document.createElement('script');
+        script.id = 'paystack-js';
+        script.src = 'https://js.paystack.co/v1/inline.js';
+        script.async = true;
+        document.body.appendChild(script);
     }, []);
 
     const toggleService = (id: string) => {
@@ -142,14 +150,22 @@ function ApplyForm() {
         try {
             const PaystackPop = (window as any).PaystackPop;
             if (!PaystackPop || typeof PaystackPop.setup !== 'function') {
-                setPaymentError('Payment system is not ready. Please refresh the page and try again.');
-                setPaymentLoading(false);
-                return;
-            }
-
-            if (!paystackPublicKey) {
-                setPaymentError('Payment is not configured. Please contact the administrator.');
-                setPaymentLoading(false);
+                // Script may still be loading — wait up to 5 s then retry
+                let waited = 0;
+                const check = setInterval(() => {
+                    waited += 250;
+                    const PS = (window as any).PaystackPop;
+                    if (PS && typeof PS.setup === 'function') {
+                        clearInterval(check);
+                        setPaymentLoading(false);
+                        // Re-trigger after the script loads
+                        handlePayment();
+                    } else if (waited >= 5000) {
+                        clearInterval(check);
+                        setPaymentError('Payment system failed to load. Please refresh the page and try again.');
+                        setPaymentLoading(false);
+                    }
+                }, 250);
                 return;
             }
 
@@ -477,20 +493,14 @@ function ApplyForm() {
                                         <button type="button" onClick={goPrev} disabled={paymentLoading} className="font-sans text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors sm:w-auto text-center py-4 sm:py-0 disabled:opacity-40">
                                             ← Back
                                         </button>
-                                        {paystackPublicKey ? (
-                                            <button
-                                                type="button"
-                                                onClick={handlePayment}
-                                                disabled={paymentLoading || !paystackReady}
-                                                className="btn-gold flex-1 justify-center py-4 text-sm tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
-                                            >
-                                                {paymentLoading ? 'Processing payment...' : !paystackReady ? 'Loading...' : 'Pay ₵1,500 & Submit Application →'}
-                                            </button>
-                                        ) : (
-                                            <div className="flex-1 text-center font-sans text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-xl px-4 py-4">
-                                                Payment not configured — contact the administrator.
-                                            </div>
-                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={handlePayment}
+                                            disabled={paymentLoading}
+                                            className="btn-gold flex-1 justify-center py-4 text-sm tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
+                                        >
+                                            {paymentLoading ? 'Opening payment...' : 'Pay ₵1,500 & Submit Application →'}
+                                        </button>
                                     </div>
                                     <p className="font-sans text-xs text-center text-gray-400">
                                         Secured by Paystack · Your payment is encrypted and protected
@@ -502,12 +512,6 @@ function ApplyForm() {
                 </div>
             </section>
 
-            <Script
-                src="https://js.paystack.co/v1/inline.js"
-                strategy="afterInteractive"
-                onLoad={() => setPaystackReady(true)}
-                onError={() => setPaymentError('Failed to load payment system. Please refresh the page and try again.')}
-            />
             <Footer />
         </div>
     );
