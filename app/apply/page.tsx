@@ -166,12 +166,15 @@ function ApplyForm() {
                 return;
             }
 
+            // eslint-disable-next-line react-hooks/purity
+            const uniqueRef = `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+
             const handler = PaystackPop.setup({
                 key: paystackPublicKey,
                 email: formData.email,
                 amount: 150000,
                 currency: 'GHS',
-                ref: `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+                ref: uniqueRef,
                 label: `${formData.firstName} ${formData.lastName}`,
                 metadata: {
                     custom_fields: [
@@ -270,6 +273,14 @@ function ApplyForm() {
             {/* Form */}
             <section className="pb-16 md:pb-24 -mt-2 md:-mt-6 relative z-10">
                 <div className="container-brand max-w-2xl">
+
+                    {/* Refund Notice */}
+                    <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
+                        <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
+                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵1,500 application fee will be 50% refunded (₵750) when we proceed with or start working on your brand strategy.
+                        </p>
+                    </div>
+
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
 
                         {/* Progress header */}

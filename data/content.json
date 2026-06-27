@@ -582,7 +582,7 @@
       "hero": {
         "tag": "Diagnostic Tool",
         "title": "Political Readiness Index (PRI)",
-        "description": "Measure your strategic communication clarity, narrative strength, and visibility readiness.",
+        "description": "Understand your leadership readiness and get personalized recommendations from Polibrand.",
         "details": [
           {
             "icon": "📝",
@@ -600,29 +600,51 @@
       },
       "categories": [
         {
-          "id": "clarity",
-          "label": "Brand Clarity",
-          "weight": 25,
+          "id": "background",
+          "label": "Your Background",
+          "weight": 20,
           "color": "#1F6F3E",
           "questions": [
             {
               "id": "q1",
-              "text": "Do you have a documented personal brand blueprint that defines your core values and value proposition?",
+              "text": "What is your current political or leadership position?",
               "options": [
                 {
-                  "text": "No, I haven't defined my brand yet.",
+                  "text": "No formal political position yet",
                   "score": 1
                 },
                 {
-                  "text": "I have a general idea but nothing documented.",
+                  "text": "Party activist or grassroots leader",
                   "score": 2
                 },
                 {
-                  "text": "I have some core values identified.",
+                  "text": "Aspiring candidate or emerging leader",
                   "score": 3
                 },
                 {
-                  "text": "Yes, I have a fully documented brand framework.",
+                  "text": "Currently serving in office or established leadership",
+                  "score": 4
+                }
+              ]
+            },
+            {
+              "id": "q2",
+              "text": "How many years of experience do you have in public/political work?",
+              "options": [
+                {
+                  "text": "Less than 1 year",
+                  "score": 1
+                },
+                {
+                  "text": "1-3 years",
+                  "score": 2
+                },
+                {
+                  "text": "3-7 years",
+                  "score": 3
+                },
+                {
+                  "text": "7+ years",
                   "score": 4
                 }
               ]
@@ -630,29 +652,89 @@
           ]
         },
         {
-          "id": "narrative",
-          "label": "Narrative Strength",
-          "weight": 35,
+          "id": "goals",
+          "label": "Your Goals",
+          "weight": 25,
           "color": "#C9A227",
           "questions": [
             {
-              "id": "q2",
-              "text": "How consistent is your public messaging across different platforms (interviews, social media, speeches)?",
+              "id": "q3",
+              "text": "What is your primary goal in the next 12 months?",
               "options": [
                 {
-                  "text": "Inconsistent; I change my message often.",
+                  "text": "Build my personal brand as a leader",
                   "score": 1
                 },
                 {
-                  "text": "Somewhat consistent, but needs more work.",
+                  "text": "Launch or strengthen a political campaign",
                   "score": 2
                 },
                 {
-                  "text": "Mostly consistent across primary platforms.",
+                  "text": "Expand influence within my party/organization",
                   "score": 3
                 },
                 {
-                  "text": "Extremely consistent and disciplined always.",
+                  "text": "Run for elected office",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "challenges",
+          "label": "Your Challenges",
+          "weight": 30,
+          "color": "#E74C3C",
+          "questions": [
+            {
+              "id": "q4",
+              "text": "What is your biggest challenge right now?",
+              "options": [
+                {
+                  "text": "Building credibility and visibility",
+                  "score": 1
+                },
+                {
+                  "text": "Crafting a clear political message",
+                  "score": 2
+                },
+                {
+                  "text": "Managing media and public perception",
+                  "score": 3
+                },
+                {
+                  "text": "Strategic campaign planning and execution",
+                  "score": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "readiness",
+          "label": "Your Readiness",
+          "weight": 25,
+          "color": "#3498DB",
+          "questions": [
+            {
+              "id": "q5",
+              "text": "How ready are you to invest in professional support?",
+              "options": [
+                {
+                  "text": "Still exploring options",
+                  "score": 1
+                },
+                {
+                  "text": "Ready for strategic guidance",
+                  "score": 2
+                },
+                {
+                  "text": "Committed to ongoing coaching/support",
+                  "score": 3
+                },
+                {
+                  "text": "Ready for comprehensive brand strategy and execution",
                   "score": 4
                 }
               ]
