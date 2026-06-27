@@ -270,6 +270,14 @@ function ApplyForm() {
             {/* Form */}
             <section className="pb-16 md:pb-24 -mt-2 md:-mt-6 relative z-10">
                 <div className="container-brand max-w-2xl">
+
+                    {/* Refund Notice */}
+                    <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
+                        <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
+                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵1,500 application fee will be 50% refunded (₵750) when we proceed with or start working on your brand strategy.
+                        </p>
+                    </div>
+
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
 
                         {/* Progress header */}

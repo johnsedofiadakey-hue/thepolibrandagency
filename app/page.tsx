@@ -137,7 +137,7 @@ export default function Page() {
               >
                 {(home.cta?.apply && !home.cta.apply.toLowerCase().includes('fellowship')) ? home.cta.apply : "Apply"}
               </Link>
-              <Link href="/institutional-clients" style={{
+              <Link href="/assessment" style={{
                 fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
                 letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
                 color: '#fff', padding: '13px 28px', borderRadius: 3,
@@ -150,7 +150,7 @@ export default function Page() {
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
               >
-                {home.cta?.partner || "Partner With Us"}
+                {home.cta?.assessment || "Start Assessment →"}
               </Link>
             </div>
           </div>
