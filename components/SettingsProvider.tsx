@@ -40,6 +40,22 @@ export function SettingsProvider({
     return serverContent || (initialContent as SiteContent);
   });
 
+  // Force fetch from API on mount to get latest content
+  React.useEffect(() => {
+    const fetchLatest = async () => {
+      try {
+        const res = await fetch('/api/content', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setContent(data as SiteContent);
+        }
+      } catch (e) {
+        console.error('Failed to fetch latest content:', e);
+      }
+    };
+    fetchLatest();
+  }, []);
+
   const loadAll = React.useCallback(async () => {
     try {
       const [sRes, cRes] = await Promise.all([
