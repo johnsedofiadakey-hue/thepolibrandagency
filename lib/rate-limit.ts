@@ -5,6 +5,17 @@ type RateLimitEntry = {
 
 const buckets = new Map<string, RateLimitEntry>();
 
+// Purge expired entries every 10 minutes to prevent unbounded memory growth.
+const CLEANUP_INTERVAL_MS = 10 * 60 * 1000;
+if (typeof setInterval !== 'undefined') {
+    setInterval(() => {
+        const now = Date.now();
+        for (const [key, entry] of buckets.entries()) {
+            if (entry.resetAt <= now) buckets.delete(key);
+        }
+    }, CLEANUP_INTERVAL_MS);
+}
+
 function getClientKey(request: Request, scope: string): string {
     const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
     const realIp = request.headers.get('x-real-ip')?.trim();
