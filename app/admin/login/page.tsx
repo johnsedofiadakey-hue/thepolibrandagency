@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirebaseClientAuth } from '@/lib/firebase-client';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -43,27 +45,40 @@ export default function AdminLoginPage() {
         }
 
         try {
+            const auth = getFirebaseClientAuth();
+            let requestBody: { email?: string; password?: string; idToken?: string };
+
+            if (auth) {
+                const credential = await signInWithEmailAndPassword(auth, email.trim(), password);
+                requestBody = { idToken: await credential.user.getIdToken(true) };
+            } else {
+                requestBody = { email, password };
+            }
+
             const res = await fetch('/api/admin/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(requestBody),
             });
-
-            let data: any = {};
-            const text = await res.text();
-            try { data = JSON.parse(text); } catch { /* non-JSON response */ }
+            const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
-                const msg = data.error || (res.status === 503 ? 'Admin login is not configured on this server.' : res.status === 429 ? 'Too many attempts. Please wait a few minutes.' : `Sign-in failed (${res.status}). Check credentials and try again.`);
-                setError(msg);
+                setError(data.error || 'Invalid email or password.');
                 setLoading(false);
                 return;
             }
 
             const next = new URLSearchParams(window.location.search).get('next') || '/admin/dashboard';
             window.location.href = next.startsWith('/admin') ? next : '/admin/dashboard';
-        } catch (err: any) {
-            setError(`Network error: ${err?.message || 'Unable to reach server. Please try again.'}`);
+        } catch (error: any) {
+            const code = String(error?.code || '');
+            if (code.includes('auth/invalid-credential') || code.includes('auth/wrong-password') || code.includes('auth/user-not-found')) {
+                setError('Invalid Firebase email or password.');
+            } else if (code.includes('auth/too-many-requests')) {
+                setError('Too many sign-in attempts. Please wait and try again.');
+            } else {
+                setError(error?.message || 'Unable to sign in. Please try again.');
+            }
             setLoading(false);
         }
     };
@@ -169,7 +184,6 @@ export default function AdminLoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="admin@polibrand.co"
-                                autoComplete="email"
                                 style={{
                                     width: '100%', padding: '15px 18px', border: '1.5px solid #e5e0d6',
                                     borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#111',
@@ -189,7 +203,6 @@ export default function AdminLoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                autoComplete="current-password"
                                 style={{
                                     width: '100%', padding: '15px 18px', border: '1.5px solid #e5e0d6',
                                     borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '1rem', color: '#111',
