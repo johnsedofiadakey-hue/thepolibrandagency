@@ -166,12 +166,15 @@ function ApplyForm() {
                 return;
             }
 
+            // eslint-disable-next-line react-hooks/purity
+            const uniqueRef = `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+
             const handler = PaystackPop.setup({
                 key: paystackPublicKey,
                 email: formData.email,
                 amount: 150000,
                 currency: 'GHS',
-                ref: `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+                ref: uniqueRef,
                 label: `${formData.firstName} ${formData.lastName}`,
                 metadata: {
                     custom_fields: [
