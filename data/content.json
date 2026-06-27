@@ -582,160 +582,138 @@
       "hero": {
         "tag": "Diagnostic Tool",
         "title": "Political Readiness Index (PRI)",
-        "description": "Understand your leadership readiness and get personalized recommendations from Polibrand.",
+        "description": "Discover the gaps in your political brand and get a personalized action plan from Polibrand.",
         "details": [
           {
-            "icon": "📝",
-            "text": "11 Strategic Indicators"
+            "icon": "🎯",
+            "text": "5 Strategic Questions"
           },
           {
             "icon": "⏱️",
-            "text": "5-Minute Assessment"
+            "text": "2-Minute Assessment"
           },
           {
             "icon": "📊",
-            "text": "Personalized Roadmap"
+            "text": "Actionable Roadmap"
           }
         ]
       },
       "categories": [
         {
-          "id": "background",
-          "label": "Your Background",
-          "weight": 20,
-          "color": "#1F6F3E",
-          "questions": [
-            {
-              "id": "q1",
-              "text": "What is your current political or leadership position?",
-              "options": [
-                {
-                  "text": "No formal political position yet",
-                  "score": 1
-                },
-                {
-                  "text": "Party activist or grassroots leader",
-                  "score": 2
-                },
-                {
-                  "text": "Aspiring candidate or emerging leader",
-                  "score": 3
-                },
-                {
-                  "text": "Currently serving in office or established leadership",
-                  "score": 4
-                }
-              ]
-            },
-            {
-              "id": "q2",
-              "text": "How many years of experience do you have in public/political work?",
-              "options": [
-                {
-                  "text": "Less than 1 year",
-                  "score": 1
-                },
-                {
-                  "text": "1-3 years",
-                  "score": 2
-                },
-                {
-                  "text": "3-7 years",
-                  "score": 3
-                },
-                {
-                  "text": "7+ years",
-                  "score": 4
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "goals",
-          "label": "Your Goals",
+          "id": "visibility",
+          "label": "Brand Visibility",
           "weight": 25,
           "color": "#C9A227",
           "questions": [
             {
-              "id": "q3",
-              "text": "What is your primary goal in the next 12 months?",
+              "id": "q1",
+              "text": "How well do people in your community/constituency know who you are and what you stand for?",
               "options": [
                 {
-                  "text": "Build my personal brand as a leader",
-                  "score": 1
+                  "text": "Most people haven't heard of me or have no clear sense of who I am",
+                  "score": 4
                 },
                 {
-                  "text": "Launch or strengthen a political campaign",
-                  "score": 2
-                },
-                {
-                  "text": "Expand influence within my party/organization",
+                  "text": "A few key stakeholders know me, but my message isn't consistent",
                   "score": 3
                 },
                 {
-                  "text": "Run for elected office",
-                  "score": 4
+                  "text": "People know me, but not for specific leadership qualities I want to be known for",
+                  "score": 2
+                },
+                {
+                  "text": "I have a strong, clear brand that aligns with my political goals",
+                  "score": 1
                 }
               ]
             }
           ]
         },
         {
-          "id": "challenges",
-          "label": "Your Challenges",
+          "id": "messaging",
+          "label": "Message Clarity",
           "weight": 30,
           "color": "#E74C3C",
           "questions": [
             {
-              "id": "q4",
-              "text": "What is your biggest challenge right now?",
+              "id": "q2",
+              "text": "Can you articulate your core political message and why people should support you in under 30 seconds?",
               "options": [
                 {
-                  "text": "Building credibility and visibility",
-                  "score": 1
+                  "text": "I struggle to explain this clearly and coherently",
+                  "score": 4
                 },
                 {
-                  "text": "Crafting a clear political message",
-                  "score": 2
-                },
-                {
-                  "text": "Managing media and public perception",
+                  "text": "I have a message, but it shifts depending on who I'm talking to",
                   "score": 3
                 },
                 {
-                  "text": "Strategic campaign planning and execution",
-                  "score": 4
+                  "text": "I have a message, but I'm not sure it's compelling enough",
+                  "score": 2
+                },
+                {
+                  "text": "Yes, and people regularly tell me it resonates with them",
+                  "score": 1
                 }
               ]
             }
           ]
         },
         {
-          "id": "readiness",
-          "label": "Your Readiness",
+          "id": "perception",
+          "label": "Public Perception",
           "weight": 25,
-          "color": "#3498DB",
+          "color": "#1F6F3E",
           "questions": [
             {
-              "id": "q5",
-              "text": "How ready are you to invest in professional support?",
+              "id": "q3",
+              "text": "How confident are you in managing your public image and media interactions?",
               "options": [
                 {
-                  "text": "Still exploring options",
-                  "score": 1
+                  "text": "I'm concerned about how media portrays me or what people say online",
+                  "score": 4
                 },
                 {
-                  "text": "Ready for strategic guidance",
-                  "score": 2
-                },
-                {
-                  "text": "Committed to ongoing coaching/support",
+                  "text": "I handle it okay, but I sometimes miss opportunities or make missteps",
                   "score": 3
                 },
                 {
-                  "text": "Ready for comprehensive brand strategy and execution",
+                  "text": "I'm fairly confident, though I'd like to be more strategic",
+                  "score": 2
+                },
+                {
+                  "text": "I actively manage my brand and perception very well",
+                  "score": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ambition",
+          "label": "Political Ambition",
+          "weight": 20,
+          "color": "#3498DB",
+          "questions": [
+            {
+              "id": "q4",
+              "text": "What's your biggest political ambition in the next 2-3 years?",
+              "options": [
+                {
+                  "text": "Run for elected office or significantly increase my influence",
                   "score": 4
+                },
+                {
+                  "text": "Lead a major initiative or expand my sphere of influence",
+                  "score": 3
+                },
+                {
+                  "text": "Strengthen my position and build credibility",
+                  "score": 2
+                },
+                {
+                  "text": "Explore opportunities without a specific timeline",
+                  "score": 1
                 }
               ]
             }
