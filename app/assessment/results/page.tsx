@@ -26,7 +26,6 @@ interface Tier {
 function ResultsContent() {
     const { content } = useContext(PoliSettingsContext) as any;
     const assessmentResults = content.pages.assessment_results;
-    // Use the primary categories from the assessment page, not the redundant results object
     const categories = content.pages.assessment.categories;
     const tiers: Tier[] = assessmentResults.tiers;
 
@@ -47,26 +46,28 @@ function ResultsContent() {
     return (
         <>
             <Navbar />
-            <section style={{ background: 'var(--color-bg)', padding: '120px 0 80px', minHeight: '100vh' }}>
+            <section className="bg-[var(--color-bg)] pt-24 pb-16 md:pt-32 md:pb-20 min-h-screen">
                 <div className="container-brand" style={{ maxWidth: 900 }}>
+
                     {/* Header */}
-                    <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
+                    <div className="text-center mb-10 md:mb-14">
+                        <div className="inline-flex items-center gap-2.5 mb-4">
                             <div style={{ width: 28, height: 1, background: '#C9A227' }} />
                             <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase' }}>Your Results</span>
                             <div style={{ width: 28, height: 1, background: '#C9A227' }} />
                         </div>
-                        <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '2.4rem', color: '#111', marginBottom: '0.5rem' }}>
+                        <h1 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: 'clamp(1.5rem, 5vw, 2.4rem)', color: '#111', marginBottom: '0.5rem', lineHeight: 1.2 }}>
                             Political Readiness Index Results
                         </h1>
                         <div className="divider-gold divider-gold-center" />
                     </div>
 
-                    {/* Score + Tier */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem', marginBottom: '2.5rem' }}>
+                    {/* Score + Tier — stacks on mobile */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 mb-5">
+
                         {/* Donut Score */}
-                        <div style={{ background: '#fff', border: '1px solid var(--color-border)', borderRadius: 4, padding: '3rem', textAlign: 'center', boxShadow: 'var(--shadow-card)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <svg width="180" height="180" viewBox="0 0 180 180" style={{ marginBottom: '1.5rem' }}>
+                        <div className="bg-white border border-[var(--color-border)] rounded-sm p-6 md:p-12 text-center flex flex-col items-center justify-center shadow-[var(--shadow-card)]">
+                            <svg width="160" height="160" viewBox="0 0 180 180" className="mb-5 md:w-[180px] md:h-[180px] w-[140px] h-[140px]">
                                 <circle cx="90" cy="90" r="72" fill="none" stroke="#f0ebe2" strokeWidth="12" />
                                 <circle
                                     cx="90" cy="90" r="72" fill="none"
@@ -90,11 +91,11 @@ function ResultsContent() {
                         </div>
 
                         {/* Tier Info */}
-                        <div style={{ background: tier.bg, border: `2px solid ${tier.color}30`, borderRadius: 4, padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <div className="rounded-sm p-5 md:p-10 flex flex-col justify-between" style={{ background: tier.bg, border: `2px solid ${tier.color}30` }}>
                             <div>
                                 <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.2rem', color: tier.color, marginBottom: '0.5rem' }}>{tier.label}</h3>
                                 <div style={{ width: 40, height: 2, background: tier.color, marginBottom: '1rem' }} />
-                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: '#333', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+                                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: '#333', lineHeight: 1.8, marginBottom: '1.25rem' }}>
                                     {tier.advice}
                                 </p>
                                 <div style={{ background: '#fff', border: '1px solid #e5e0d6', borderRadius: 4, padding: '1rem' }}>
@@ -106,17 +107,17 @@ function ResultsContent() {
                     </div>
 
                     {/* Category Breakdown */}
-                    <div style={{ background: '#fff', border: '1px solid var(--color-border)', borderRadius: 4, padding: '2.5rem', marginBottom: '2rem', boxShadow: 'var(--shadow-card)' }}>
-                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '2rem' }}>Category Breakdown</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div className="bg-white border border-[var(--color-border)] rounded-sm p-5 md:p-10 mb-5 shadow-[var(--shadow-card)]">
+                        <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.15rem', color: '#111', marginBottom: '1.5rem' }}>Category Breakdown</h3>
+                        <div className="flex flex-col gap-5 md:gap-6">
                             {catScores.map((cat: CategoryScore) => (
                                 <div key={cat.id}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, alignItems: 'center' }}>
-                                        <div>
+                                    <div className="flex justify-between items-start mb-2 gap-2">
+                                        <div className="min-w-0">
                                             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.9rem', color: '#111' }}>{cat.label}</span>
-                                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#888', marginLeft: 8 }}>({cat.weight}% weight)</span>
+                                            <span className="hidden sm:inline" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#888', marginLeft: 8 }}>({cat.weight}% weight)</span>
                                         </div>
-                                        <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1rem', color: cat.color }}>{cat.score}/100</span>
+                                        <span className="shrink-0" style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1rem', color: cat.color }}>{cat.score}/100</span>
                                     </div>
                                     <div style={{ height: 8, background: '#f0ebe2', borderRadius: 4 }}>
                                         <div style={{
@@ -129,33 +130,34 @@ function ResultsContent() {
                         </div>
                     </div>
 
-                    {/* CTAs */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
-                        <div style={{ background: '#1F6F3E', borderRadius: 4, padding: '2rem', color: '#fff' }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.75rem' }}>Enroll in a Program</h3>
-                            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'rgba(255,255,255,0.78)', marginBottom: '1.5rem', lineHeight: 1.7 }}>
+                    {/* CTAs — stacks on mobile */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                        <div className="rounded-sm p-5 md:p-8 flex flex-col" style={{ background: '#1F6F3E' }}>
+                            <h3 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.1rem', color: '#fff', marginBottom: '0.75rem' }}>Enroll in a Program</h3>
+                            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'rgba(255,255,255,0.78)', marginBottom: '1.5rem', lineHeight: 1.7, flexGrow: 1 }}>
                                 Based on your readiness score, we recommend: <strong style={{ color: '#C9A227' }}>{program}</strong>
                             </p>
-                            <Link href={`/apply?score=${total}&program=${encodeURIComponent(program)}`} className="btn-gold" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
+                            <Link href={`/apply?score=${total}&program=${encodeURIComponent(program)}`} className="btn-gold w-full sm:w-auto text-center justify-center" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
                                 Apply Now →
                             </Link>
                         </div>
-                        <div style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: 4, padding: '2rem' }}>
+                        <div className="rounded-sm p-5 md:p-8 flex flex-col" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
                             <h3 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '0.75rem' }}>Consult a Strategist</h3>
-                            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#666', marginBottom: '1.5rem', lineHeight: 1.7 }}>
+                            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#666', marginBottom: '1.5rem', lineHeight: 1.7, flexGrow: 1 }}>
                                 Speak directly with a Polibrand political communication strategist to discuss your results and create a tailored roadmap.
                             </p>
-                            <Link href="#" className="btn-outline-dark" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
+                            <Link href="#" className="btn-outline-dark w-full sm:w-auto text-center justify-center" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
                                 Book Consultation
                             </Link>
                         </div>
                     </div>
 
-                    <div style={{ textAlign: 'center' }}>
+                    <div className="text-center">
                         <Link href="/assessment" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#888', textDecoration: 'underline' }}>
                             Retake Assessment
                         </Link>
                     </div>
+
                 </div>
             </section>
             <Footer />
@@ -165,7 +167,14 @@ function ResultsContent() {
 
 export default function ResultsPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)]">
+                <div className="text-center">
+                    <div className="w-10 h-10 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                    <p className="font-sans text-sm text-gray-500">Loading your results...</p>
+                </div>
+            </div>
+        }>
             <ResultsContent />
         </Suspense>
     );
