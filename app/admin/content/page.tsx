@@ -632,6 +632,12 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
                 ))}
             </div>
 
+            <SectionTitle>Founders Story Section</SectionTitle>
+            <Field label="Tag" value={about.foundersStory?.tag} onChange={v => setField('foundersStory.tag', v)} />
+            <Field label="Title" value={about.foundersStory?.title} onChange={v => setField('foundersStory.title', v)} />
+            <Field label="Story" value={about.foundersStory?.story} onChange={v => setField('foundersStory.story', v)} type="textarea" />
+            <ImageUploadField label="Story Image" value={about.foundersStory?.image} onChange={v => setField('foundersStory.image', v)} />
+
             <SectionTitle>Impact Timeline</SectionTitle>
             <ObjectListField
                 label="Timeline Events"

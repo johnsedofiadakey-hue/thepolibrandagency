@@ -164,6 +164,46 @@ export default function AboutPage() {
                 </section>
             )}
 
+            {/* ─── FOUNDERS STORY ─── */}
+            {about.foundersStory && (
+                <section className="section-pad bg-white">
+                    <div className="container-brand max-w-4xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+                            {/* Text */}
+                            <div>
+                                <div className="inline-flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-px bg-[var(--color-secondary)]" />
+                                    <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.foundersStory.tag}</span>
+                                </div>
+                                <h2 className="font-display font-bold text-4xl text-[#111] mb-6 leading-tight">{about.foundersStory.title}</h2>
+                                <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed mb-6">
+                                    {about.foundersStory.story}
+                                </p>
+                                <p className="font-sans text-sm text-gray-500 italic">
+                                    We started Polibrand to close that gap.
+                                </p>
+                            </div>
+
+                            {/* Image */}
+                            <div className="relative">
+                                {about.foundersStory.image ? (
+                                    <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl">
+                                        <img src={about.foundersStory.image} alt="Founders Story" className="w-full h-full object-cover" />
+                                    </div>
+                                ) : (
+                                    <div className="aspect-square bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-lg overflow-hidden shadow-xl flex items-center justify-center">
+                                        <p className="font-sans text-white/40 text-center px-8">Story image to be added</p>
+                                    </div>
+                                )}
+                                <div className="absolute -bottom-6 -right-6 w-40 h-40 border-2 border-[var(--color-secondary)]/20 rounded-lg pointer-events-none" />
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* ─── JOURNEY ─── */}
             <section className="section-pad bg-[var(--color-bg)]">
                 <div className="container-brand max-w-4xl mx-auto">

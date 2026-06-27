@@ -6,31 +6,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
-const SERVICE_OPTIONS = [
-    {
-        category: 'Training Programs',
-        items: [
-            { id: 'fellowship', label: 'The Polibrand Fellowship', desc: 'Flagship leadership & political branding programme for women in governance.' },
-            { id: 'bootcamp', label: 'Leadership Branding Bootcamp', desc: '6-week intensive on personal brand, narrative & media strategy.' },
-            { id: 'courses', label: 'Digital Courses', desc: 'Self-paced courses in political communication and digital presence.' },
-        ],
-    },
-    {
-        category: 'Individual Services',
-        items: [
-            { id: 'brand-positioning', label: 'Personal Brand Positioning', desc: 'Build a distinctive political identity that commands attention and trust.' },
-            { id: 'brand-strategy', label: 'Political Brand Strategy', desc: 'Data-driven communication strategy tailored to your political goals.' },
-            { id: 'campaign-comms', label: 'Campaign Communication Management', desc: 'End-to-end messaging, media handling and campaign narrative.' },
-        ],
-    },
-    {
-        category: 'Institutional Services',
-        items: [
-            { id: 'policy-comms', label: 'Policy Communication Consulting', desc: 'Translate complex policy into public messaging that resonates.' },
-            { id: 'gender-leadership', label: 'Gender Leadership Programs', desc: 'Custom-designed programs for political parties, NGOs and institutions.' },
-        ],
-    },
-];
+// Service options will be built from the services page in the content
 
 const COUNTRIES = [
     'Ghana', 'Nigeria', 'Kenya', 'South Africa', 'Rwanda', 'Uganda', 'Tanzania',
@@ -40,7 +16,7 @@ const COUNTRIES = [
     'Egypt', 'Morocco', 'Tunisia', 'Algeria', 'Libya', 'Other African Country', 'International',
 ];
 
-function ServiceCard({ item, selected, onToggle }: { item: typeof SERVICE_OPTIONS[0]['items'][0]; selected: boolean; onToggle: () => void }) {
+function ServiceCard({ item, selected, onToggle }: { item: { id: string; label: string; desc: string }; selected: boolean; onToggle: () => void }) {
     return (
         <button
             type="button"
@@ -70,6 +46,27 @@ const PAYSTACK_PK_FALLBACK = 'pk_live_8ed2906bfdd2f7f064f4c2f171e2aa603b5690c7';
 function ApplyForm() {
     const { content } = useContext(PoliSettingsContext) as any;
     const apply = content.pages.apply;
+    const services = content.pages.services;
+
+    // Build SERVICE_OPTIONS from the services page
+    const serviceOptions = [
+        {
+            category: services.individual.tag,
+            items: (services.individual.items || []).map((s: any) => ({
+                id: s.title.toLowerCase().replace(/\s+/g, '-'),
+                label: s.title,
+                desc: s.intro,
+            })),
+        },
+        {
+            category: services.institutional.tag,
+            items: (services.institutional.items || []).map((s: any) => ({
+                id: s.title.toLowerCase().replace(/\s+/g, '-'),
+                label: s.title,
+                desc: s.desc,
+            })),
+        },
+    ].filter(group => group.items.length > 0);
 
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
@@ -139,7 +136,7 @@ function ApplyForm() {
     };
 
     const getSelectedLabels = () => {
-        const all = SERVICE_OPTIONS.flatMap(g => g.items);
+        const all = serviceOptions.flatMap(g => g.items);
         return formData.services.map(id => all.find(i => i.id === id)?.label || id);
     };
 
@@ -379,11 +376,11 @@ function ApplyForm() {
                                         <p className="font-sans text-sm text-gray-500 mt-1">Select one or more services or programs. <span className="font-semibold text-[var(--color-primary)]">Multiple selections welcome.</span></p>
                                     </div>
 
-                                    {SERVICE_OPTIONS.map(group => (
+                                    {serviceOptions.map(group => (
                                         <div key={group.category}>
                                             <p className="font-sans text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{group.category}</p>
                                             <div className="grid grid-cols-1 gap-2.5">
-                                                {group.items.map(item => (
+                                                {group.items.map((item: { id: string; label: string; desc: string }) => (
                                                     <ServiceCard
                                                         key={item.id}
                                                         item={item}
@@ -481,9 +478,14 @@ function ApplyForm() {
                                             </div>
                                             <span className="font-sans text-xs font-bold px-3 py-1.5 rounded-full" style={{ background: 'rgba(201,162,39,0.18)', color: '#C9A227' }}>ONE-TIME</span>
                                         </div>
-                                        <p className="font-sans text-xs leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                                        <p className="font-sans text-xs leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
                                             A one-time fee to process your application. An adviser will reach out within 48 hours of payment.
                                         </p>
+                                        <div className="rounded-lg px-3 py-2.5 mb-4" style={{ background: 'rgba(201,162,39,0.08)', border: '1px solid rgba(201,162,39,0.2)' }}>
+                                            <p className="font-sans text-xs" style={{ color: 'rgba(201,162,39,0.9)' }}>
+                                                <span className="font-semibold">50% refund:</span> Your consultation fee will be refunded when we proceed or start working on your brand.
+                                            </p>
+                                        </div>
                                         <div className="flex gap-4 flex-wrap" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.75rem' }}>
                                             {['Card', 'Mobile Money', 'Bank Transfer'].map(m => (
                                                 <span key={m} className="font-sans text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>✓ {m}</span>
