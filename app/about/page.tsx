@@ -112,9 +112,6 @@ export default function AboutPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                         {about.philosophy.cards.map((card: any, i: number) => (
                             <div key={i} className="card-brand text-center">
-                                <div className="w-16 h-16 bg-[var(--color-secondary)]/10 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
-                                    {i === 0 ? '◈' : i === 1 ? '◆' : '▣'}
-                                </div>
                                 <h3 className="font-display font-bold text-xl text-[#111] mb-4">{card.title}</h3>
                                 <p className="font-sans text-[var(--color-muted)] leading-relaxed">{card.text}</p>
                             </div>

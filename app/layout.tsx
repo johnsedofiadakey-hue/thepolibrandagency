@@ -1,6 +1,5 @@
 import "./globals.css";
 import { SettingsProvider } from "../components/SettingsProvider";
-import AdinkraBackground from "../components/AdinkraBackground";
 import { getContent, getSettings } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
@@ -116,7 +115,6 @@ export default async function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: styleVariables }} />
       </head>
       <body>
-        <AdinkraBackground />
         <SettingsProvider serverSettings={activeSettings} serverContent={content}>
           {children}
         </SettingsProvider>
