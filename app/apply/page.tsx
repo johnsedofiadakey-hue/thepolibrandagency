@@ -169,10 +169,14 @@ function ApplyForm() {
             // eslint-disable-next-line react-hooks/purity
             const uniqueRef = `pba_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 
+            // Convert amount from content (e.g., "2,500") to pesewas (250000)
+            const feeAmount = apply.form?.consultationFee?.amount?.replace(/,/g, '') || '2500';
+            const amountInPesewas = parseInt(feeAmount) * 100;
+
             const handler = PaystackPop.setup({
                 key: paystackPublicKey,
                 email: formData.email,
-                amount: 150000,
+                amount: amountInPesewas,
                 currency: 'GHS',
                 ref: uniqueRef,
                 label: `${formData.firstName} ${formData.lastName}`,

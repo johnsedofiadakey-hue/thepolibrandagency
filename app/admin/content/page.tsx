@@ -910,6 +910,13 @@ function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <Field label="Step 1 Title" value={apply.form?.step1_title} onChange={v => setField('form.step1_title', v)} />
             <Field label="Step 2 Title" value={apply.form?.step2_title} onChange={v => setField('form.step2_title', v)} />
 
+            <SectionTitle>Consultation Fee</SectionTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <Field label="Amount (number only)" value={apply.form?.consultationFee?.amount} onChange={v => setField('form.consultationFee.amount', v)} />
+                <Field label="Currency" value={apply.form?.consultationFee?.currency} onChange={v => setField('form.consultationFee.currency', v)} />
+            </div>
+            <Field label="Refund Description" value={apply.form?.consultationFee?.description} onChange={v => setField('form.consultationFee.description', v)} type="textarea" />
+
             <SectionTitle>Success State</SectionTitle>
             <Field label="Success Title" value={apply.form?.success?.title} onChange={v => setField('form.success.title', v)} />
             <Field label="Success Text" value={apply.form?.success?.text} onChange={v => setField('form.success.text', v)} type="textarea" />
