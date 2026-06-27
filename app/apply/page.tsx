@@ -254,29 +254,29 @@ function ApplyForm() {
             <Navbar />
 
             {/* Hero */}
-            <section className="pt-36 pb-12 relative overflow-hidden" style={{
+            <section className="pt-24 md:pt-36 pb-8 md:pb-12 relative overflow-hidden" style={{
                 background: apply.hero.image
                     ? `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(${apply.hero.image}) center/cover`
                     : 'linear-gradient(135deg, var(--color-primary) 0%, #0d1f3c 100%)',
             }}>
                 <div className="container-brand max-w-2xl text-center relative z-10">
-                    <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="inline-flex items-center gap-3 mb-3 md:mb-4">
                         <div className="w-6 h-px bg-[#C9A227]" />
                         <span className="font-sans text-xs font-semibold text-[#C9A227] tracking-widest uppercase">{apply.hero.tag}</span>
                         <div className="w-6 h-px bg-[#C9A227]" />
                     </div>
-                    <h1 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">{apply.hero.title}</h1>
-                    <p className="font-sans text-base text-white/75 leading-relaxed">{apply.hero.description}</p>
+                    <h1 className="font-display font-bold text-3xl md:text-5xl text-white mb-3 md:mb-4 leading-tight">{apply.hero.title}</h1>
+                    <p className="font-sans text-sm md:text-base text-white/75 leading-relaxed">{apply.hero.description}</p>
                 </div>
             </section>
 
             {/* Form */}
-            <section className="pb-24 -mt-6 relative z-10">
+            <section className="pb-16 md:pb-24 -mt-2 md:-mt-6 relative z-10">
                 <div className="container-brand max-w-2xl">
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
 
                         {/* Progress header */}
-                        <div style={{ background: 'var(--color-primary)', padding: '1.25rem 2rem' }}>
+                        <div className="px-4 py-4 sm:px-8 sm:py-5" style={{ background: 'var(--color-primary)' }}>
                             {formData.assessmentScore !== undefined && (
                                 <div className="flex items-center gap-2 mb-3 bg-white/10 rounded-lg px-3 py-2">
                                     <span style={{ color: '#C9A227', fontWeight: 900 }}>★</span>
@@ -285,13 +285,13 @@ function ApplyForm() {
                                     </span>
                                 </div>
                             )}
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 sm:gap-3">
                                 {[
                                     { n: 1, label: 'Your Details' },
                                     { n: 2, label: 'Services' },
                                     { n: 3, label: 'Payment' },
                                 ].map(({ n, label }, i, arr) => (
-                                    <div key={n} className="flex items-center gap-3" style={{ flex: n < arr.length ? 1 : 'none' }}>
+                                    <div key={n} className="flex items-center gap-2 sm:gap-3" style={{ flex: n < arr.length ? 1 : 'none' }}>
                                         <div className="flex items-center gap-2 shrink-0">
                                             <div style={{
                                                 width: 28, height: 28, borderRadius: '50%',
@@ -310,9 +310,13 @@ function ApplyForm() {
                                     </div>
                                 ))}
                             </div>
+                            {/* Current step label — mobile only */}
+                            <p className="sm:hidden font-sans text-xs text-white/60 mt-3 text-center uppercase tracking-widest">
+                                Step {step} of 3 — {step === 1 ? 'Your Details' : step === 2 ? 'Services' : 'Payment'}
+                            </p>
                         </div>
 
-                        <div className="p-8 md:p-10">
+                        <div className="p-5 sm:p-8 md:p-10">
 
                             {/* STEP 1 — Your Details */}
                             {step === 1 && (
@@ -360,7 +364,8 @@ function ApplyForm() {
 
                                     <div className="pt-4">
                                         <button type="submit" className="btn-primary w-full justify-center py-4 text-sm tracking-widest">
-                                            Continue → Select Services
+                                            <span className="sm:hidden">Continue →</span>
+                                            <span className="hidden sm:inline">Continue → Select Services</span>
                                         </button>
                                     </div>
                                 </form>
@@ -419,11 +424,12 @@ function ApplyForm() {
                                     )}
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                        <button type="button" onClick={goPrev} className="font-sans text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors sm:w-auto text-center py-4 sm:py-0">
-                                            ← Back
+                                        <button type="submit" className="btn-primary order-1 sm:order-2 flex-1 justify-center py-4 text-sm tracking-widest">
+                                            <span className="sm:hidden">Continue →</span>
+                                            <span className="hidden sm:inline">Continue → Review & Pay</span>
                                         </button>
-                                        <button type="submit" className="btn-primary flex-1 justify-center py-4 text-sm tracking-widest">
-                                            Continue → Review & Pay
+                                        <button type="button" onClick={goPrev} className="order-2 sm:order-1 font-sans text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors sm:w-auto text-center py-2 sm:py-0">
+                                            ← Back
                                         </button>
                                     </div>
                                 </form>
@@ -451,8 +457,8 @@ function ApplyForm() {
                                                 { label: 'Role', value: formData.role },
                                             ].map(({ label, value }) => (
                                                 <div key={label} className="flex justify-between items-start px-5 py-3">
-                                                    <span className="font-sans text-xs text-gray-400 shrink-0 w-20">{label}</span>
-                                                    <span className="font-sans text-sm font-semibold text-[#111] text-right">{value}</span>
+                                                    <span className="font-sans text-xs text-gray-400 shrink-0 w-16 sm:w-20">{label}</span>
+                                                    <span className="font-sans text-sm font-semibold text-[#111] text-right break-all min-w-0 ml-2">{value}</span>
                                                 </div>
                                             ))}
                                             <div className="px-5 py-3">
@@ -490,16 +496,21 @@ function ApplyForm() {
                                     )}
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                                        <button type="button" onClick={goPrev} disabled={paymentLoading} className="font-sans text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors sm:w-auto text-center py-4 sm:py-0 disabled:opacity-40">
-                                            ← Back
-                                        </button>
                                         <button
                                             type="button"
                                             onClick={handlePayment}
                                             disabled={paymentLoading}
-                                            className="btn-gold flex-1 justify-center py-4 text-sm tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
+                                            className="btn-gold order-1 sm:order-2 flex-1 justify-center py-4 text-sm tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
-                                            {paymentLoading ? 'Opening payment...' : 'Pay ₵1,500 & Submit Application →'}
+                                            {paymentLoading ? 'Opening payment...' : (
+                                                <>
+                                                    <span className="sm:hidden">Pay ₵1,500 GHS →</span>
+                                                    <span className="hidden sm:inline">Pay ₵1,500 & Submit Application →</span>
+                                                </>
+                                            )}
+                                        </button>
+                                        <button type="button" onClick={goPrev} disabled={paymentLoading} className="order-2 sm:order-1 font-sans text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors sm:w-auto text-center py-2 sm:py-0 disabled:opacity-40">
+                                            ← Back
                                         </button>
                                     </div>
                                     <p className="font-sans text-xs text-center text-gray-400">
