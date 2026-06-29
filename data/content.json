@@ -404,6 +404,32 @@
               "Crisis communication guide",
               "Digital content strategy"
             ]
+          },
+          {
+            "number": "04",
+            "title": "Media Training",
+            "color": "var(--color-primary)",
+            "intro": "Equipping women leaders with the confidence, language, and presence to command every media environment — from broadcast interviews to press conferences.",
+            "deliverables": [
+              "On-camera and on-air performance coaching",
+              "Interview preparation and Q&A frameworks",
+              "Hostile media response strategies",
+              "Press conference facilitation guide",
+              "Media relationship development plan"
+            ]
+          },
+          {
+            "number": "05",
+            "title": "Fundraising Strategy",
+            "color": "var(--color-secondary)",
+            "intro": "Developing the narrative frameworks and donor engagement systems that translate political credibility into sustainable financial support.",
+            "deliverables": [
+              "Donor persona and segmentation mapping",
+              "Fundraising narrative and pitch deck",
+              "Major donor engagement plan",
+              "Digital fundraising campaign structure",
+              "Stewardship and retention framework"
+            ]
           }
         ]
       },
