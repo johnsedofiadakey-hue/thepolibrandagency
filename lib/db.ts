@@ -86,6 +86,7 @@ function getFirebaseStorageBucket(): string | undefined {
 function hasFirebaseConfig(): boolean {
     return !!(
         getFirebaseProjectId() ||
+        process.env.POLI_FIREBASE_SERVICE_ACCOUNT_KEY ||
         process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
         process.env.GOOGLE_APPLICATION_CREDENTIALS ||
         process.env.FIREBASE_CONFIG ||
@@ -97,7 +98,8 @@ function initializeFirebaseApp() {
     const admin = firebaseAdminModule();
     if (admin.apps.length) return admin.apps[0];
 
-    const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+    // POLI_FIREBASE_SERVICE_ACCOUNT_KEY is used on Firebase Hosting (FIREBASE_* prefix is reserved)
+    const serviceAccount = process.env.POLI_FIREBASE_SERVICE_ACCOUNT_KEY || process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
     const storageBucket = getFirebaseStorageBucket();
 
     if (serviceAccount) {
@@ -392,7 +394,7 @@ export async function setContent(data: Record<string, unknown>): Promise<void> {
 
     try {
         const firebase = requireFirebaseAdmin();
-        await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).set(cleanData, { merge: false });
+        await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).set(cleanData, { merge: true });
     } catch (error) {
         try {
             await setFirestoreRestJson(CONFIG_COLLECTION, CONTENT_DOC, cleanData);

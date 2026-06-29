@@ -3,6 +3,7 @@ import path from 'node:path';
 import admin from 'firebase-admin';
 
 const root = process.cwd();
+const force = process.argv.includes('--force');
 
 function readJson(relativePath, fallback) {
   const filePath = path.join(root, relativePath);
@@ -14,7 +15,7 @@ function initializeFirebase() {
   if (admin.apps.length) return admin.apps[0];
 
   const projectId = process.env.POLI_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
-  const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+  const serviceAccount = process.env.POLI_FIREBASE_SERVICE_ACCOUNT_KEY || process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
   if (serviceAccount) {
     return admin.initializeApp({
@@ -40,6 +41,17 @@ function stripSource(data) {
 
 const app = initializeFirebase();
 const db = admin.firestore(app);
+
+// Safety check: refuse to overwrite existing live data without --force
+if (!force) {
+  const existing = await db.collection('site_config').doc('content').get();
+  if (existing.exists) {
+    console.error('❌ site_config/content already exists in Firestore.');
+    console.error('   This script does a full REPLACE and will destroy any admin edits.');
+    console.error('   Re-run with --force if you are sure you want to overwrite live data.');
+    process.exit(1);
+  }
+}
 
 const content = stripSource(readJson('data/content.json', {}));
 const settings = stripSource(readJson('data/settings.json', {}));
