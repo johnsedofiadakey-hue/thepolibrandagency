@@ -191,35 +191,35 @@ function ApplyForm() {
                         { display_name: 'Services', variable_name: 'services', value: getSelectedLabels().join(', ') },
                     ],
                 },
-                callback: async (response: any) => {
-                    try {
-                        const res = await fetch('/api/payment/verify', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                reference: response.reference,
-                                firstName: formData.firstName,
-                                lastName: formData.lastName,
-                                email: formData.email,
-                                phone: formData.phone,
-                                country: formData.country,
-                                role: formData.role,
-                                program: getSelectedLabels().join(', '),
-                                essay: formData.essay,
-                                services: formData.services,
-                                assessmentScore: formData.assessmentScore,
-                            }),
-                        });
-                        if (res.ok) { setSubmitted(true); window.scrollTo(0, 0); }
-                        else {
-                            const d = await res.json().catch(() => null);
-                            setPaymentError((d?.error || 'Payment verification failed.') + ` (Ref: ${response.reference})`);
+                callback: function(response: any) {
+                    fetch('/api/payment/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            reference: response.reference,
+                            firstName: formData.firstName,
+                            lastName: formData.lastName,
+                            email: formData.email,
+                            phone: formData.phone,
+                            country: formData.country,
+                            role: formData.role,
+                            program: getSelectedLabels().join(', '),
+                            essay: formData.essay,
+                            services: formData.services,
+                            assessmentScore: formData.assessmentScore,
+                        }),
+                    })
+                    .then(function(res) {
+                        if (res.ok) { setSubmitted(true); window.scrollTo(0, 0); return; }
+                        return res.json().catch(function() { return null; }).then(function(d) {
+                            setPaymentError((d?.error || 'Payment verification failed.') + ' (Ref: ' + response.reference + ')');
                             setPaymentLoading(false);
-                        }
-                    } catch {
-                        setPaymentError(`Network error after payment. Please save your reference: ${response.reference} and contact us.`);
+                        });
+                    })
+                    .catch(function() {
+                        setPaymentError('Network error after payment. Please save your reference: ' + response.reference + ' and contact us.');
                         setPaymentLoading(false);
-                    }
+                    });
                 },
                 onClose: () => { setPaymentLoading(false); },
             });
