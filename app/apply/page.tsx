@@ -48,6 +48,11 @@ function ApplyForm() {
     const apply = content.pages.apply;
     const services = content.pages.services;
 
+    const feeDisplay = apply.form?.consultationFee?.amount || '2,500';
+    const feeCurrency = apply.form?.consultationFee?.currency || 'GHS';
+    const feeNumeric = parseInt(feeDisplay.replace(/,/g, ''), 10) || 2500;
+    const feeHalf = (feeNumeric / 2).toLocaleString();
+
     // Build SERVICE_OPTIONS from the services page
     const serviceOptions = [
         {
@@ -281,7 +286,7 @@ function ApplyForm() {
                     {/* Refund Notice */}
                     <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
                         <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
-                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵1,500 application fee will be 50% refunded (₵750) when we proceed with or start working on your brand strategy.
+                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
                         </p>
                     </div>
 
@@ -489,7 +494,7 @@ function ApplyForm() {
                                         <div className="flex justify-between items-start mb-3">
                                             <div>
                                                 <p className="font-sans text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Consultation Fee</p>
-                                                <p className="font-display font-bold text-4xl" style={{ color: '#C9A227' }}>₵1,500</p>
+                                                <p className="font-display font-bold text-4xl" style={{ color: '#C9A227' }}>₵{feeDisplay}</p>
                                             </div>
                                             <span className="font-sans text-xs font-bold px-3 py-1.5 rounded-full" style={{ background: 'rgba(201,162,39,0.18)', color: '#C9A227' }}>ONE-TIME</span>
                                         </div>
@@ -521,8 +526,8 @@ function ApplyForm() {
                                         >
                                             {paymentLoading ? 'Opening payment...' : (
                                                 <>
-                                                    <span className="sm:hidden">Pay ₵1,500 GHS →</span>
-                                                    <span className="hidden sm:inline">Pay ₵1,500 & Submit Application →</span>
+                                                    <span className="sm:hidden">Pay ₵{feeDisplay} {feeCurrency} →</span>
+                                                    <span className="hidden sm:inline">Pay ₵{feeDisplay} & Submit Application →</span>
                                                 </>
                                             )}
                                         </button>
