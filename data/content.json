@@ -586,7 +586,7 @@
         "details": [
           {
             "icon": "🎯",
-            "text": "5 Strategic Questions"
+            "text": "4 Strategic Questions"
           },
           {
             "icon": "⏱️",
@@ -607,22 +607,22 @@
           "questions": [
             {
               "id": "q1",
-              "text": "How well do people in your community/constituency know who you are and what you stand for?",
+              "text": "When a key political opportunity arises — a nomination, endorsement, or high-stakes appointment — what is your honest reality?",
               "options": [
                 {
-                  "text": "Most people haven't heard of me or have no clear sense of who I am",
+                  "text": "My name is rarely in the conversation. I'm not visible to the people who make these decisions.",
                   "score": 4
                 },
                 {
-                  "text": "A few key stakeholders know me, but my message isn't consistent",
+                  "text": "I'm occasionally mentioned, but I lose out to candidates with stronger, more recognisable brands.",
                   "score": 3
                 },
                 {
-                  "text": "People know me, but not for specific leadership qualities I want to be known for",
+                  "text": "I get opportunities, but I'm not yet seen as the obvious, first-choice leader.",
                   "score": 2
                 },
                 {
-                  "text": "I have a strong, clear brand that aligns with my political goals",
+                  "text": "I attract opportunities, but I need a strategic partner to maximise and scale them.",
                   "score": 1
                 }
               ]
@@ -637,22 +637,22 @@
           "questions": [
             {
               "id": "q2",
-              "text": "Can you articulate your core political message and why people should support you in under 30 seconds?",
+              "text": "If a powerful decision-maker asked you to pitch your political vision in 60 seconds right now — what would happen?",
               "options": [
                 {
-                  "text": "I struggle to explain this clearly and coherently",
+                  "text": "I'd struggle. I don't yet have a sharp, compelling message that cuts through.",
                   "score": 4
                 },
                 {
-                  "text": "I have a message, but it shifts depending on who I'm talking to",
+                  "text": "I'd get through it, but it wouldn't be memorable or leave a strong impression.",
                   "score": 3
                 },
                 {
-                  "text": "I have a message, but I'm not sure it's compelling enough",
+                  "text": "I'd do well — but my pitch isn't consistent and doesn't scale beyond one-on-one conversations.",
                   "score": 2
                 },
                 {
-                  "text": "Yes, and people regularly tell me it resonates with them",
+                  "text": "I deliver it confidently — but I need help amplifying it to the audiences that matter most.",
                   "score": 1
                 }
               ]
@@ -667,22 +667,22 @@
           "questions": [
             {
               "id": "q3",
-              "text": "How confident are you in managing your public image and media interactions?",
+              "text": "When political stakeholders discuss you in rooms you're not in, what do you believe they say?",
               "options": [
                 {
-                  "text": "I'm concerned about how media portrays me or what people say online",
+                  "text": "I honestly don't know — I haven't built enough presence for people to be talking about me.",
                   "score": 4
                 },
                 {
-                  "text": "I handle it okay, but I sometimes miss opportunities or make missteps",
+                  "text": "They might say I'm capable, but they likely can't define what I uniquely stand for.",
                   "score": 3
                 },
                 {
-                  "text": "I'm fairly confident, though I'd like to be more strategic",
+                  "text": "They respect me — but others are shaping my narrative before I get the chance to.",
                   "score": 2
                 },
                 {
-                  "text": "I actively manage my brand and perception very well",
+                  "text": "They associate me with strong work, but my brand isn't yet commanding the rooms I want.",
                   "score": 1
                 }
               ]
@@ -697,22 +697,22 @@
           "questions": [
             {
               "id": "q4",
-              "text": "What's your biggest political ambition in the next 2-3 years?",
+              "text": "What is your most pressing political challenge right now?",
               "options": [
                 {
-                  "text": "Run for elected office or significantly increase my influence",
+                  "text": "I'm figuring out my positioning — I know I'm meant for this, but I need a clear strategy.",
                   "score": 4
                 },
                 {
-                  "text": "Lead a major initiative or expand my sphere of influence",
+                  "text": "I'm preparing for an election or major role and need to be competitive, fast.",
                   "score": 3
                 },
                 {
-                  "text": "Strengthen my position and build credibility",
+                  "text": "I'm in the public eye but losing ground to candidates with bolder, more polished brands.",
                   "score": 2
                 },
                 {
-                  "text": "Explore opportunities without a specific timeline",
+                  "text": "I'm established — and I need to build a legacy brand that outlasts my current position.",
                   "score": 1
                 }
               ]
@@ -728,7 +728,7 @@
           "label": "Foundation Stage",
           "color": "#B22222",
           "bg": "#fff5f5",
-          "advice": "You are at the beginning of your political branding journey. Focus on identity architecture.",
+          "advice": "Your results reveal critical gaps in your political brand — and this is exactly where Polibrand's work begins. The window to build a commanding presence is now. Apply for a consultation to build your brand from a position of strategy, not chance.",
           "program": "Building Political Voice (Digital Course)"
         },
         {
@@ -736,7 +736,7 @@
           "label": "Emerging Stage",
           "color": "#C9A227",
           "bg": "#fff9e6",
-          "advice": "You have a solid foundation but need more consistency and media discipline.",
+          "advice": "You have momentum, but your brand is not yet working hard enough for you. Every month without a sharper, more consistent strategy is an opportunity your competition is claiming. Apply now — this is your moment to close the gap.",
           "program": "Leadership Branding Bootcamp"
         },
         {
@@ -744,7 +744,7 @@
           "label": "Competitive Stage",
           "color": "#1F6F3E",
           "bg": "#f0fdf4",
-          "advice": "You are highly competitive but need advanced campaign infrastructure.",
+          "advice": "You are well-positioned — but at this level, the difference between winning and falling short is brand precision. The leaders who break through are those who invest in their brand before they feel fully ready. Apply to take your positioning to the next level.",
           "program": "The Polibrand Fellowship"
         },
         {
@@ -752,7 +752,7 @@
           "label": "Elite Stage",
           "color": "#1F6F3E",
           "bg": "#f0fdf4",
-          "advice": "You demonstrate exceptional readiness. Focus on high-level narrative power and delegation.",
+          "advice": "You are operating at the top of your field. Protecting and scaling that legacy requires the kind of strategic brand infrastructure very few leaders have. Apply for a consultation — ensure your brand leads every room you walk into.",
           "program": "Strategic Policy Consulting"
         }
       ],
