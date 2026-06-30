@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "The Polibrand Agency | The Leading Political Branding Partner for Women Leaders",
-    "description": "Strategic branding, campaign communication, and leadership development for women shaping the future of governance across Africa.",
-    "keywords": "political branding, women leaders, Africa, campaign communication, leadership development, political strategy"
+    "title": "The Polibrand Agency | The Leading Political Branding Partner in Africa",
+    "description": "Strategic branding, campaign communication, and leadership development for political leaders shaping the future of governance across Africa.",
+    "keywords": "political branding, political leaders, Africa, campaign communication, leadership development, political strategy"
   },
   "navbar": {
     "brand": {
@@ -38,7 +38,7 @@
   },
   "footer": {
     "brand": {
-      "description": "The leading political branding partner for women leaders across Africa."
+      "description": "The leading political branding partner for leaders across Africa."
     },
     "sections": [
       {
@@ -140,14 +140,14 @@
   "pages": {
     "home": {
       "hero": {
-        "tag": "The Leading Political Branding Partner for Women Leaders",
-        "headline": "Building Political Power\nfor Women Across Africa.",
-        "subheadline": "Strategic branding, campaign communication, and leadership development for women shaping the future of governance."
+        "tag": "The Leading Political Branding Partner in Africa",
+        "headline": "Building Political Power\nAcross Africa.",
+        "subheadline": "Strategic branding, campaign communication, and leadership development for leaders shaping the future of governance."
       },
       "stats": [
         {
           "number": "200+",
-          "label": "Women Leaders Trained"
+          "label": "Leaders Trained"
         },
         {
           "number": "18",
@@ -164,8 +164,8 @@
       ],
       "challenge": {
         "tag": "The Challenge",
-        "title": "The Representation Gap\nIs Structural.",
-        "text": "Women across emerging democracies remain underrepresented in legislative, executive, and party leadership structures. The barrier is not ambition — it is strategic infrastructure.",
+        "title": "The Branding Gap\nIs Structural.",
+        "text": "Across emerging democracies, capable political leaders are consistently outpaced by competitors with sharper messaging, stronger visibility, and more disciplined campaign infrastructure. The barrier is not ambition — it is strategic infrastructure.",
         "list": [
           "Narrative clarity",
           "Media discipline",
@@ -173,19 +173,19 @@
           "Fundraising architecture",
           "Strategic visibility"
         ],
-        "quote": "\"Democracy thrives when leadership reflects society.\"",
+        "quote": "\"Power follows perception. Build the brand before the moment demands it.\"",
         "stats": [
           {
-            "label": "Women in African Parliaments",
-            "value": "26%"
+            "label": "Candidates Without Message Discipline",
+            "value": "64%"
           },
           {
-            "label": "Women Executives",
-            "value": "18%"
+            "label": "Campaigns Lacking Media Training",
+            "value": "57%"
           },
           {
-            "label": "Women Party Leaders",
-            "value": "14%"
+            "label": "Leaders Invisible to Key Decision-Makers",
+            "value": "41%"
           }
         ]
       },
@@ -242,7 +242,7 @@
             "logo": "/partners/du.svg"
           },
           {
-            "name": "Gender Equities Foundation",
+            "name": "Civic Governance Foundation",
             "logo": "/partners/gef.svg"
           },
           {
@@ -258,7 +258,7 @@
       "cta": {
         "apply": "Apply",
         "partner": "Partner With Us",
-        "mission": "Polibrand exists to equip women with these structural tools.",
+        "mission": "Polibrand exists to equip political leaders with these structural tools.",
         "services": "Explore All Services →",
         "assessment": "Start Assessment →",
         "proposal": "Request Partnership Proposal →"
@@ -273,7 +273,7 @@
       "vision": {
         "tag": "Our Future",
         "title": "Representing the Future of African Governance",
-        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where women lead at every level of policy and power.",
+        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where principled, capable leaders rise at every level of policy and power.",
         "image": "/vision.svg",
         "items": [
           {
@@ -333,18 +333,18 @@
       "founders": {
         "tag": "Meet the Founders",
         "title": "The Leadership Behind Polibrand",
-        "description": "Built by women who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
+        "description": "Built by strategists who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
         "team": [
           {
             "name": "Founder Name",
             "title": "Founder & Executive Director",
-            "bio": "A seasoned political strategist with over 15 years of experience advising women leaders across West Africa. She has designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
+            "bio": "A seasoned political strategist with over 15 years of experience advising political leaders across West Africa. Designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
             "image": ""
           },
           {
             "name": "Co-Founder Name",
             "title": "Co-Founder & Director of Programs",
-            "bio": "Former policy advisor and communications architect with deep roots in gender equity advocacy. She leads curriculum design and program delivery across all Polibrand initiatives.",
+            "bio": "Former policy advisor and communications architect with deep roots in civic and policy advocacy. Leads curriculum design and program delivery across all Polibrand initiatives.",
             "image": ""
           }
         ]
@@ -352,7 +352,7 @@
       "foundersStory": {
         "tag": "Our Origin",
         "title": "The Polibrand Story",
-        "story": "Polibrand was born from a simple observation: African women leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant women candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that.",
+        "story": "Polibrand was born from a simple observation: African political leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that.",
         "image": ""
       }
     },
@@ -363,7 +363,7 @@
         "description": "Every service is designed around the structural requirements of competitive democratic environments."
       },
       "individual": {
-        "tag": "For Women Leaders",
+        "tag": "For Individual Leaders",
         "title": "Individual Strategy Services",
         "items": [
           {
@@ -409,7 +409,7 @@
             "number": "04",
             "title": "Media Training",
             "color": "var(--color-primary)",
-            "intro": "Equipping women leaders with the confidence, language, and presence to command every media environment — from broadcast interviews to press conferences.",
+            "intro": "Equipping political leaders with the confidence, language, and presence to command every media environment — from broadcast interviews to press conferences.",
             "deliverables": [
               "On-camera and on-air performance coaching",
               "Interview preparation and Q&A frameworks",
@@ -450,7 +450,7 @@
           },
           {
             "icon": "👑",
-            "title": "Gender Leadership Programs",
+            "title": "Leadership Development Programs",
             "desc": "Custom-designed leadership and communication programs for political parties and NGOs.",
             "features": [
               "Cohort program design",
@@ -463,7 +463,7 @@
       },
       "cta": {
         "title": "Ready to Build Your Political Power?",
-        "description": "Join women leaders across Africa who are transforming their political futures through strategic communication and branding.",
+        "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding.",
         "apply": "Apply",
         "assessment": "Take the Assessment"
       }
@@ -512,7 +512,7 @@
         "badge": "3–6 Months · Selective Enrollment",
         "tag": "Flagship Initiative",
         "title": "The Polibrand Fellowship",
-        "description": "An immersive 3–6 month program for high-potential women leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.",
+        "description": "An immersive 3–6 month program for high-potential political leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.",
         "cta_apply": "Apply to Fellowship",
         "cta_assessment": "Take Readiness Assessment First",
         "inclusions": [
@@ -541,7 +541,7 @@
       "courses": {
         "tag": "Self-Paced",
         "title": "Digital Courses",
-        "description": "Learning modules for women who want to build political communication skills on their own timeline.",
+        "description": "Learning modules for leaders who want to build political communication skills on their own timeline.",
         "items": [
           {
             "number": "01",
@@ -577,7 +577,7 @@
         {
           "title": "NGO & Civic Programs",
           "icon": "🌍",
-          "desc": "Custom gender leadership training programs.",
+          "desc": "Custom leadership development programs for civic organizations.",
           "features": [
             "Grassroots narrative building",
             "Community mobilization"
@@ -599,7 +599,7 @@
           "logo": "/partners/du.svg"
         },
         {
-          "name": "Gender Equities Foundation",
+          "name": "Civic Governance Foundation",
           "logo": "/partners/gef.svg"
         }
       ]

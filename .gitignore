@@ -32,6 +32,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# Required deploy config (no secrets) — forces webpack bundler for `firebase deploy`
+# builds, working around a Turbopack + serverExternalPackages bug that breaks
+# firebase-admin in the deployed Cloud Function. Must stay tracked in git.
+!.env.thepolibrandagency-d4263
 
 # vercel
 .vercel

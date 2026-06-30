@@ -66,8 +66,8 @@ export default function Page() {
           borderLeft: `1px solid ${theme.secondary || '#C9A227'}14`,
         }} />
 
-        {/* Decorative corner mark — top right */}
-        <div style={{ position: 'absolute', top: 100, right: 80, zIndex: 2, opacity: 0.18, pointerEvents: 'none' }}>
+        {/* Decorative corner mark — top right, hidden on mobile */}
+        <div className="hide-mobile" style={{ position: 'absolute', top: 100, right: 80, zIndex: 2, opacity: 0.18, pointerEvents: 'none' }}>
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
             <circle cx="90" cy="90" r="88" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
             <circle cx="90" cy="90" r="64" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="4 6" />
@@ -164,10 +164,7 @@ export default function Page() {
             background: 'rgba(0,0,0,0.35)',
             backdropFilter: 'blur(16px)',
           }}>
-            <div className="container-brand" style={{
-              display: 'grid', gridTemplateColumns: `repeat(${home.stats.length}, 1fr)`,
-              padding: '20px 0',
-            }}>
+            <div className="container-brand stats-bar">
               {home.stats.map((s: any, i: number) => (
                 <div key={i} style={{
                   textAlign: 'center', padding: '12px 8px',

@@ -745,3 +745,95 @@ h6 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
+
+/* ─── Responsive Layout Primitives ─── */
+
+/* 3-column service/course card: number | info | detail */
+.three-col-card {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* 2-column bootcamp layout */
+.two-col-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+/* Stats bar that adapts to count */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  padding: 18px 0;
+}
+
+/* ─── Mobile Menu Animation ─── */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Mobile Touch Feedback ─── */
+@media (hover: none) {
+  .card-brand:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+  .card-brand:active {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+}
+
+/* ─── Mobile Responsive Overrides ─── */
+@media (max-width: 768px) {
+  /* Container gets more breathing room */
+  .container-brand {
+    padding: 0 20px;
+  }
+
+  /* 3-col cards collapse to single column */
+  .three-col-card {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .three-col-card-number {
+    display: none;
+  }
+
+  /* 2-col collapses to single column */
+  .two-col-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Section padding is tighter */
+  .section-pad {
+    padding: 56px 0;
+  }
+
+  /* Cards get slightly less internal padding */
+  .card-brand {
+    padding: 1.5rem;
+  }
+
+  /* No hover-translate animations on touch */
+  .card-brand:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+  .card-brand:active {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+}

@@ -22,7 +22,7 @@ export default function AboutPage() {
                     : 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                padding: '160px 0 100px', position: 'relative', overflow: 'hidden',
+                padding: 'clamp(100px, 20vw, 160px) 0 clamp(48px, 10vw, 100px)', position: 'relative', overflow: 'hidden',
             }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--color-secondary), transparent 90%) 0%, transparent 60%)', pointerEvents: 'none' }} />
                 <div className="container-brand relative z-10 text-center animate-fade-up">
@@ -71,7 +71,7 @@ export default function AboutPage() {
                             <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl relative z-10">
                                 <img src={about.vision.image || '/vision.svg'} alt="Vision" className="w-full h-full object-cover opacity-80" />
                             </div>
-                            <div className="absolute -top-10 -right-10 w-48 h-48 border-2 border-[var(--color-secondary)]/20 rounded-lg animate-float pointer-events-none" />
+                            <div className="hide-mobile absolute -top-10 -right-10 w-48 h-48 border-2 border-[var(--color-secondary)]/20 rounded-lg animate-float pointer-events-none" />
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default function AboutPage() {
                                         <p className="font-sans text-white/40 text-center px-8">Story image to be added</p>
                                     </div>
                                 )}
-                                <div className="absolute -bottom-6 -right-6 w-40 h-40 border-2 border-[var(--color-secondary)]/20 rounded-lg pointer-events-none" />
+                                <div className="hide-mobile absolute -bottom-6 -right-6 w-40 h-40 border-2 border-[var(--color-secondary)]/20 rounded-lg pointer-events-none" />
                             </div>
 
                         </div>
