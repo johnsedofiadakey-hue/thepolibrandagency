@@ -1080,7 +1080,7 @@ function ThemeEditor({ theme, onChange, onLogoUploaded }: { theme: any; onChange
 //
 
 export default function ContentPage() {
-    const { content, updateContent, theme, updateSettings } = useContext(PoliSettingsContext) as any;
+    const { content, updateContent, theme, typography, updateSettings } = useContext(PoliSettingsContext) as any;
     const [activeSection, setActiveSection] = useState(sections[0].id);
     const [localContent, setLocalContent] = useState<any>(content);
     const [localTheme, setLocalTheme] = useState<any>(theme);
@@ -1115,7 +1115,7 @@ export default function ContentPage() {
                 fetch('/api/settings', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ theme: localTheme, typography: 'institutional' }),
+                    body: JSON.stringify({ theme: localTheme, typography: typography || 'institutional' }),
                 }),
             ]);
 

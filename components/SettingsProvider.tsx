@@ -40,78 +40,46 @@ export function SettingsProvider({
     return serverContent || (initialContent as SiteContent);
   });
 
-  // Force fetch from API on mount to get latest content
-  React.useEffect(() => {
-    const fetchLatest = async () => {
-      try {
-        const res = await fetch('/api/content', { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          setContent(data as SiteContent);
-        }
-      } catch (e) {
-        console.error('Failed to fetch latest content:', e);
-      }
-    };
-    fetchLatest();
-  }, []);
-
+  // serverSettings/serverContent are already fresh (layout.tsx fetches them on every
+  // request with no caching). Re-fetch once on mount only to catch edits saved between
+  // the SSR response leaving the server and this component hydrating in the browser —
+  // never trust localStorage here, since a silently failed fetch would otherwise leave
+  // a visitor stuck on arbitrarily old cached content with no indication anything's stale.
   const loadAll = React.useCallback(async () => {
     try {
       const [sRes, cRes] = await Promise.all([
         fetch('/api/settings', { cache: 'no-store' }),
         fetch('/api/content', { cache: 'no-store' })
       ]);
-      
+
       if (!sRes.ok || !cRes.ok) throw new Error('API request failed');
 
       const sData = await sRes.json();
       const cData = await cRes.json();
-      
+
       if (sData && sData.theme && !sData.error) {
         setSettings(sData);
-        localStorage.setItem('poli_settings', JSON.stringify(sData));
       }
-      
+
       // Ensure cData is a valid content object (not an error and has pages/navbar)
       if (cData && !cData.error && cData.pages) {
         setContent(cData);
-        localStorage.setItem('poli_content', JSON.stringify(cData));
       }
     } catch (err) {
-      console.warn('Using local/cached data as fallback:', err);
+      console.error('Failed to refresh settings/content; showing server-rendered data:', err);
     }
   }, []);
 
-  // Load from localStorage on mount + then fetch fresh
   React.useEffect(() => {
-    const savedContent = localStorage.getItem('poli_content');
-    if (savedContent) {
-      try { setContent(JSON.parse(savedContent)); } catch (e) {}
-    }
-
-    const savedSettings = localStorage.getItem('poli_settings');
-    if (savedSettings) {
-      try { setSettings(JSON.parse(savedSettings)); } catch (e) {}
-    }
-
     loadAll();
   }, [loadAll]);
 
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
-    setSettings((prev) => {
-      const next = { ...prev, ...newSettings };
-      localStorage.setItem('poli_settings', JSON.stringify(next));
-      return next;
-    });
+    setSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
   const updateContent = (newContent: Partial<SiteContent>) => {
-    setContent((prev) => {
-      const next = { ...prev, ...newContent };
-      localStorage.setItem('poli_content', JSON.stringify(next));
-      return next;
-    });
+    setContent((prev) => ({ ...prev, ...newContent }));
   };
 
   React.useEffect(() => {
