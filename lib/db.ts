@@ -73,6 +73,26 @@ function stripInternalSource<T extends Record<string, unknown>>(data: T): T {
     return next;
 }
 
+/**
+ * The REST fallback write path (setFirestoreRestJson) stores documents as a
+ * single stringified `json` field instead of native Firestore fields, because
+ * encoding nested objects into Firestore's typed-field REST format is nontrivial.
+ * If a doc was last written via that path (e.g. while Admin SDK init was
+ * failing) but is now read via the Admin SDK, the raw snapshot data is just
+ * `{ json: "...", updatedAt: ... }` instead of the real fields. Unwrap it so
+ * both read paths always agree on the document shape.
+ */
+function unwrapAdminSnapshotData<T extends Record<string, unknown>>(raw: T | undefined): T | undefined {
+    if (raw && typeof raw === 'object' && typeof (raw as Record<string, unknown>).json === 'string') {
+        try {
+            return JSON.parse((raw as Record<string, unknown>).json as string) as T;
+        } catch {
+            return raw;
+        }
+    }
+    return raw;
+}
+
 function getFirebaseProjectId(): string | undefined {
     const runtimeConfig = getFirebaseRuntimeConfig();
     return process.env.POLI_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || runtimeConfig.projectId || DEFAULT_FIREBASE_PROJECT_ID;
@@ -372,7 +392,7 @@ export async function getContent(): Promise<Record<string, unknown>> {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).get();
-            if (snap.exists) return { ...(snap.data() as Record<string, unknown>), _source: 'firebase' };
+            if (snap.exists) return { ...unwrapAdminSnapshotData(snap.data() as Record<string, unknown>), _source: 'firebase' };
         }
     } catch (error) {
         console.error('Firebase getContent error:', error);
@@ -525,7 +545,10 @@ export async function getSettings(): Promise<SiteSettings & { _source?: string }
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC).get();
-            if (snap.exists) return { ...(snap.data() as SiteSettings), _source: 'firebase' };
+            if (snap.exists) {
+                const unwrapped = unwrapAdminSnapshotData(snap.data() as Record<string, unknown>) ?? {};
+                return { ...unwrapped, _source: 'firebase' } as SiteSettings & { _source?: string };
+            }
         }
     } catch (error) {
         console.error('Firebase getSettings error:', error);
@@ -855,7 +878,7 @@ export async function getIntegrations(): Promise<Record<string, any>> {
         const firebase = getFirebaseAdmin();
         if (firebase) {
             const snap = await firebase.db.collection(CONFIG_COLLECTION).doc(INTEGRATIONS_DOC).get();
-            if (snap.exists) return mergeIntegrations(envDefaults, snap.data() as Record<string, any>);
+            if (snap.exists) return mergeIntegrations(envDefaults, unwrapAdminSnapshotData(snap.data() as Record<string, any>) ?? {});
         }
     } catch (error) {
         console.error('Firebase getIntegrations error:', error);
