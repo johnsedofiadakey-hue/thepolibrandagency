@@ -9,20 +9,27 @@ const typographyPresets = [
     { id: 'classic', label: 'Classic', headline: 'Cinzel', body: 'Georgia' },
 ];
 
+const DEFAULT_MAINTENANCE = {
+    enabled: false,
+    title: "We're Building Something New.",
+    message: "We're working on new features and improvements behind the scenes. We'll be back online shortly — thank you for your patience.",
+};
+
 export default function BrandPage() {
-    const { theme, typography: contextTypography, updateSettings } = useContext(PoliSettingsContext) as any;
+    const { theme, typography: contextTypography, maintenance: contextMaintenance, updateSettings } = useContext(PoliSettingsContext) as any;
     const [colors, setColors] = useState(theme);
     const [typography, setTypography] = useState(contextTypography || 'institutional');
+    const [maintenance, setMaintenance] = useState({ ...DEFAULT_MAINTENANCE, ...contextMaintenance });
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     // Save settings to API and Context
-    const handleSave = async (updatedColors = colors, updatedTypography = typography) => {
+    const handleSave = async (updatedColors = colors, updatedTypography = typography, updatedMaintenance = maintenance) => {
         setLoading(true);
         setError(null);
-        const newSettings = { theme: updatedColors, typography: updatedTypography };
+        const newSettings = { theme: updatedColors, typography: updatedTypography, maintenance: updatedMaintenance };
 
         try {
             const res = await fetch('/api/settings', {
@@ -185,6 +192,74 @@ export default function BrandPage() {
                                     </label>
                                 ))}
                             </div>
+                        </div>
+
+                        {/* Maintenance Mode */}
+                        <div style={{ background: '#fff', borderRadius: 8, border: `1px solid ${maintenance.enabled ? '#fca5a5' : '#e5e7eb'}`, padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: maintenance.enabled ? '1.25rem' : 0 }}>
+                                <div>
+                                    <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.05rem', color: '#111', marginBottom: 4 }}>Site Status</h3>
+                                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#9ca3af', lineHeight: 1.5 }}>
+                                        {maintenance.enabled
+                                            ? 'The public site is closed. Visitors see the message below. The admin portal stays accessible.'
+                                            : 'The public site is live.'}
+                                    </p>
+                                </div>
+                                <label style={{ position: 'relative', display: 'inline-block', width: 46, height: 26, flexShrink: 0, cursor: loading ? 'wait' : 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={!!maintenance.enabled}
+                                        disabled={loading}
+                                        onChange={(e) => {
+                                            const next = { ...maintenance, enabled: e.target.checked };
+                                            setMaintenance(next);
+                                            handleSave(colors, typography, next);
+                                        }}
+                                        style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', margin: 0, cursor: loading ? 'wait' : 'pointer' }}
+                                    />
+                                    <span style={{
+                                        position: 'absolute', inset: 0, borderRadius: 999,
+                                        background: maintenance.enabled ? '#dc2626' : '#d1d5db',
+                                        transition: 'background 0.2s',
+                                    }} />
+                                    <span style={{
+                                        position: 'absolute', top: 3, left: maintenance.enabled ? 23 : 3,
+                                        width: 20, height: 20, borderRadius: '50%', background: '#fff',
+                                        boxShadow: '0 1px 3px rgba(0,0,0,0.3)', transition: 'left 0.2s',
+                                    }} />
+                                </label>
+                            </div>
+
+                            {maintenance.enabled && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    <div>
+                                        <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', fontWeight: 600, color: '#374151', display: 'block', marginBottom: 4 }}>
+                                            Heading
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={maintenance.title}
+                                            onChange={(e) => setMaintenance({ ...maintenance, title: e.target.value })}
+                                            onBlur={() => handleSave()}
+                                            placeholder={DEFAULT_MAINTENANCE.title}
+                                            style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#111', border: '1.5px solid #e5e0d6', borderRadius: 4, padding: '8px 10px', width: '100%' }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', fontWeight: 600, color: '#374151', display: 'block', marginBottom: 4 }}>
+                                            Message
+                                        </label>
+                                        <textarea
+                                            value={maintenance.message}
+                                            onChange={(e) => setMaintenance({ ...maintenance, message: e.target.value })}
+                                            onBlur={() => handleSave()}
+                                            placeholder={DEFAULT_MAINTENANCE.message}
+                                            rows={3}
+                                            style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#111', border: '1.5px solid #e5e0d6', borderRadius: 4, padding: '8px 10px', width: '100%', resize: 'vertical' }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

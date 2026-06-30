@@ -8,6 +8,9 @@ import path from 'path';
 import fs from 'fs';
 import { randomUUID } from 'crypto';
 import { createRequire } from 'module';
+import type { SiteSettings, ThemeSettings } from './types';
+
+export type { SiteSettings, ThemeSettings };
 
 // @ts-ignore
 import localContent from '../data/content.json';
@@ -525,20 +528,6 @@ export async function getPersistenceHealth() {
     return health;
 }
 
-export interface ThemeSettings {
-    primary: string;
-    secondary: string;
-    accent: string;
-    background: string;
-    text: string;
-    heroImage: string;
-    logo: string;
-}
-
-export interface SiteSettings {
-    theme: ThemeSettings;
-    typography: string;
-}
 
 export async function getSettings(): Promise<SiteSettings & { _source?: string }> {
     try {
@@ -570,7 +559,7 @@ export async function setSettings(data: SiteSettings): Promise<void> {
 
     try {
         const firebase = requireFirebaseAdmin();
-        await firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC).set(cleanData, { merge: false });
+        await firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC).set(cleanData, { merge: true });
     } catch (error) {
         try {
             await setFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC, cleanData as unknown as Record<string, unknown>);

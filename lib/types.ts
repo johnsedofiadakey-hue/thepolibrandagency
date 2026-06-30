@@ -8,9 +8,16 @@ export interface ThemeSettings {
   logo: string;
 }
 
+export interface MaintenanceSettings {
+  enabled: boolean;
+  title?: string;
+  message?: string;
+}
+
 export interface SiteSettings {
   theme: ThemeSettings;
   typography: string;
+  maintenance?: MaintenanceSettings;
 }
 
 export interface NavLink {

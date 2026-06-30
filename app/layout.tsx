@@ -1,5 +1,7 @@
 import "./globals.css";
+import { headers } from "next/headers";
 import { SettingsProvider } from "../components/SettingsProvider";
+import MaintenanceScreen from "../components/MaintenanceScreen";
 import { getContent, getSettings } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
@@ -42,6 +44,9 @@ export default async function RootLayout({
     getSettings().catch(() => null),
     getContent().catch(() => null)
   ]);
+
+  const pathname = (await headers()).get('x-pathname') || '';
+  const maintenanceActive = !!settings?.maintenance?.enabled && !pathname.startsWith('/admin');
 
   const activeSettings = settings || {
     theme: {
@@ -139,7 +144,11 @@ export default async function RootLayout({
       </head>
       <body>
         <SettingsProvider serverSettings={activeSettings} serverContent={(content ?? undefined) as import('@/lib/types').SiteContent | undefined}>
-          {children}
+          {maintenanceActive ? (
+            <MaintenanceScreen title={settings?.maintenance?.title} message={settings?.maintenance?.message} />
+          ) : (
+            children
+          )}
         </SettingsProvider>
       </body>
     </html>
