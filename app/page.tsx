@@ -10,7 +10,7 @@ export default function Page() {
   
   // Safe deep access with fallbacks to prevent rendering crashes
   const home = content?.pages?.home || {
-    hero: { tag: "The Polibrand Agency", headline: "Building Political Power\nfor Women.", subheadline: "Strategic branding and leadership development." },
+    hero: { tag: "The Polibrand Agency", headline: "Building Political Power\nAcross Africa.", subheadline: "Strategic branding and leadership development." },
     stats: [],
     challenge: { tag: "Challenge", title: "Gap", text: "", list: [], quote: "", stats: [] },
     services: { tag: "Services", title: "Core Services", description: "", items: [] },
@@ -223,7 +223,7 @@ export default function Page() {
                 ))}
               </div>
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, color: theme.primary || '#1A2B4C', fontSize: '0.95rem', fontStyle: 'italic', lineHeight: 1.7 }}>
-                {home.cta?.mission || "The Polibrand Agency exists to equip women with structural political tools."}
+                {home.cta?.mission || "Polibrand exists to equip political leaders with these structural tools."}
               </p>
             </div>
 

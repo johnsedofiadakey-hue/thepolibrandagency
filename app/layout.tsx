@@ -19,8 +19,8 @@ export async function generateMetadata() {
   return {
     metadataBase,
     title: meta.title || "The Polibrand Agency",
-    description: meta.description || "Strategic branding and leadership development for women in governance.",
-    keywords: meta.keywords || "political branding, women leaders, Africa",
+    description: meta.description || "Strategic branding, campaign communication, and leadership development for political leaders across Africa.",
+    keywords: meta.keywords || "political branding, political leaders, Africa, campaign communication",
     icons: {
       icon: logo,
       shortcut: logo,
@@ -28,7 +28,7 @@ export async function generateMetadata() {
     },
     openGraph: {
       title: meta.title || "The Polibrand Agency",
-      description: meta.description || "Leading Political Branding Partner for Women Leaders",
+      description: meta.description || "The Leading Political Branding Partner in Africa",
       type: "website",
       images: [logo],
     },

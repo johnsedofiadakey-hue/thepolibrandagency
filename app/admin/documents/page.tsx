@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const documents = [
     { id: 1, name: 'Polibrand Program Brochure 2026', type: 'Brochure', size: '2.4 MB', downloads: 142, uploaded: 'Feb 1, 2026' },
-    { id: 2, name: 'Women in Politics Africa Research Report', type: 'Research', size: '5.1 MB', downloads: 89, uploaded: 'Jan 15, 2026' },
+    { id: 2, name: 'Political Branding in Africa Research Report', type: 'Research', size: '5.1 MB', downloads: 89, uploaded: 'Jan 15, 2026' },
     { id: 3, name: 'Fellowship Program Guide 2026', type: 'Report', size: '1.8 MB', downloads: 213, uploaded: 'Jan 5, 2026' },
     { id: 4, name: 'Media Kit – The Polibrand Agency', type: 'Press Kit', size: '8.7 MB', downloads: 47, uploaded: 'Dec 10, 2025' },
     { id: 5, name: 'Political Readiness Framework – White Paper', type: 'Research', size: '3.2 MB', downloads: 198, uploaded: 'Nov 20, 2025' },

@@ -50,7 +50,7 @@ The Polibrand Agency`,
 
 Congratulations — your application to the {{program_name}} has been approved.
 
-You are now part of an elite cohort of women building political power across Africa.
+You are now part of an elite cohort of leaders building political power across Africa.
 
 Next Steps:
 1. Complete your payment to secure your spot

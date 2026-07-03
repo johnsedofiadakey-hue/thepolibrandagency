@@ -299,7 +299,7 @@ export default function BrandPage() {
                                     </div>
                                     {/* Mini hero */}
                                     <div style={{ textAlign: 'center', padding: '1rem' }}>
-                                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1rem', color: colors.text, marginBottom: '0.5rem' }}>Building Political Power for Women.</h2>
+                                        <h2 style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1rem', color: colors.text, marginBottom: '0.5rem' }}>Building Political Power Across Africa.</h2>
                                         <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
                                             <div style={{ background: colors.primary, color: '#fff', padding: '6px 14px', borderRadius: 2, fontFamily: 'Inter, sans-serif', fontSize: '0.6rem', fontWeight: 600 }}>
                                                 Apply

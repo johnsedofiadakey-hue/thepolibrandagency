@@ -37,7 +37,7 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            {/* ─── FOR WOMEN LEADERS ─── */}
+            {/* ─── FOR INDIVIDUAL LEADERS ─── */}
             <section className="section-pad" style={{ background: 'var(--color-bg)' }}>
                 <div className="container-brand">
                     <div style={{ marginBottom: '3rem' }}>

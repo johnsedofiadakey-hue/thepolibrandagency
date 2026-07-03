@@ -237,7 +237,7 @@ export default function AboutPage() {
                         {about.cta?.title || "Ready to Build Your Political Power?"}
                     </h2>
                     <p className="font-sans text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        {about.cta?.description || "Join women leaders across Africa who are transforming their political futures through strategic communication and branding."}
+                        {about.cta?.description || "Join political leaders across Africa who are transforming their futures through strategic communication and branding."}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link href="/apply" className="btn-gold justify-center">

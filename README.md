@@ -1,6 +1,6 @@
 # The Polibrand Agency
 
-The leading political branding partner for women leaders across Africa. This platform provides strategic branding, campaign communication frameworks, and leadership positioning.
+The leading political branding partner for political leaders across Africa. This platform provides strategic branding, campaign communication frameworks, and leadership positioning.
 
 ## ✨ Features
 - **Professional Branding**: High-end landing page with dynamic Hero sections.
