@@ -25,9 +25,11 @@ export default function Navbar() {
         <>
             <nav style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? theme.primary : 'rgba(17,17,17,0.6)',
-                backdropFilter: 'blur(16px)',
-                borderBottom: scrolled ? `1px solid ${theme.secondary}` : 'none',
+                background: scrolled ? 'rgba(10,10,15,0.55)' : 'rgba(10,10,15,0.22)',
+                backdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'blur(14px) saturate(160%)',
+                WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'blur(14px) saturate(160%)',
+                borderBottom: `1px solid rgba(255,255,255,${scrolled ? 0.14 : 0.08})`,
+                boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.18)' : 'none',
                 transition: 'all 0.35s ease',
                 padding: scrolled ? '0.75rem 24px' : '1.25rem 24px',
             }}>

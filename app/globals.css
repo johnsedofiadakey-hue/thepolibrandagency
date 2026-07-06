@@ -2,12 +2,12 @@
 
 /* ─── Brand Design Tokens ─── */
 :root {
-  /* Default fallbacks - Modern Minimalist Theme */
-  --color-primary: #1A2B4C;
-  --color-secondary: #F1E5D1;
-  --color-accent: #FF6B6B;
-  --color-bg: #FAFAFC;
-  --color-text: #2C3E50;
+  /* Default fallbacks - matches live production theme (thepolibrandagency.com) */
+  --color-primary: #ae0a0a;
+  --color-secondary: #ffa3a3;
+  --color-accent: #ae0a0a;
+  --color-bg: #ffffff;
+  --color-text: #000000;
 
   /* Derived variables (set via SettingsProvider or CSS) */
   --color-primary-dark: color-mix(in srgb, var(--color-primary), black 20%);

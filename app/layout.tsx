@@ -18,17 +18,17 @@ export async function generateMetadata() {
   
   return {
     metadataBase,
-    title: meta.title || "The Polibrand Agency",
-    description: meta.description || "Strategic branding and leadership development for women in governance.",
-    keywords: meta.keywords || "political branding, women leaders, Africa",
+    title: meta.title || "The PoliBrand Agency",
+    description: meta.description || "PoliBrand — The Trusted Political Branding Partner. Building Leaders. Shaping Influence. Winning Trust.",
+    keywords: meta.keywords || "political branding, trusted political branding partner, Africa",
     icons: {
       icon: logo,
       shortcut: logo,
       apple: logo,
     },
     openGraph: {
-      title: meta.title || "The Polibrand Agency",
-      description: meta.description || "Leading Political Branding Partner for Women Leaders",
+      title: meta.title || "The PoliBrand Agency",
+      description: meta.description || "The Trusted Political Branding Partner. Building Leaders. Shaping Influence. Winning Trust.",
       type: "website",
       images: [logo],
     },
@@ -50,11 +50,11 @@ export default async function RootLayout({
 
   const activeSettings = settings || {
     theme: {
-      primary: '#1A2B4C',
-      secondary: '#F1E5D1',
-      accent: '#FF6B6B',
-      background: '#FAFAFC',
-      text: '#2C3E50',
+      primary: '#ae0a0a',
+      secondary: '#ffa3a3',
+      accent: '#ae0a0a',
+      background: '#ffffff',
+      text: '#000000',
       heroImage: '',
       logo: '/logo.svg',
     },
@@ -128,7 +128,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="theme-color" content="#0a1128" />
+        <meta name="theme-color" content="#ae0a0a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />

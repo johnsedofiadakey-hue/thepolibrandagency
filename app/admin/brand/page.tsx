@@ -86,7 +86,7 @@ export default function BrandPage() {
     }
 
     const presetColors: Record<string, { primary: string; secondary: string; accent: string; background: string; text: string; logo: string; heroImage: string }> = {
-        polibrand: { primary: '#1A2B4C', secondary: '#F1E5D1', accent: '#FF6B6B', background: '#FAFAFC', text: '#2C3E50', logo: '/logo.svg', heroImage: '' },
+        polibrand: { primary: '#ae0a0a', secondary: '#ffa3a3', accent: '#ae0a0a', background: '#ffffff', text: '#000000', logo: '/logo.svg', heroImage: '' },
         midnight: { primary: '#1e3a5f', secondary: '#d4af37', accent: '#c0392b', background: '#f0f4f8', text: '#0f172a', logo: '/logo.svg', heroImage: '' },
         royal: { primary: '#4a235a', secondary: '#d4ac0d', accent: '#922b21', background: '#fdf9f0', text: '#1a1a2e', logo: '/logo.svg', heroImage: '' },
     };

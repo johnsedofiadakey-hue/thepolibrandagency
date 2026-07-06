@@ -445,6 +445,24 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
             <Field label="Headline" value={home.hero?.headline} onChange={v => setField('hero.headline', v)} type="textarea" />
             <Field label="Subheadline" value={home.hero?.subheadline} onChange={v => setField('hero.subheadline', v)} type="textarea" />
 
+            <SectionTitle>Who We Serve</SectionTitle>
+            <Field label="Tag" value={home.whoWeServe?.tag} onChange={v => setField('whoWeServe.tag', v)} />
+            <Field label="Title" value={home.whoWeServe?.title} onChange={v => setField('whoWeServe.title', v)} />
+            <Field label="Intro Text" value={home.whoWeServe?.text} onChange={v => setField('whoWeServe.text', v)} type="textarea" />
+            <ObjectListField
+                label="Audience Segments"
+                items={home.whoWeServe?.segments || []}
+                fields={[
+                    { key: 'tag', label: 'Segment Tag (e.g. For First-Time Candidates)' },
+                    { key: 'title', label: 'Title' },
+                    { key: 'text', label: 'Body Text (use blank line between paragraphs)', type: 'textarea' },
+                    { key: 'highlight', label: 'Highlight / Pull Quote', type: 'textarea' },
+                    { key: 'ctaLabel', label: 'CTA Label' },
+                    { key: 'ctaHref', label: 'CTA Link (e.g. /apply?program=...)' },
+                ]}
+                onChange={v => setField('whoWeServe.segments', v)}
+            />
+
             <SectionTitle>Statistics Bar</SectionTitle>
             {(home.stats || []).map((stat: any, i: number) => (
                 <ItemCard key={i} index={i} onRemove={() => {
