@@ -25,13 +25,17 @@ export default function Navbar() {
         <>
             <nav style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? 'rgba(10,10,15,0.55)' : 'rgba(10,10,15,0.22)',
+                background: scrolled
+                    ? `linear-gradient(180deg, ${theme.primary}b3 0%, ${theme.primary}80 65%, ${theme.primary}00 100%)`
+                    : `linear-gradient(180deg, ${theme.primary}4d 0%, ${theme.primary}26 65%, ${theme.primary}00 100%)`,
                 backdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'blur(14px) saturate(160%)',
                 WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'blur(14px) saturate(160%)',
-                borderBottom: `1px solid rgba(255,255,255,${scrolled ? 0.14 : 0.08})`,
-                boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.18)' : 'none',
+                maskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
+                paddingTop: scrolled ? '0.75rem' : '1.25rem',
+                paddingLeft: '24px', paddingRight: '24px',
+                paddingBottom: scrolled ? '2.5rem' : '3rem',
                 transition: 'all 0.35s ease',
-                padding: scrolled ? '0.75rem 24px' : '1.25rem 24px',
             }}>
                 <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     {/* Logo & Brand Lockup */}
