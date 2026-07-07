@@ -36,12 +36,14 @@ export default function Page() {
         backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
-        {/* Primary dark overlay — always present for readability */}
+        {/* Primary brand-tinted overlay — always present for readability, tinted with
+            theme.primary (instead of neutral black) so the photo hero reads as part of
+            the same red brand world as every other page instead of a desaturated outlier */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 1,
           background: theme.heroImage
-            ? 'linear-gradient(110deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.2) 100%)'
-            : 'linear-gradient(110deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 100%)',
+            ? `linear-gradient(110deg, ${theme.primary}d9 0%, ${theme.primary}80 60%, ${theme.primary}33 100%)`
+            : `linear-gradient(110deg, ${theme.primary}b8 0%, ${theme.primary}73 100%)`,
         }} />
 
         {/* Subtle geometric grid pattern */}

@@ -140,6 +140,9 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        {safeTheme.heroImage && (
+          <link rel="preload" as="image" href={safeTheme.heroImage} fetchPriority="high" />
+        )}
         <style dangerouslySetInnerHTML={{ __html: styleVariables }} />
       </head>
       <body>
