@@ -294,7 +294,14 @@
         "tag": "The TPA Team",
         "title": "The People Behind The Work",
         "description": "Beyond the founder, PoliBrand is growing a bench of strategists, communicators, and researchers who bring real electoral experience and deep roots in African political institutions.",
-        "members": []
+        "members": [
+          {
+            "name": "John Dakey",
+            "title": "Full-Stack Developer & Technical Lead",
+            "bio": "John Dakey is the technical architect behind The PoliBrand Agency's digital presence — building and maintaining the website, admin systems, and tools the agency runs on.\n\nA full-stack developer with a focus on modern web applications, John brings the same discipline to code that PoliBrand brings to political branding: structure, reliability, and attention to detail.\n\nHe is also the founder of Stormglide.io, where he builds software ventures of his own.",
+            "image": ""
+          }
+        ]
       },
       "vision": {
         "tag": "Our Future",
