@@ -26,10 +26,10 @@ export default function Navbar() {
             <nav style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
                 background: scrolled
-                    ? `linear-gradient(180deg, ${theme.primary}66 0%, ${theme.primary}33 65%, ${theme.primary}00 100%)`
-                    : `linear-gradient(180deg, ${theme.primary}26 0%, ${theme.primary}0d 65%, ${theme.primary}00 100%)`,
-                backdropFilter: scrolled ? 'blur(18px) saturate(160%)' : 'blur(12px) saturate(160%)',
-                WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(160%)' : 'blur(12px) saturate(160%)',
+                    ? `linear-gradient(180deg, rgba(10,10,12,0.45) 0%, rgba(10,10,12,0.22) 65%, rgba(10,10,12,0) 100%)`
+                    : `linear-gradient(180deg, rgba(10,10,12,0.22) 0%, rgba(10,10,12,0.1) 65%, rgba(10,10,12,0) 100%)`,
+                backdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'blur(10px) saturate(140%)',
+                WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'blur(10px) saturate(140%)',
                 maskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
                 WebkitMaskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
                 paddingTop: scrolled ? '0.75rem' : '1.25rem',
