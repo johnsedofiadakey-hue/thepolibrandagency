@@ -453,16 +453,16 @@ export default function Page() {
                   ) : (
                     <>
                       <div style={{
-                        width: 44, height: 44, borderRadius: 4, margin: '0 auto 0.75rem',
-                        background: `${theme.primary || '#1A2B4C'}0f`,
-                        border: `1px solid ${theme.primary || '#1A2B4C'}20`,
+                        width: 48, height: 48, borderRadius: '50%', margin: '0 auto 0.85rem',
+                        background: `linear-gradient(135deg, ${theme.primary || '#1A2B4C'}, ${theme.primary || '#1A2B4C'}cc)`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontFamily: 'Cinzel, Georgia, serif', fontWeight: 700,
-                        fontSize: '1.1rem', color: theme.primary || '#1A2B4C',
+                        fontSize: '1.15rem', color: '#fff',
+                        boxShadow: `0 6px 16px ${theme.primary || '#1A2B4C'}35`,
                       }}>
                         {(p.name || p.title || '?').charAt(0)}
                       </div>
-                      <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.78rem', color: '#111', lineHeight: 1.4 }}>{p.name || p.title}</div>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.8rem', color: '#111', lineHeight: 1.4 }}>{p.name || p.title}</div>
                     </>
                   )}
                 </div>
