@@ -476,6 +476,7 @@
       }
     },
     "programs": {
+      "enabled": true,
       "hero": {
         "tag": "Learning & Growth",
         "title": "Elite Programs for Political Advancement.",

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import IconGlyph from '@/components/IconGlyph';
 
 // Simple relative time formatter for premium dynamic feel
 function formatRelativeTime(isoString: string): string {
@@ -231,7 +232,7 @@ export default function PortalDashboard() {
                                 onMouseEnter={(e: any) => { e.target.style.background = 'rgba(239, 68, 68, 0.15)'; e.target.style.borderColor = 'rgba(239, 68, 68, 0.4)'; }}
                                 onMouseLeave={(e: any) => { e.target.style.background = 'rgba(255,255,255,0.08)'; e.target.style.borderColor = 'rgba(255,255,255,0.2)'; }}
                             >
-                                🚪 Log Out
+                                <IconGlyph icon="🚪" size={16} /> Log Out
                             </button>
                         </div>
                     </div>
@@ -256,9 +257,9 @@ export default function PortalDashboard() {
                     {/* Tabs */}
                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: '2rem' }}>
                         {([
-                            { id: 'materials' as const, label: '📚 Course Syllabus' }, 
-                            { id: 'progress' as const, label: '📊 Metrics & Scorecard' }, 
-                            { id: 'forum' as const, label: `💬 Cohort Forum (${discussions.length})` }
+                            { id: 'materials' as const, label: 'Course Syllabus', icon: '📚' },
+                            { id: 'progress' as const, label: 'Metrics & Scorecard', icon: '📊' },
+                            { id: 'forum' as const, label: `Cohort Forum (${discussions.length})`, icon: '🤝' }
                         ] as const).map((tab) => (
                             <button
                                 key={tab.id}
@@ -271,7 +272,7 @@ export default function PortalDashboard() {
                                     boxShadow: activeTab === tab.id ? '0 -4px 12px rgba(0,0,0,0.05)' : 'none'
                                 }}
                             >
-                                {tab.label}
+                                <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}><IconGlyph icon={tab.icon} size={16} /></span>{tab.label}
                             </button>
                         ))}
                     </div>
@@ -388,7 +389,8 @@ export default function PortalDashboard() {
                                         fontSize: '0.7rem',
                                         fontWeight: 600
                                     }}>
-                                        {score >= 85 ? '👑 Top Competitive Stage' : '📈 Strategic Growth Stage'}
+                                        <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}><IconGlyph icon={score >= 85 ? '👑' : '📈'} size={14} /></span>
+                                        {score >= 85 ? 'Top Competitive Stage' : 'Strategic Growth Stage'}
                                     </span>
                                 </div>
                                 <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '1rem', textAlign: 'center' }}>
@@ -442,7 +444,7 @@ export default function PortalDashboard() {
                                         boxShadow: '0 4px 15px rgba(0,0,0,0.02)'
                                     }}
                                 >
-                                    <div style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>{s.icon}</div>
+                                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem', color: s.color }}><IconGlyph icon={s.icon} size={30} /></div>
                                     <div style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.6rem', color: '#111', marginBottom: 4 }}>{s.value}</div>
                                     <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#6b7280', fontWeight: 500, letterSpacing: '0.5px' }}>{s.label}</div>
                                 </div>
@@ -459,7 +461,7 @@ export default function PortalDashboard() {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                 <div style={{ border: '1px solid #f3f4f6', borderRadius: 6, padding: '1.25rem', background: '#faf9f6' }}>
                                     <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1F6F3E', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                                        🎯 Primary Strengths
+                                        <IconGlyph icon="🎯" size={16} /> Primary Strengths
                                     </div>
                                     <ul style={{ fontSize: '0.78rem', color: '#4b5563', paddingLeft: '1.2rem', margin: 0, lineHeight: 1.6 }}>
                                         <li>Strong brand narrative identity alignment.</li>
@@ -469,7 +471,7 @@ export default function PortalDashboard() {
                                 </div>
                                 <div style={{ border: '1px solid #f3f4f6', borderRadius: 6, padding: '1.25rem', background: '#faf9f6' }}>
                                     <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#c9a227', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                                        🚀 Tailored Growth Areas
+                                        <IconGlyph icon="🚀" size={16} /> Tailored Growth Areas
                                     </div>
                                     <ul style={{ fontSize: '0.78rem', color: '#4b5563', paddingLeft: '1.2rem', margin: 0, lineHeight: 1.6 }}>
                                         <li>Intense simulation practice for policy debates.</li>
@@ -527,7 +529,7 @@ export default function PortalDashboard() {
                                         style={{ fontSize: '0.8rem', padding: '10px 24px', height: 40 }}
                                         disabled={submittingComment || !newComment.trim()}
                                     >
-                                        {submittingComment ? 'Posting...' : 'Post Comment 📣'}
+                                        {submittingComment ? 'Posting...' : <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>Post Comment <IconGlyph icon="📣" size={16} /></span>}
                                     </button>
                                 </div>
                             </form>

@@ -37,59 +37,6 @@ export default function Page() {
         backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
-        {/* Primary brand-tinted overlay — always present for readability, tinted with
-            theme.primary (instead of neutral black) so the photo hero reads as part of
-            the same red brand world as every other page instead of a desaturated outlier */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 1,
-          background: theme.heroImage
-            ? `linear-gradient(110deg, ${theme.primary}d9 0%, ${theme.primary}80 60%, ${theme.primary}33 100%)`
-            : `linear-gradient(110deg, ${theme.primary}b8 0%, ${theme.primary}73 100%)`,
-        }} />
-
-        {/* Neutral dark strip behind the fixed navbar so its glass doesn't pick up
-            red bleed-through from the overlay above — keeps the navbar area purely
-            transparent/neutral instead of tinted red */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 220, zIndex: 2,
-          background: 'linear-gradient(180deg, rgba(4,4,6,0.6) 0%, rgba(4,4,6,0) 100%)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* Subtle geometric grid pattern */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 1, opacity: 0.04,
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }} />
-
-        {/* Gold radial glow — top left anchor */}
-        <div style={{
-          position: 'absolute', top: '-10%', left: '-5%', zIndex: 1,
-          width: '55vw', height: '55vw', borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.secondary || '#C9A227'}18 0%, transparent 65%)`,
-          pointerEvents: 'none',
-        }} />
-
-        {/* Diagonal accent stripe — right side */}
-        <div style={{
-          position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1,
-          width: '38%', clipPath: 'polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)',
-          background: `linear-gradient(160deg, ${theme.secondary || '#C9A227'}08 0%, ${theme.secondary || '#C9A227'}04 100%)`,
-          borderLeft: `1px solid ${theme.secondary || '#C9A227'}14`,
-        }} />
-
-        {/* Decorative corner mark — top right, hidden on mobile */}
-        <div className="hide-mobile" style={{ position: 'absolute', top: 100, right: 80, zIndex: 2, opacity: 0.18, pointerEvents: 'none' }}>
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
-            <circle cx="90" cy="90" r="88" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-            <circle cx="90" cy="90" r="64" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="4 6" />
-            <circle cx="90" cy="90" r="38" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-            <line x1="90" y1="2" x2="90" y2="178" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
-            <line x1="2" y1="90" x2="178" y2="90" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
-          </svg>
-        </div>
-
         {/* Main hero content */}
         <div className="container-brand" style={{ position: 'relative', zIndex: 3, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 40 }}>
           <div style={{ maxWidth: 740 }}>
@@ -111,6 +58,7 @@ export default function Page() {
               fontSize: 'clamp(2.8rem, 5.5vw, 5rem)',
               color: '#fff', lineHeight: 1.08, marginBottom: '1.75rem',
               letterSpacing: '-1.5px',
+              textShadow: '0 4px 22px rgba(0,0,0,0.55)',
             }}>
               {home.hero.headline.split('\n').map((line: string, i: number) => (
                 <span key={i} style={{ display: 'block' }}>{line}</span>
@@ -130,6 +78,7 @@ export default function Page() {
               fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', fontWeight: 400,
               color: 'rgba(255,255,255,0.78)', lineHeight: 1.85, maxWidth: 520, marginBottom: '2.75rem',
               letterSpacing: '0.2px',
+              textShadow: '0 2px 14px rgba(0,0,0,0.55)',
             }}>
               {home.hero.subheadline}
             </p>

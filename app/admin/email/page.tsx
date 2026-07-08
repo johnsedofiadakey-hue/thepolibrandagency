@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import IconGlyph from '@/components/IconGlyph';
 
 const templates = [
     {
@@ -111,7 +112,7 @@ export default function EmailPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {/* Trigger info */}
                     <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: 6, padding: '0.75rem 1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#92400e' }}>
-                        ⚡ <strong>Trigger:</strong> {active.trigger}
+                        <span style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}><IconGlyph icon="⚡" size={16} /></span><strong>Trigger:</strong> {active.trigger}
                     </div>
 
                     <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', padding: '1.75rem', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}>

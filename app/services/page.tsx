@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import IconGlyph from '@/components/IconGlyph';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
@@ -9,6 +10,7 @@ import { PoliSettingsContext } from '@/components/SettingsProvider';
 export default function ServicesPage() {
     const { content } = useContext(PoliSettingsContext) as any;
     const services = content.pages.services;
+    const programsEnabled = content?.pages?.programs?.enabled !== false;
 
     return (
         <>
@@ -104,7 +106,7 @@ export default function ServicesPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
                         {services.institutional.items.map((s: any, i: number) => (
                             <div key={i} className="card-brand">
-                                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{s.icon}</div>
+                                <div style={{ marginBottom: '1rem', color: 'var(--color-primary)', display: 'inline-flex' }}><IconGlyph icon={s.icon} size={32} /></div>
                                 <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '0.75rem' }}>{s.title}</h3>
                                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.86rem', color: '#555', lineHeight: 1.8, marginBottom: '1.25rem' }}>{s.desc}</p>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -127,7 +129,7 @@ export default function ServicesPage() {
                     <p style={{ fontFamily: 'var(--font-body)', color: 'rgba(255,255,255,0.65)', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: 1.7 }}>Start with the Political Readiness Index to identify your strategic starting point.</p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href="/assessment" className="btn-gold">Start Assessment →</Link>
-                        <Link href="/programs#fellowship" className="btn-secondary">View Programs</Link>
+                        {programsEnabled && <Link href="/programs#fellowship" className="btn-secondary">View Programs</Link>}
                     </div>
                 </div>
             </section>

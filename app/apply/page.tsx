@@ -3,6 +3,7 @@ import { Suspense, useState, useContext, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import IconGlyph from '@/components/IconGlyph';
 import { useSearchParams } from 'next/navigation';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
@@ -293,7 +294,7 @@ function ApplyForm() {
                     {/* Refund Notice */}
                     <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
                         <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
-                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
+                            <span className="font-semibold inline-flex items-center gap-2"><IconGlyph icon="💰" size={18} /> 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
                         </p>
                     </div>
 

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useContext } from "react";
 import { PoliSettingsContext } from '@/components/SettingsProvider';
+import IconGlyph from '@/components/IconGlyph';
 
 const typographyPresets = [
     { id: 'modern_minimalist', label: 'Modern Minimalist', headline: 'Outfit', body: 'Inter' },
@@ -342,8 +343,8 @@ export default function BrandPage() {
                                                 transition: 'all 0.2s'
                                             }}
                                         >
-                                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
-                                                {uploading === item.type ? '⌛' : '📸'}
+                                            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem', color: '#4b5563' }}>
+                                                <IconGlyph icon={uploading === item.type ? '⌛' : '📸'} size={24} />
                                             </div>
                                             <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563' }}>{item.label}</div>
                                             <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', color: '#9ca3af', marginTop: 4 }}>

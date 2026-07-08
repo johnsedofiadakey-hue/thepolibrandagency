@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import IconGlyph from '@/components/IconGlyph';
 
 const documents = [
     { id: 1, name: 'Polibrand Program Brochure 2026', type: 'Brochure', size: '2.4 MB', downloads: 142, uploaded: 'Feb 1, 2026' },
@@ -36,7 +37,7 @@ export default function DocumentsPage() {
                     background: dragging ? '#f0fdf4' : '#fff', transition: 'all 0.2s',
                 }}
             >
-                <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📁</div>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: '#9a3412' }}><IconGlyph icon="📂" size={42} /></div>
                 <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '0.5rem' }}>
                     Drag & Drop Files Here
                 </h3>
@@ -83,7 +84,7 @@ export default function DocumentsPage() {
                                 <tr key={doc.id} style={{ borderTop: '1px solid #f3f4f6' }}>
                                     <td style={{ padding: '14px 1.25rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                            <span style={{ fontSize: '1.2rem' }}>📄</span>
+                                            <IconGlyph icon="📄" size={20} />
                                             <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.86rem', fontWeight: 600, color: '#111' }}>{doc.name}</span>
                                         </div>
                                     </td>
@@ -123,7 +124,7 @@ export default function DocumentsPage() {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ fontSize: '0.7rem' }}>📊</span>
+                                    <IconGlyph icon="📊" size={14} />
                                     <span style={{ fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '0.8rem', color: '#1F6F3E' }}>{doc.downloads} DLs</span>
                                 </div>
                                 <div style={{ display: 'flex', gap: 6 }}>

@@ -83,6 +83,7 @@ export interface SiteContent {
       cta: Record<string, string>;
     };
     programs: {
+      enabled?: boolean;
       hero: HeroSection;
       bootcamp: any;
       fellowship: any;

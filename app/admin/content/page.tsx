@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
+import IconGlyph from '@/components/IconGlyph';
 
 const sections = [
     { id: 'metadata', label: 'Global SEO / Metadata', group: 'Global', icon: '🔍' },
@@ -20,7 +21,7 @@ const sections = [
 // ─── FIELD HELPERS ──────────────────────────────────────────────────────────────────
 //
 
-type FieldType = 'text' | 'textarea' | 'color' | 'image';
+type FieldType = 'text' | 'textarea' | 'color' | 'image' | 'checkbox';
 
 function getNestedValue(obj: any, path: string): any {
     return path.split('.').reduce((curr, k) => curr?.[k], obj);
@@ -44,7 +45,7 @@ function setNestedValue(obj: any, path: string, value: any): any {
 
 // Minimal field input
 function Field({ label, value, onChange, type = 'text' }: {
-    label: string; value: any; onChange: (v: string) => void; type?: FieldType;
+    label: string; value: any; onChange: (v: any) => void; type?: FieldType;
 }) {
     const commonStyle: React.CSSProperties = {
         width: '100%', padding: '9px 13px', border: '1.5px solid #e5e0d6',
@@ -56,7 +57,31 @@ function Field({ label, value, onChange, type = 'text' }: {
             <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 6 }}>
                 {label}
             </label>
-            {type === 'textarea' ? (
+            {type === 'checkbox' ? (
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                    <span style={{ position: 'relative', display: 'inline-block', width: 46, height: 26 }}>
+                        <input
+                            type="checkbox"
+                            checked={!!value}
+                            onChange={e => onChange(e.target.checked)}
+                            style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', margin: 0, cursor: 'pointer' }}
+                        />
+                        <span style={{
+                            position: 'absolute', inset: 0, borderRadius: 999,
+                            background: value ? '#16a34a' : '#d1d5db',
+                            transition: 'background 0.2s',
+                        }} />
+                        <span style={{
+                            position: 'absolute', top: 3, left: value ? 23 : 3,
+                            width: 20, height: 20, borderRadius: '50%', background: '#fff',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s',
+                        }} />
+                    </span>
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#374151', fontWeight: 600 }}>
+                        {value ? 'Enabled' : 'Disabled'}
+                    </span>
+                </label>
+            ) : type === 'textarea' ? (
                 <textarea value={value ?? ''} onChange={e => onChange(e.target.value)} rows={3} style={{ ...commonStyle, minHeight: 80 }} />
             ) : type === 'color' ? (
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -516,7 +541,7 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
                     const items = (home.services?.items || []).filter((_: any, idx: number) => idx !== i);
                     onChange(setNestedValue(content, 'pages.home.services.items', items));
                 }}>
-                    <Field label="Icon (emoji or symbol)" value={item.icon} onChange={v => updateService(i, 'icon', v)} />
+                    <Field label="Icon Key" value={item.icon} onChange={v => updateService(i, 'icon', v)} />
                     <Field label="Title" value={item.title} onChange={v => updateService(i, 'title', v)} />
                     <Field label="Description" value={item.desc} onChange={v => updateService(i, 'desc', v)} type="textarea" />
                 </ItemCard>
@@ -579,7 +604,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <ObjectListField 
                 label="Vision Metrics" 
                 items={about.vision?.items || []} 
-                fields={[{ key: 'label', label: 'Metric Name' }, { key: 'percentage', label: 'Percentage (e.g. 85%)' }]} 
+                fields={[{ key: 'label', label: 'Metric Name' }, { key: 'percentage', label: 'Percentage (e.g. 85%)' }]}
                 onChange={v => setField('vision.items', v)}
             />
 
@@ -589,7 +614,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <ObjectListField 
                 label="Steps" 
                 items={about.strategy?.steps || []} 
-                fields={[{ key: 'title', label: 'Title' }, { key: 'desc', label: 'Description', type: 'textarea' }]} 
+                fields={[{ key: 'title', label: 'Title' }, { key: 'desc', label: 'Description', type: 'textarea' }]}
                 onChange={v => setField('strategy.steps', v)}
             />
 
@@ -599,7 +624,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <ObjectListField 
                 label="Cards" 
                 items={about.philosophy?.cards || []} 
-                fields={[{ key: 'title', label: 'Title' }, { key: 'text', label: 'Text', type: 'textarea' }]} 
+                fields={[{ key: 'title', label: 'Title' }, { key: 'text', label: 'Text', type: 'textarea' }]}
                 onChange={v => setField('philosophy.cards', v)}
             />
 
@@ -959,7 +984,7 @@ function InstitutionalEditor({ content, onChange }: { content: any; onChange: (c
                 label="Models" 
                 items={page.models || []} 
                 fields={[
-                    { key: 'icon', label: 'Icon (emoji)' },
+                    { key: 'icon', label: 'Icon Key' },
                     { key: 'title', label: 'Title' },
                     { key: 'desc', label: 'Description', type: 'textarea' }
                 ]} 
@@ -999,7 +1024,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
                     <ObjectListField 
                         label="Outcomes" 
                         items={prog.outcomes} 
-                        fields={[{ key: 'icon', label: 'Icon' }, { key: 'label', label: 'Label' }]} 
+                        fields={[{ key: 'icon', label: 'Icon Key' }, { key: 'label', label: 'Label' }]}
                         onChange={v => setField(`${key}.outcomes`, v)}
                     />
                 )}
@@ -1007,7 +1032,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
                     <ObjectListField 
                         label="Inclusions" 
                         items={prog.inclusions} 
-                        fields={[{ key: 'icon', label: 'Icon' }, { key: 'title', label: 'Title' }, { key: 'desc', label: 'Desc', type: 'textarea' }]} 
+                        fields={[{ key: 'icon', label: 'Icon Key' }, { key: 'title', label: 'Title' }, { key: 'desc', label: 'Desc', type: 'textarea' }]}
                         onChange={v => setField(`${key}.inclusions`, v)}
                     />
                 )}
@@ -1017,6 +1042,17 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
 
     return (
         <>
+            <SectionTitle>Page Visibility</SectionTitle>
+            <Field
+                label="Show Programs Page"
+                type="checkbox"
+                value={page.enabled !== false}
+                onChange={v => setField('enabled', v)}
+            />
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.6, marginTop: '-0.5rem', marginBottom: '1.5rem' }}>
+                Turn this off while programs are not running. The Programs navigation/footer links will be hidden, and the public page will show a closed notice.
+            </p>
+
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={page.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={page.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -1034,7 +1070,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
             <ObjectListField 
                 label="Courses List" 
                 items={page.courses?.items || []} 
-                fields={[{ key: 'number', label: 'No.' }, { key: 'title', label: 'Title' }, { key: 'duration', label: 'Duration' }, { key: 'desc', label: 'Desc', type: 'textarea' }]} 
+                fields={[{ key: 'number', label: 'No.' }, { key: 'title', label: 'Title' }, { key: 'duration', label: 'Duration' }, { key: 'desc', label: 'Desc', type: 'textarea' }]}
                 onChange={v => setField('courses.items', v)}
             />
 
@@ -1254,7 +1290,7 @@ export default function ContentPage() {
                                         transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: 8,
                                     }}
                                 >
-                                    <span style={{ fontSize: '0.9rem' }}>{s.icon}</span>
+                                    <span style={{ display: 'inline-flex' }}><IconGlyph icon={s.icon} size={16} /></span>
                                     <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: activeSection === s.id ? 600 : 400, color: activeSection === s.id ? '#1F6F3E' : '#374151' }}>
                                         {s.label}
                                     </span>
@@ -1267,7 +1303,7 @@ export default function ContentPage() {
                 {/* Editor Panel */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', overflowY: 'auto', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
                     <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 0, background: '#fff', zIndex: 10 }}>
-                        <span style={{ fontSize: '1.1rem' }}>{active.icon}</span>
+                        <span style={{ display: 'inline-flex', color: '#1F6F3E' }}><IconGlyph icon={active.icon} size={20} /></span>
                         <div>
                             <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111', margin: 0 }}>{active.label}</h3>
                             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#9ca3af', margin: 0 }}>Update copy, links, and list items for this section.</p>

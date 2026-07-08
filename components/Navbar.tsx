@@ -8,6 +8,10 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { theme, content } = useContext(PoliSettingsContext) as any;
     const nav = content.navbar;
+    const programsEnabled = content?.pages?.programs?.enabled !== false;
+    const navLinks = (nav.links || []).filter((link: any) => programsEnabled || !String(link.href || '').startsWith('/programs'));
+    const navForeground = scrolled ? '#fff' : '#111';
+    const navSubtleForeground = scrolled ? 'rgba(255,255,255,0.9)' : '#222';
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -26,15 +30,15 @@ export default function Navbar() {
             <nav style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
                 background: scrolled
-                    ? `linear-gradient(180deg, rgba(10,10,12,0.45) 0%, rgba(10,10,12,0.22) 65%, rgba(10,10,12,0) 100%)`
-                    : `linear-gradient(180deg, rgba(10,10,12,0.22) 0%, rgba(10,10,12,0.1) 65%, rgba(10,10,12,0) 100%)`,
-                backdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'blur(10px) saturate(140%)',
-                WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(140%)' : 'blur(10px) saturate(140%)',
-                maskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(180deg, black 0%, black 65%, transparent 100%)',
+                    ? 'linear-gradient(180deg, rgba(12,12,14,0.68) 0%, rgba(12,12,14,0.42) 72%, rgba(12,12,14,0.18) 100%)'
+                    : 'transparent',
+                backdropFilter: scrolled ? 'blur(18px) saturate(145%)' : 'none',
+                WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(145%)' : 'none',
+                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.10)' : '1px solid transparent',
+                boxShadow: scrolled ? '0 14px 40px rgba(0,0,0,0.18)' : 'none',
                 paddingTop: scrolled ? '0.75rem' : '1.25rem',
                 paddingLeft: '24px', paddingRight: '24px',
-                paddingBottom: scrolled ? '2.5rem' : '3rem',
+                paddingBottom: scrolled ? '0.75rem' : '1.25rem',
                 transition: 'all 0.35s ease',
             }}>
                 <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -54,13 +58,13 @@ export default function Navbar() {
                             <span style={{
                                 fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.2rem',
                                 color: theme.secondary, letterSpacing: '2px', lineHeight: 1,
-                                textShadow: scrolled ? 'none' : '0 2px 10px rgba(0,0,0,0.4)'
+                                textShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.35)' : '0 1px 8px rgba(255,255,255,0.75)'
                             }}>
                                 {nav.brand.line1}
                             </span>
                             <span style={{
                                 fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.8rem',
-                                color: '#fff', letterSpacing: '4.5px', marginTop: '2px',
+                                color: navSubtleForeground, letterSpacing: '4.5px', marginTop: '2px',
                                 opacity: 0.9
                             }}>
                                 {nav.brand.line2}
@@ -70,18 +74,18 @@ export default function Navbar() {
 
                     {/* Desktop Nav Links */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }} className="desktop-nav">
-                        {nav.links.map((link: any) => (
+                        {navLinks.map((link: any) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 style={{
                                     fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '0.75rem',
-                                    letterSpacing: '1.5px', textTransform: 'uppercase', color: '#fff',
+                                    letterSpacing: '1.5px', textTransform: 'uppercase', color: navForeground,
                                     textDecoration: 'none', transition: 'all 0.2s',
                                     opacity: 0.85
                                 }}
                                 onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = theme.secondary; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.color = '#fff'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.color = navForeground; }}
                             >
                                 {link.label}
                             </Link>
@@ -170,7 +174,7 @@ export default function Navbar() {
                     <div style={{ width: 40, height: 1.5, background: theme.secondary, margin: '8px auto 0' }} />
                 </div>
 
-                {nav.links.map((link: any, i: number) => (
+                {navLinks.map((link: any, i: number) => (
                     <Link
                         key={link.href}
                         href={link.href}

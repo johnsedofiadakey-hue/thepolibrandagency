@@ -7,6 +7,15 @@ export default function Footer() {
     const { theme, content } = useContext(PoliSettingsContext) as any;
     const footer = content.footer;
     const navbar = content.navbar;
+    const programsEnabled = content?.pages?.programs?.enabled !== false;
+    const visibleSections = (footer.sections || []).map((section: any) => ({
+        ...section,
+        links: (section.links || []).filter((link: any) => {
+            const href = String(link.href || '');
+            if (programsEnabled) return true;
+            return !href.startsWith('/programs') && href !== '/portal';
+        }),
+    }));
 
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -137,7 +146,7 @@ export default function Footer() {
                     </div>
 
                     {/* Link Columns */}
-                    {footer.sections.map((section: any) => (
+                    {visibleSections.map((section: any) => (
                         <div key={section.title}>
                             <h4 style={{ fontFamily: 'Cinzel, serif', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-secondary)', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
                                 {section.title}

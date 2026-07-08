@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import IconGlyph from '@/components/IconGlyph';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
@@ -70,7 +71,7 @@ export default function InstitutionalClientsPage() {
                         {institutional.models.map((client: any, idx: number) => (
                             <div key={idx} className="card-brand flex flex-col hover:-translate-y-2 transition-transform duration-300">
                                 <div className="text-4xl mb-6 bg-[var(--color-bg)] w-16 h-16 rounded-full flex items-center justify-center border border-[var(--color-border)] shadow-sm">
-                                    {client.icon}
+                                    <IconGlyph icon={client.icon} size={32} />
                                 </div>
                                 <h3 className="font-serif font-bold text-2xl text-[var(--color-text)] mb-3">{client.title}</h3>
                                 <p className="font-sans text-base text-[var(--color-muted)] leading-relaxed mb-6 flex-grow">
