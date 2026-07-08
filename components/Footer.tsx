@@ -100,6 +100,21 @@ export default function Footer() {
                         .newsletter-form {
                             width: 100%;
                             max-width: 100%;
+                            flex-direction: column;
+                            gap: 10px;
+                        }
+                        .newsletter-form input {
+                            width: 100% !important;
+                            min-width: 0;
+                            border-right: 1px solid rgba(201,162,39,0.3) !important;
+                            border-radius: 4px !important;
+                            text-align: center;
+                        }
+                        .newsletter-form button {
+                            width: 100% !important;
+                            min-width: 0 !important;
+                            border-radius: 4px !important;
+                            white-space: normal;
                         }
                         .footer-bottom {
                             flex-direction: column;

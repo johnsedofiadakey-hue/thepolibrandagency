@@ -27,7 +27,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav style={{
+            <nav className="site-navbar" style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
                 background: scrolled
                     ? 'linear-gradient(180deg, rgba(12,12,14,0.68) 0%, rgba(12,12,14,0.42) 72%, rgba(12,12,14,0.18) 100%)'
@@ -41,10 +41,10 @@ export default function Navbar() {
                 paddingBottom: scrolled ? '0.75rem' : '1.25rem',
                 transition: 'all 0.35s ease',
             }}>
-                <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="site-navbar-inner" style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     {/* Logo & Brand Lockup */}
-                    <Link href="/" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
-                        <div style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
+                    <Link href="/" className="site-brand-lockup" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
+                        <div className="site-brand-logo" style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
                             <img
                                 src={theme.logo || '/logo.png'}
                                 alt="Logo"
@@ -54,7 +54,7 @@ export default function Navbar() {
                                 }}
                             />
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', borderLeft: `1px solid ${theme.secondary}40`, paddingLeft: '16px' }}>
+                        <div className="site-brand-text" style={{ display: 'flex', flexDirection: 'column', borderLeft: `1px solid ${theme.secondary}40`, paddingLeft: '16px' }}>
                             <span style={{
                                 fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.2rem',
                                 color: theme.secondary, letterSpacing: '2px', lineHeight: 1,
@@ -110,7 +110,7 @@ export default function Navbar() {
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 12, zIndex: 1001, position: 'relative' }}
-                        className="mobile-only"
+                        className="mobile-only site-menu-button"
                         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                     >
                         <div style={{ width: 24, height: 2, background: theme.secondary, marginBottom: 5, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
@@ -122,6 +122,47 @@ export default function Navbar() {
                 <style>{`
           @media (min-width: 769px) { .mobile-only { display: none !important; } }
           @media (max-width: 768px) { .desktop-nav { display: none !important; } }
+          @media (max-width: 768px) {
+            .site-navbar {
+              padding: 0.72rem 16px !important;
+            }
+            .site-navbar-inner {
+              align-items: center !important;
+            }
+            .site-brand-lockup {
+              gap: 10px !important;
+              min-width: 0;
+            }
+            .site-brand-logo {
+              width: 48px !important;
+              height: 48px !important;
+              flex: 0 0 48px;
+            }
+            .site-brand-text {
+              padding-left: 10px !important;
+              max-width: 190px;
+            }
+            .site-brand-text span:first-child {
+              font-size: 0.9rem !important;
+              letter-spacing: 1.3px !important;
+            }
+            .site-brand-text span:last-child {
+              font-size: 0.58rem !important;
+              letter-spacing: 3px !important;
+            }
+            .site-menu-button {
+              width: 50px !important;
+              height: 50px !important;
+              min-width: 50px !important;
+              min-height: 50px !important;
+              padding: 13px !important;
+              border-radius: 999px !important;
+              background: rgba(255, 255, 255, 0.72) !important;
+              box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12) !important;
+              backdrop-filter: blur(14px);
+              -webkit-backdrop-filter: blur(14px);
+            }
+          }
         `}</style>
             </nav>
 

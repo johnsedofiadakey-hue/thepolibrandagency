@@ -1,0 +1,18 @@
+{
+  "theme": {
+    "primary": "#ae0a0a",
+    "secondary": "#ffa3a3",
+    "accent": "#ae0a0a",
+    "background": "#ffffff",
+    "text": "#000000",
+    "logo": "https://firebasestorage.googleapis.com/v0/b/thepolibrandagency-d4263.firebasestorage.app/o/uploads%2F1781348131275_877e9212_cc23_46db_8e90_d5ef4aff4258.png?alt=media&token=6697356e-b671-4d58-b08e-6d5bd0758c58",
+    "heroImage": "https://firebasestorage.googleapis.com/v0/b/thepolibrandagency-d4263.firebasestorage.app/o/uploads%2F1781306633445_img_8791.webp?alt=media&token=58c6c904-afa1-4dae-818c-f737ffdbf743"
+  },
+  "typography": "institutional",
+  "maintenance": {
+    "message": "We're working on new features and improvements behind the scenes. We'll be back online shortly — thank you for your patience.",
+    "title": "We're Building Something New.",
+    "enabled": false
+  },
+  "_source": "firebase"
+}
