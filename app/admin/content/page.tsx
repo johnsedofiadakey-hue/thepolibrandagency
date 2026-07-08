@@ -601,12 +601,17 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <Field label="Tag" value={about.vision?.tag} onChange={v => setField('vision.tag', v)} />
             <Field label="Title" value={about.vision?.title} onChange={v => setField('vision.title', v)} />
             <Field label="Description" value={about.vision?.description} onChange={v => setField('vision.description', v)} type="textarea" />
-            <ObjectListField 
-                label="Vision Metrics" 
-                items={about.vision?.items || []} 
+            <ObjectListField
+                label="Vision Metrics"
+                items={about.vision?.items || []}
                 fields={[{ key: 'label', label: 'Metric Name' }, { key: 'percentage', label: 'Percentage (e.g. 85%)' }]}
                 onChange={v => setField('vision.items', v)}
             />
+
+            <SectionTitle>Mission Section</SectionTitle>
+            <Field label="Tag" value={about.mission?.tag} onChange={v => setField('mission.tag', v)} />
+            <Field label="Title" value={about.mission?.title} onChange={v => setField('mission.title', v)} />
+            <Field label="Description" value={about.mission?.description} onChange={v => setField('mission.description', v)} type="textarea" />
 
             <SectionTitle>Strategic Architecture</SectionTitle>
             <Field label="Tag" value={about.strategy?.tag} onChange={v => setField('strategy.tag', v)} />
@@ -628,57 +633,58 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
                 onChange={v => setField('philosophy.cards', v)}
             />
 
-            <SectionTitle>Founders / Team Section</SectionTitle>
-            <Field label="Tag" value={about.founders?.tag} onChange={v => setField('founders.tag', v)} />
-            <Field label="Section Title" value={about.founders?.title} onChange={v => setField('founders.title', v)} />
-            <Field label="Section Description" value={about.founders?.description} onChange={v => setField('founders.description', v)} type="textarea" />
+            <SectionTitle>Founder Section</SectionTitle>
+            <Field label="Tag" value={about.founder?.tag} onChange={v => setField('founder.tag', v)} />
+            <Field label="Full Name" value={about.founder?.name} onChange={v => setField('founder.name', v)} />
+            <Field label="Title / Role" value={about.founder?.title} onChange={v => setField('founder.title', v)} />
+            <Field label="Bio" value={about.founder?.bio} onChange={v => setField('founder.bio', v)} type="textarea" />
+            <ImageUploadField label="Photo" value={about.founder?.image} onChange={v => setField('founder.image', v)} />
+
+            <SectionTitle>TPA Team Section</SectionTitle>
+            <Field label="Tag" value={about.team?.tag} onChange={v => setField('team.tag', v)} />
+            <Field label="Section Title" value={about.team?.title} onChange={v => setField('team.title', v)} />
+            <Field label="Section Description" value={about.team?.description} onChange={v => setField('team.description', v)} type="textarea" />
             <div style={{ marginTop: '0.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Team Members</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Team Members (shown once at least one is added)</span>
                     <button
                         type="button"
                         onClick={() => {
-                            const team = [...(about.founders?.team || []), { name: '', title: '', bio: '', image: '' }];
-                            setField('founders.team', team);
+                            const members = [...(about.team?.members || []), { name: '', title: '', bio: '', image: '' }];
+                            setField('team.members', members);
                         }}
                         style={{ padding: '4px 10px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 4, fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer' }}
                     >+ Add Member</button>
                 </div>
-                {(about.founders?.team || []).map((member: any, i: number) => (
+                {(about.team?.members || []).map((member: any, i: number) => (
                     <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: '1rem', marginBottom: '0.75rem', background: '#fafafa', position: 'relative' }}>
                         <button
                             type="button"
                             onClick={() => {
-                                const team = (about.founders?.team || []).filter((_: any, idx: number) => idx !== i);
-                                setField('founders.team', team);
+                                const members = (about.team?.members || []).filter((_: any, idx: number) => idx !== i);
+                                setField('team.members', members);
                             }}
                             style={{ position: 'absolute', top: 8, right: 8, background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, padding: '2px 8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}
                         >Remove</button>
                         <Field label="Full Name" value={member.name} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, name: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, name: v } : m);
+                            setField('team.members', members);
                         }} />
                         <Field label="Title / Role" value={member.title} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, title: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, title: v } : m);
+                            setField('team.members', members);
                         }} />
                         <Field label="Bio" value={member.bio} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, bio: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, bio: v } : m);
+                            setField('team.members', members);
                         }} type="textarea" />
                         <ImageUploadField label="Photo" value={member.image} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, image: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, image: v } : m);
+                            setField('team.members', members);
                         }} />
                     </div>
                 ))}
             </div>
-
-            <SectionTitle>Founders Story Section</SectionTitle>
-            <Field label="Tag" value={about.foundersStory?.tag} onChange={v => setField('foundersStory.tag', v)} />
-            <Field label="Title" value={about.foundersStory?.title} onChange={v => setField('foundersStory.title', v)} />
-            <Field label="Story" value={about.foundersStory?.story} onChange={v => setField('foundersStory.story', v)} type="textarea" />
-            <ImageUploadField label="Story Image" value={about.foundersStory?.image} onChange={v => setField('foundersStory.image', v)} />
 
             <SectionTitle>Impact Timeline</SectionTitle>
             <ObjectListField

@@ -283,6 +283,19 @@
         "title": "Redefining Political Leadership Through Strategic Communication.",
         "description": "Democracy thrives when leadership reflects society. PoliBrand combines political strategy, communication architecture, and leadership development — built on our 5S Framework of Structure, Strategy, Storytelling, Salience, and Stewardship — to close the representation gap."
       },
+      "founder": {
+        "tag": "Meet the Founder",
+        "name": "Vera Fafa Agbenya",
+        "title": "Founder & Lead Strategist",
+        "bio": "Vera Fafa Agbenya made history as the first female SRC President at her university — elected in a race where she had less name recognition, less money, and less institutional backing than her opponents. What she had was a brand: a clear identity, a disciplined message, and the presence to be remembered in a room built to overlook her.\n\nThat result wasn't luck. It was strategy.\n\nVera founded The PoliBrand Agency on a single belief: political success is not about competence alone — it is about perception, presence, and positioning. She built the 5S Framework — Structure, Strategy, Storytelling, Salience, Stewardship — from that experience, and has since applied it to political leaders, aspirants, and institutions across Ghana and West Africa.\n\nShe also runs Kente Haul, a fashion and textile venture, and builds with the same intentionality in both spaces. Faith-driven and legacy-minded, she describes herself simply: \"The woman who builds.\"",
+        "image": ""
+      },
+      "team": {
+        "tag": "The TPA Team",
+        "title": "The People Behind The Work",
+        "description": "Beyond the founder, PoliBrand is growing a bench of strategists, communicators, and researchers who bring real electoral experience and deep roots in African political institutions.",
+        "members": []
+      },
       "vision": {
         "tag": "Our Future",
         "title": "Representing the Future of African Governance",
@@ -302,6 +315,11 @@
             "percentage": "50%"
           }
         ]
+      },
+      "mission": {
+        "tag": "Our Mission",
+        "title": "Equipping Leaders With the Tools to Win Trust",
+        "description": "PoliBrand exists to close the representation gap — equipping political leaders, aspirants, and institutions with the structural tools of the 5S Framework: Structure, Strategy, Storytelling, Salience, and Stewardship. We don't just advise on messaging; we build the disciplined systems that turn capable leaders into commanding political brands."
       },
       "strategy": {
         "tag": "The Polibrand Strategy",
@@ -342,25 +360,6 @@
             "text": "Creating high-impact presence in the right spaces at the right time."
           }
         ]
-      },
-      "founders": {
-        "tag": "Meet the Team",
-        "title": "The People Behind PoliBrand",
-        "description": "PoliBrand is built and led by strategists who understand political systems from the inside — bringing real electoral experience, strategic communications expertise, and deep roots in African political institutions.",
-        "team": [
-          {
-            "name": "Vera Fafa Agbenya",
-            "title": "Founder & Lead Strategist",
-            "bio": "Vera Fafa Agbenya made history as the first female SRC President at her university — elected in a race where she had less name recognition, less money, and less institutional backing than her opponents. What she had was a brand: a clear identity, a disciplined message, and the presence to be remembered in a room built to overlook her.\n\nThat result wasn't luck. It was strategy.\n\nVera founded The PoliBrand Agency on a single belief: political success is not about competence alone — it is about perception, presence, and positioning. She built the 5S Framework — Structure, Strategy, Storytelling, Salience, Stewardship — from that experience, and has since applied it to political leaders, aspirants, and institutions across Ghana and West Africa.\n\nShe also runs Kente Haul, a fashion and textile venture, and builds with the same intentionality in both spaces. Faith-driven and legacy-minded, she describes herself simply: \"The woman who builds.\"",
-            "image": ""
-          }
-        ]
-      },
-      "foundersStory": {
-        "tag": "Our Origin",
-        "title": "The Polibrand Story",
-        "story": "Polibrand was born from a simple observation: African political leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that.",
-        "image": ""
       }
     },
     "services": {
