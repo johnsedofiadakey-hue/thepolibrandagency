@@ -447,7 +447,6 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
 
             <SectionTitle>Who We Serve</SectionTitle>
             <Field label="Tag" value={home.whoWeServe?.tag} onChange={v => setField('whoWeServe.tag', v)} />
-            <Field label="Title" value={home.whoWeServe?.title} onChange={v => setField('whoWeServe.title', v)} />
             <Field label="Intro Text" value={home.whoWeServe?.text} onChange={v => setField('whoWeServe.text', v)} type="textarea" />
             <ObjectListField
                 label="Audience Segments"

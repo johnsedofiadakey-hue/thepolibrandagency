@@ -1,6 +1,7 @@
 "use client";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import WhoWeServeCard from '@/components/WhoWeServeCard';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
@@ -199,51 +200,16 @@ export default function Page() {
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase' }}>{home.whoWeServe.tag}</span>
                 <div style={{ width: 28, height: 1.5, background: theme.secondary || '#C9A227' }} />
               </div>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#0d1117', marginBottom: '1rem', letterSpacing: '-0.5px' }}>
-                {home.whoWeServe.title}
-              </h2>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.98rem', color: '#666', maxWidth: 560, margin: '0 auto', lineHeight: 1.8 }}>
-                {home.whoWeServe.text}
-              </p>
+              {home.whoWeServe.text && (
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.98rem', color: '#666', maxWidth: 560, margin: '0 auto', lineHeight: 1.8 }}>
+                  {home.whoWeServe.text}
+                </p>
+              )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
               {home.whoWeServe.segments.map((seg: any, i: number) => (
-                <div key={i} style={{
-                  background: '#fff', borderRadius: 6, padding: '2.25rem 1.75rem',
-                  border: '1px solid rgba(0,0,0,0.07)', boxShadow: '0 2px 16px rgba(0,0,0,0.04)',
-                  display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
-                }}>
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0, width: '100%', height: 3,
-                    background: `linear-gradient(90deg, ${theme.secondary || '#C9A227'}, ${theme.secondary || '#C9A227'}80)`,
-                  }} />
-                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: theme.secondary || '#C9A227', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
-                    {seg.tag}
-                  </span>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: '#0d1117', marginBottom: '1rem', lineHeight: 1.35 }}>
-                    {seg.title}
-                  </h3>
-                  <div style={{ flex: 1, marginBottom: '1.25rem' }}>
-                    {(seg.text || '').split('\n\n').map((para: string, pi: number) => (
-                      <p key={pi} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#555', lineHeight: 1.8, marginBottom: '0.85rem' }}>{para}</p>
-                    ))}
-                  </div>
-                  {seg.highlight && (
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, color: theme.primary || '#8B1A1A', fontSize: '0.88rem', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                      {seg.highlight}
-                    </p>
-                  )}
-                  {seg.ctaHref && (
-                    <Link href={seg.ctaHref} style={{
-                      fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.7rem',
-                      letterSpacing: '1px', textTransform: 'uppercase', textDecoration: 'none',
-                      color: theme.primary || '#8B1A1A', marginTop: 'auto',
-                    }}>
-                      {seg.ctaLabel || 'Learn More →'}
-                    </Link>
-                  )}
-                </div>
+                <WhoWeServeCard key={i} seg={seg} accent={theme.secondary || '#C9A227'} primary={theme.primary || '#8B1A1A'} />
               ))}
             </div>
           </div>
