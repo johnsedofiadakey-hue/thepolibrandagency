@@ -5,9 +5,9 @@ import type { PoliSettingsContextValue, SiteSettings, SiteContent } from '@/lib/
 import initialContent from '../data/content.json';
 
 const DEFAULT_THEME: SiteSettings['theme'] = {
-  primary: '#ae0a0a',
+  primary: '#F3010A',
   secondary: '#ffa3a3',
-  accent: '#ae0a0a',
+  accent: '#F3010A',
   background: '#ffffff',
   text: '#000000',
   heroImage: '',

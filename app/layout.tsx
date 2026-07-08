@@ -50,9 +50,9 @@ export default async function RootLayout({
 
   const activeSettings = settings || {
     theme: {
-      primary: '#ae0a0a',
+      primary: '#F3010A',
       secondary: '#ffa3a3',
-      accent: '#ae0a0a',
+      accent: '#F3010A',
       background: '#ffffff',
       text: '#000000',
       heroImage: '',
@@ -128,7 +128,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="theme-color" content="#ae0a0a" />
+        <meta name="theme-color" content="#F3010A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />

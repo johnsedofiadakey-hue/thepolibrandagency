@@ -43,35 +43,27 @@ export default function AboutPage() {
             {/* ─── VISION ─── */}
             <section className="section-pad bg-white">
                 <div className="container-brand">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <div className="inline-flex items-center gap-3 mb-6">
-                                <div className="w-8 h-px bg-[var(--color-secondary)]" />
-                                <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.vision.tag}</span>
-                            </div>
-                            <h2 className="font-display font-bold text-4xl text-[#111] mb-6">{about.vision.title}</h2>
-                            <p className="font-sans text-lg text-[var(--color-muted)] mb-8 leading-relaxed">
-                                {about.vision.description}
-                            </p>
-                            <div className="space-y-6">
-                                {about.vision.items.map((item: any, i: number) => (
-                                    <div key={i}>
-                                        <div className="flex justify-between mb-2">
-                                            <span className="font-sans text-sm font-bold text-[#111] uppercase tracking-wider">{item.label}</span>
-                                            <span className="font-display font-bold text-[var(--color-primary)]">{item.percentage}</span>
-                                        </div>
-                                        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                                            <div className="h-full bg-[var(--color-primary)] transition-all duration-1000" style={{ width: item.percentage }} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                    <div className="max-w-3xl">
+                        <div className="inline-flex items-center gap-3 mb-6">
+                            <div className="w-8 h-px bg-[var(--color-secondary)]" />
+                            <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.vision.tag}</span>
                         </div>
-                        <div className="relative">
-                            <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl relative z-10">
-                                <img src={about.vision.image || '/vision.svg'} alt="Vision" className="w-full h-full object-cover opacity-80" />
-                            </div>
-                            <div className="hide-mobile absolute -top-10 -right-10 w-48 h-48 border-2 border-[var(--color-secondary)]/20 rounded-lg animate-float pointer-events-none" />
+                        <h2 className="font-display font-bold text-4xl text-[#111] mb-6">{about.vision.title}</h2>
+                        <p className="font-sans text-lg text-[var(--color-muted)] mb-8 leading-relaxed">
+                            {about.vision.description}
+                        </p>
+                        <div className="space-y-6">
+                            {about.vision.items.map((item: any, i: number) => (
+                                <div key={i}>
+                                    <div className="flex justify-between mb-2">
+                                        <span className="font-sans text-sm font-bold text-[#111] uppercase tracking-wider">{item.label}</span>
+                                        <span className="font-display font-bold text-[var(--color-primary)]">{item.percentage}</span>
+                                    </div>
+                                    <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
+                                        <div className="h-full bg-[var(--color-primary)] transition-all duration-1000" style={{ width: item.percentage }} />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -3,9 +3,9 @@
 /* ─── Brand Design Tokens ─── */
 :root {
   /* Default fallbacks - matches live production theme (thepolibrandagency.com) */
-  --color-primary: #ae0a0a;
+  --color-primary: #F3010A;
   --color-secondary: #ffa3a3;
-  --color-accent: #ae0a0a;
+  --color-accent: #F3010A;
   --color-bg: #ffffff;
   --color-text: #000000;
 

@@ -209,7 +209,7 @@ export default function Page() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
               {home.whoWeServe.segments.map((seg: any, i: number) => (
-                <WhoWeServeCard key={i} seg={seg} accent={theme.secondary || '#C9A227'} primary={theme.primary || '#8B1A1A'} />
+                <WhoWeServeCard key={i} seg={seg} accent={theme.secondary || '#C9A227'} primary={theme.primary || '#F3010A'} />
               ))}
             </div>
           </div>
