@@ -601,12 +601,6 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <Field label="Tag" value={about.vision?.tag} onChange={v => setField('vision.tag', v)} />
             <Field label="Title" value={about.vision?.title} onChange={v => setField('vision.title', v)} />
             <Field label="Description" value={about.vision?.description} onChange={v => setField('vision.description', v)} type="textarea" />
-            <ObjectListField
-                label="Vision Metrics"
-                items={about.vision?.items || []}
-                fields={[{ key: 'label', label: 'Metric Name' }, { key: 'percentage', label: 'Percentage (e.g. 85%)' }]}
-                onChange={v => setField('vision.items', v)}
-            />
 
             <SectionTitle>Mission Section</SectionTitle>
             <Field label="Tag" value={about.mission?.tag} onChange={v => setField('mission.tag', v)} />

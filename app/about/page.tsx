@@ -122,22 +122,9 @@ export default function AboutPage() {
                                 <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.vision.tag}</span>
                             </div>
                             <h2 className="font-display font-bold text-3xl text-[#111] mb-6">{about.vision.title}</h2>
-                            <p className="font-sans text-lg text-[var(--color-muted)] mb-8 leading-relaxed">
+                            <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed">
                                 {about.vision.description}
                             </p>
-                            <div className="space-y-6">
-                                {about.vision.items.map((item: any, i: number) => (
-                                    <div key={i}>
-                                        <div className="flex justify-between mb-2">
-                                            <span className="font-sans text-sm font-bold text-[#111] uppercase tracking-wider">{item.label}</span>
-                                            <span className="font-display font-bold text-[var(--color-primary)]">{item.percentage}</span>
-                                        </div>
-                                        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                                            <div className="h-full bg-[var(--color-primary)] transition-all duration-1000" style={{ width: item.percentage }} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
                         {about.mission && (
                             <div>

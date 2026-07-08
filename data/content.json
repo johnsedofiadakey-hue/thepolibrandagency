@@ -304,24 +304,10 @@
         ]
       },
       "vision": {
-        "tag": "Our Future",
+        "tag": "Our Vision",
         "title": "Representing the Future of African Governance",
         "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where principled, capable leaders rise at every level of policy and power.",
-        "image": "/vision.svg",
-        "items": [
-          {
-            "label": "Legislative Excellence",
-            "percentage": "50%"
-          },
-          {
-            "label": "Executive Leadership",
-            "percentage": "50%"
-          },
-          {
-            "label": "Party Governance",
-            "percentage": "50%"
-          }
-        ]
+        "image": "/vision.svg"
       },
       "mission": {
         "tag": "Our Mission",
