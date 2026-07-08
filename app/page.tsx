@@ -47,6 +47,15 @@ export default function Page() {
             : `linear-gradient(110deg, ${theme.primary}b8 0%, ${theme.primary}73 100%)`,
         }} />
 
+        {/* Neutral dark strip behind the fixed navbar so its glass doesn't pick up
+            red bleed-through from the overlay above — keeps the navbar area purely
+            transparent/neutral instead of tinted red */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 220, zIndex: 2,
+          background: 'linear-gradient(180deg, rgba(4,4,6,0.6) 0%, rgba(4,4,6,0) 100%)',
+          pointerEvents: 'none',
+        }} />
+
         {/* Subtle geometric grid pattern */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 1, opacity: 0.04,
