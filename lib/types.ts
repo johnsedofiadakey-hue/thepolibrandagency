@@ -72,9 +72,12 @@ export interface SiteContent {
     };
     about: {
       hero: HeroSection;
-      vision: { tag: string; title: string; description: string; image?: string; items: Array<{ label: string; percentage: string }> };
+      vision: { tag: string; title: string; description: string; image?: string; items?: Array<{ label: string; percentage: string }> };
+      mission?: { tag: string; title: string; description: string };
       strategy: { tag: string; title: string; steps: Array<{ title: string; desc: string }> };
       philosophy: { tag: string; title: string; cards: Array<{ title: string; text: string }> };
+      founder?: { tag: string; name: string; title: string; bio: string; image?: string };
+      team?: { tag: string; title: string; description?: string; members: Array<{ name: string; title: string; bio: string; image?: string }> };
     };
     services: {
       hero: HeroSection;
