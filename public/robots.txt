@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Disallow: /api
+
+Sitemap: https://thepolibrandagency.com/sitemap.xml
