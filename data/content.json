@@ -275,6 +275,11 @@
         "services": "Explore All Services →",
         "assessment": "Start Assessment →",
         "proposal": "Request Partnership Proposal →"
+      },
+      "meta": {
+        "title": "The PoliBrand Agency | Political Branding & Strategic Communication Partner",
+        "description": "PoliBrand is Africa's trusted political branding agency — political strategy, campaign communication, and leadership branding for candidates, parties, and institutions across Ghana and West Africa.",
+        "keywords": "political branding, political branding agency, political communication strategy, campaign branding, candidate branding Africa, political consulting Ghana, political strategy Africa, leadership branding"
       }
     },
     "about": {
@@ -353,6 +358,11 @@
             "text": "Creating high-impact presence in the right spaces at the right time."
           }
         ]
+      },
+      "meta": {
+        "title": "About PoliBrand | Political Branding Strategists Building African Leaders",
+        "description": "Meet the team behind PoliBrand's 5S Framework — the political branding methodology helping African leaders win trust through structure, strategy, storytelling, salience, and stewardship.",
+        "keywords": "political branding agency, political branding team, 5S framework, political strategist Africa, political communication experts, PoliBrand founder"
       }
     },
     "services": {
@@ -465,6 +475,11 @@
         "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding.",
         "apply": "Apply",
         "assessment": "Take the Assessment"
+      },
+      "meta": {
+        "title": "Political Branding Services | Strategy, Storytelling & Campaign Communication",
+        "description": "Explore PoliBrand's political branding services — identity architecture, message discipline, campaign communication, and strategic visibility for candidates, aspirants, and institutions.",
+        "keywords": "political branding services, campaign communication, political messaging, candidate branding, political identity strategy, political PR, political brand strategy"
       }
     },
     "programs": {
@@ -565,6 +580,11 @@
         "title": "Advocacy Campaign Architecture",
         "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change.",
         "cta": "Launch Your Campaign →"
+      },
+      "meta": {
+        "title": "Political Leadership Programs | Bootcamp, Fellowship & Training – PoliBrand",
+        "description": "Build political leadership skills with PoliBrand's Bootcamp, Fellowship, and Courses — practical training in political branding, communication, and campaign strategy for emerging African leaders.",
+        "keywords": "political leadership training, political bootcamp, political fellowship Africa, campaign training, political branding courses, leadership development Africa"
       }
     },
     "institutional": {
@@ -593,7 +613,12 @@
           ]
         }
       ],
-      "partners": []
+      "partners": [],
+      "meta": {
+        "title": "Institutional Partnerships | Political Branding for Parties & Institutions",
+        "description": "PoliBrand partners with political parties, NGOs, and development institutions to scale political branding, governance communication, and leadership development across Africa.",
+        "keywords": "institutional political branding, party branding, political party communication, governance partnerships Africa, NGO political strategy, political branding partners"
+      }
     },
     "assessment": {
       "hero": {
@@ -736,7 +761,12 @@
             }
           ]
         }
-      ]
+      ],
+      "meta": {
+        "title": "Political Readiness Index (PRI) | Free Political Branding Assessment",
+        "description": "Take PoliBrand's Political Readiness Index — a free diagnostic assessment measuring your political brand strength across structure, strategy, storytelling, salience, and stewardship.",
+        "keywords": "political readiness assessment, political brand audit, campaign readiness test, political branding diagnostic, political brand assessment"
+      }
     },
     "assessment_results": {
       "tiers": [
@@ -824,6 +854,11 @@
           "title": "Application Received",
           "text": "Thank you, {name}. We will contact you within 5-7 business days to schedule your consultation and discuss how we can amplify your political brand."
         }
+      },
+      "meta": {
+        "title": "Apply to PoliBrand | Political Branding & Leadership Programs",
+        "description": "Apply to work with PoliBrand — political branding strategy, leadership training, and campaign communication support for candidates, aspirants, and institutions across Africa.",
+        "keywords": "apply political branding agency, join political leadership program, political branding consultation, political branding application"
       }
     },
     "portal": {

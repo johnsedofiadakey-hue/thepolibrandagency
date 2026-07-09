@@ -6,31 +6,48 @@ import { getContent, getSettings } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency.com";
+
 export async function generateMetadata() {
-  const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency-d4263.web.app");
+  const metadataBase = new URL(SITE_URL);
   const [content, settings] = await Promise.all([
     getContent().catch(() => ({})),
     getSettings().catch(() => ({})),
   ]);
-  
-  const meta = (content as any)?.metadata || {};
+
+  // Root layout's metadata is the fallback for every route that has no route-level
+  // layout.tsx override (home, not-found, etc.) — prefer the homepage-specific
+  // meta block if set, then the legacy global `content.metadata`, then a hardcoded default.
+  const homeMeta = (content as any)?.pages?.home?.meta || {};
+  const globalMeta = (content as any)?.metadata || {};
+  const meta = { ...globalMeta, ...homeMeta };
   const logo = (settings as any)?.theme?.logo || "/logo.svg";
-  
+
+  const title = meta.title || "The PoliBrand Agency | The Trusted Political Branding Partner";
+  const description = meta.description || "PoliBrand — Africa's trusted political branding agency. Political strategy, campaign communication, and leadership branding for candidates, parties, and institutions.";
+
   return {
     metadataBase,
-    title: meta.title || "The PoliBrand Agency",
-    description: meta.description || "PoliBrand — The Trusted Political Branding Partner. Building Leaders. Shaping Influence. Winning Trust.",
-    keywords: meta.keywords || "political branding, trusted political branding partner, Africa",
+    title,
+    description,
+    keywords: meta.keywords || "political branding, political branding agency, political communication strategy, campaign branding, candidate branding Africa, political consulting Ghana",
+    alternates: { canonical: SITE_URL },
     icons: {
       icon: logo,
       shortcut: logo,
       apple: logo,
     },
     openGraph: {
-      title: meta.title || "The PoliBrand Agency",
-      description: meta.description || "The Trusted Political Branding Partner. Building Leaders. Shaping Influence. Winning Trust.",
+      title,
+      description,
+      url: SITE_URL,
       type: "website",
       images: [logo],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
@@ -124,9 +141,31 @@ export default async function RootLayout({
     }
   `;
 
+  const orgDescription = (content as any)?.pages?.home?.meta?.description
+    || (content as any)?.metadata?.description
+    || "PoliBrand — Africa's trusted political branding agency. Political strategy, campaign communication, and leadership branding for candidates, parties, and institutions.";
+
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'The PoliBrand Agency',
+    alternateName: 'PoliBrand',
+    url: SITE_URL,
+    logo: logo.startsWith('http') ? logo : `${SITE_URL}${logo}`,
+    image: logo.startsWith('http') ? logo : `${SITE_URL}${logo}`,
+    description: orgDescription,
+    areaServed: { '@type': 'Place', name: 'Africa' },
+    serviceType: ['Political branding', 'Political communication strategy', 'Campaign communication', 'Political leadership training'],
+    sameAs: [] as string[],
+  };
+
   return (
     <html lang="en">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="theme-color" content="#F3010A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

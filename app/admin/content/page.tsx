@@ -305,6 +305,16 @@ function MetadataEditor({ content, onChange }: { content: any; onChange: (c: any
     );
 }
  
+function PageSeoFields({ meta, setField }: { meta: any; setField: (path: string, value: any) => void }) {
+    return (
+        <Collapsible label="Page SEO (Search Listing)">
+            <Field label="Page Title (shown in Google & browser tab)" value={meta?.title} onChange={v => setField('meta.title', v)} />
+            <Field label="Meta Description" value={meta?.description} onChange={v => setField('meta.description', v)} type="textarea" />
+            <Field label="Keywords (comma separated)" value={meta?.keywords} onChange={v => setField('meta.keywords', v)} type="textarea" />
+        </Collapsible>
+    );
+}
+
 //
 // ─── SECTION EDITORS ────────────────────────────────────────────────────────────────
 //
@@ -465,6 +475,7 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
 
     return (
         <>
+            <PageSeoFields meta={home.meta} setField={setField} />
             <SectionTitle>Hero</SectionTitle>
             <Field label="Tag / Overline" value={home.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Headline" value={home.hero?.headline} onChange={v => setField('hero.headline', v)} type="textarea" />
@@ -591,6 +602,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
 
     return (
         <>
+            <PageSeoFields meta={about.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={about.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={about.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -697,6 +709,7 @@ function ServicesEditor({ content, onChange }: { content: any; onChange: (c: any
 
     return (
         <>
+            <PageSeoFields meta={services.meta} setField={setField} />
             <SectionTitle>Hero</SectionTitle>
             <Field label="Tag" value={services.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={services.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -823,6 +836,7 @@ function AssessmentEditor({ content, onChange }: { content: any; onChange: (c: a
 
     return (
         <>
+            <PageSeoFields meta={assessment.meta} setField={setField} />
             <SectionTitle>Hero & Intro</SectionTitle>
             <Field label="Tag" value={assessment.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={assessment.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -942,6 +956,7 @@ function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) =
 
     return (
         <>
+            <PageSeoFields meta={apply.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={apply.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={apply.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -973,6 +988,7 @@ function InstitutionalEditor({ content, onChange }: { content: any; onChange: (c
 
     return (
         <>
+            <PageSeoFields meta={page.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={page.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={page.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -1042,6 +1058,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
 
     return (
         <>
+            <PageSeoFields meta={page.meta} setField={setField} />
             <SectionTitle>Page Visibility</SectionTitle>
             <Field
                 label="Show Programs Page"
