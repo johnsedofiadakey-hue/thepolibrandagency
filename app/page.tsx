@@ -129,12 +129,12 @@ export default function Page() {
               </div>
             </div>
 
-            {/* ── RIGHT: founder video ── */}
+            {/* ── RIGHT: founder video (portrait) ── */}
             <div className="home-hero-video-wrap">
-              <div style={{ position: 'relative', width: '100%' }}>
+              <div style={{ position: 'relative', display: 'inline-block' }}>
                 {home.hero?.videoUrl ? (
                   <>
-                    {/* Soft-edge video — mask dissolves all four edges into the hero background */}
+                    {/* Portrait video — soft radial mask dissolves all four edges into the hero */}
                     <video
                       ref={videoRef}
                       autoPlay
@@ -142,62 +142,58 @@ export default function Page() {
                       playsInline
                       muted
                       style={{
-                        width: '100%',
-                        maxHeight: '72vh',
-                        objectFit: 'cover',
                         display: 'block',
-                        maskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
-                        WebkitMaskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
+                        height: 'min(72vh, 580px)',
+                        width: 'auto',
+                        objectFit: 'cover',
+                        maskImage: 'radial-gradient(ellipse 78% 84% at 50% 50%, black 35%, transparent 100%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse 78% 84% at 50% 50%, black 35%, transparent 100%)',
                       }}
                     >
                       <source src={home.hero.videoUrl} type="video/mp4" />
                     </video>
 
-                    {/* Sound toggle */}
+                    {/* Mute / unmute */}
                     <button
                       onClick={toggleSound}
                       title={muted ? 'Unmute' : 'Mute'}
                       style={{
-                        position: 'absolute', bottom: '12%', right: '14%',
-                        width: 40, height: 40, borderRadius: '50%',
-                        background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)',
-                        border: `1px solid rgba(255,255,255,0.2)`,
+                        position: 'absolute', bottom: '10%', right: '8%',
+                        width: 38, height: 38, borderRadius: '50%',
+                        background: 'rgba(0,0,0,0.52)', backdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255,255,255,0.18)',
                         color: '#fff', cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '1rem', transition: 'background 0.2s',
+                        fontSize: '0.95rem', transition: 'background 0.2s',
                         zIndex: 2,
                       }}
                       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.8)'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.52)'; }}
                     >
                       {muted ? '🔇' : '🔊'}
                     </button>
                   </>
                 ) : (
-                  /* Placeholder shown until client uploads a founder video */
+                  /* Portrait placeholder — same soft-edge mask, no play button */
                   <div style={{
-                    width: '100%',
-                    aspectRatio: '9/14',
-                    maxHeight: '72vh',
-                    maskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
-                    background: `linear-gradient(160deg, ${theme.primary || '#1A2B4C'}cc 0%, rgba(0,0,0,0.6) 100%)`,
+                    height: 'min(72vh, 580px)',
+                    aspectRatio: '9 / 16',
+                    maskImage: 'radial-gradient(ellipse 78% 84% at 50% 50%, black 35%, transparent 100%)',
+                    WebkitMaskImage: 'radial-gradient(ellipse 78% 84% at 50% 50%, black 35%, transparent 100%)',
+                    background: `linear-gradient(170deg, ${theme.primary || '#1A2B4C'}bb 0%, rgba(0,0,0,0.45) 100%)`,
                     display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
                     gap: '1rem',
                   }}>
-                    {/* Decorative reticle */}
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ opacity: 0.25 }}>
-                      <circle cx="60" cy="60" r="58" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-                      <circle cx="60" cy="60" r="40" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="3 6" />
-                      <circle cx="60" cy="60" r="18" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-                      {/* Play triangle */}
-                      <polygon points="52,46 52,74 78,60" fill={theme.secondary || '#C9A227'} opacity="0.5" />
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style={{ opacity: 0.2 }}>
+                      <circle cx="40" cy="40" r="38" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
+                      <circle cx="40" cy="40" r="26" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="3 6" />
+                      <circle cx="40" cy="40" r="12" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
                     </svg>
                     <span style={{
-                      fontFamily: 'Inter, sans-serif', fontSize: '0.62rem', fontWeight: 700,
-                      color: `${theme.secondary || '#C9A227'}80`, letterSpacing: '3px',
-                      textTransform: 'uppercase', textAlign: 'center',
+                      fontFamily: 'Inter, sans-serif', fontSize: '0.58rem', fontWeight: 700,
+                      color: `${theme.secondary || '#C9A227'}70`, letterSpacing: '3px',
+                      textTransform: 'uppercase',
                     }}>
                       Founder&rsquo;s Story
                     </span>
@@ -567,7 +563,7 @@ export default function Page() {
         /* ── Hero two-column layout ── */
         .home-hero-inner {
           display: grid;
-          grid-template-columns: 55fr 45fr;
+          grid-template-columns: 1fr auto;
           gap: 3rem;
           align-items: center;
           width: 100%;
@@ -575,7 +571,7 @@ export default function Page() {
         .home-hero-video-wrap {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-end;
         }
 
         @media (max-width: 768px) {

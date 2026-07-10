@@ -152,6 +152,65 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
     );
 }
 
+function VideoUploadField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+    const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        setUploadError(null);
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const res = await fetch('/api/upload/video', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Upload failed.');
+            if (data.url) onChange(data.url);
+        } catch (err: any) {
+            setUploadError(err.message || 'Upload failed.');
+        } finally {
+            setUploading(false);
+            e.target.value = '';
+        }
+    };
+
+    return (
+        <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 8 }}>
+                {label}
+            </label>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
+                {/* Portrait preview */}
+                <div style={{ width: 54, height: 96, borderRadius: 6, background: '#f3f4f6', border: '1.5px solid #e5e0d6', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {value
+                        ? <video src={value} muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <span style={{ fontSize: '0.55rem', color: '#9ca3af', textAlign: 'center', padding: '0 4px' }}>No Video</span>
+                    }
+                </div>
+                <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                        <label style={{ background: uploading ? '#9ca3af' : '#1F6F3E', color: '#fff', padding: '8px 14px', borderRadius: 4, cursor: uploading ? 'wait' : 'pointer', fontSize: '0.75rem', fontWeight: 600, display: 'inline-block' }}>
+                            {uploading ? 'Uploading…' : 'Upload Video'}
+                            <input type="file" accept="video/mp4,video/quicktime,video/webm" onChange={handleUpload} style={{ display: 'none' }} disabled={uploading} />
+                        </label>
+                        {value && (
+                            <button onClick={() => onChange('')} style={{ background: 'transparent', border: '1.5px solid #e5e0d6', color: '#6b7280', padding: '8px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.72rem', fontWeight: 600 }}>
+                                Remove
+                            </button>
+                        )}
+                    </div>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: '#9ca3af', margin: 0 }}>
+                        MP4 · MOV · WebM &nbsp;·&nbsp; Max 100 MB &nbsp;·&nbsp; Portrait recommended
+                    </p>
+                    {uploadError && <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#991b1b', margin: '6px 0 0' }}>{uploadError}</p>}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 // Section subheading
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
@@ -480,7 +539,7 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
             <Field label="Tag / Overline" value={home.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Headline" value={home.hero?.headline} onChange={v => setField('hero.headline', v)} type="textarea" />
             <Field label="Subheadline" value={home.hero?.subheadline} onChange={v => setField('hero.subheadline', v)} type="textarea" />
-            <Field label="Founder Video URL (.mp4)" value={home.hero?.videoUrl} onChange={v => setField('hero.videoUrl', v)} />
+            <VideoUploadField label="Founder Video (Hero)" value={home.hero?.videoUrl || ''} onChange={v => setField('hero.videoUrl', v)} />
 
             <SectionTitle>Who We Serve</SectionTitle>
             <Field label="Tag" value={home.whoWeServe?.tag} onChange={v => setField('whoWeServe.tag', v)} />
