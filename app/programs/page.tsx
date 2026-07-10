@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import IconGlyph from '@/components/IconGlyph';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
@@ -9,6 +10,34 @@ import { PoliSettingsContext } from '@/components/SettingsProvider';
 export default function ProgramsPage() {
     const { content } = useContext(PoliSettingsContext) as any;
     const programs = content.pages.programs;
+
+    if (programs?.enabled === false) {
+        return (
+            <>
+                <Navbar />
+                <section className="min-h-screen flex items-center" style={{ background: 'var(--color-bg)', padding: 'clamp(120px, 18vw, 180px) 0 80px' }}>
+                    <div className="container-brand" style={{ maxWidth: 720, textAlign: 'center' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.25rem' }}>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-secondary)', letterSpacing: '3px', textTransform: 'uppercase' }}>Programs Paused</span>
+                            <div style={{ width: 28, height: 1, background: 'var(--color-secondary)' }} />
+                        </div>
+                        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: 'var(--color-text)', lineHeight: 1.15, marginBottom: '1rem' }}>
+                            Programs Are Currently Closed.
+                        </h1>
+                        <p style={{ fontFamily: 'var(--font-body)', color: 'var(--color-muted)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2rem' }}>
+                            Our programs page is being updated. You can still take the Political Readiness Index or book a consultation.
+                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <Link href="/assessment" className="btn-primary">Start Assessment</Link>
+                            <Link href="/apply" className="btn-outline-dark">Book Consultation</Link>
+                        </div>
+                    </div>
+                </section>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -77,7 +106,7 @@ export default function ProgramsPage() {
                                 <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#111', marginBottom: '1.25rem' }}>Program Outcomes</h3>
                                 {programs.bootcamp.outcomes.map((o: any) => (
                                     <div key={o.label} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, padding: '12px', background: '#fff', borderRadius: 6, border: '1px solid var(--color-border)' }}>
-                                        <span style={{ color: 'var(--color-secondary)', fontSize: '1rem', flexShrink: 0 }}>{o.icon}</span>
+                                        <span style={{ color: 'var(--color-secondary)', flexShrink: 0, display: 'inline-flex' }}><IconGlyph icon={o.icon} size={18} /></span>
                                         <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.86rem', fontWeight: 500, color: '#333' }}>{o.label}</span>
                                     </div>
                                 ))}
@@ -110,7 +139,7 @@ export default function ProgramsPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '3rem' }}>
                         {programs.fellowship.inclusions.map((f: any, i: number) => (
                             <div key={i} className="card-brand" style={{ textAlign: 'center' }}>
-                                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{f.icon}</div>
+                                <div style={{ marginBottom: '1rem', color: 'var(--color-primary)', display: 'flex', justifyContent: 'center' }}><IconGlyph icon={f.icon} size={32} /></div>
                                 <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#111', marginBottom: '0.5rem' }}>{f.title}</h4>
                                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#666', lineHeight: 1.7 }}>{f.desc}</p>
                             </div>
@@ -185,7 +214,7 @@ export default function ProgramsPage() {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left">
                         <div className="card-brand hover:-translate-y-2 transition-transform duration-300">
-                            <div className="text-4xl mb-4 bg-green-50 w-16 h-16 rounded-full flex items-center justify-center text-green-700 shadow-sm border border-green-100">📑</div>
+                            <div className="mb-4 bg-green-50 w-16 h-16 rounded-full flex items-center justify-center text-green-700 shadow-sm border border-green-100"><IconGlyph icon="📑" size={30} /></div>
                             <h3 className="font-serif font-bold text-xl text-[#111] mb-3">{programs.consulting.title}</h3>
                             <p className="font-sans text-sm text-[var(--color-muted)] leading-relaxed mb-4">{programs.consulting.desc}</p>
                             <Link href="/apply?type=consulting" className="font-sans text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider hover:underline">
@@ -193,7 +222,7 @@ export default function ProgramsPage() {
                             </Link>
                         </div>
                         <div className="card-brand hover:-translate-y-2 transition-transform duration-300">
-                            <div className="text-4xl mb-4 bg-red-50 w-16 h-16 rounded-full flex items-center justify-center text-red-700 shadow-sm border border-red-100">📢</div>
+                            <div className="mb-4 bg-red-50 w-16 h-16 rounded-full flex items-center justify-center text-red-700 shadow-sm border border-red-100"><IconGlyph icon="📢" size={30} /></div>
                             <h3 className="font-serif font-bold text-xl text-[#111] mb-3">{programs.advocacy.title}</h3>
                             <p className="font-sans text-sm text-[var(--color-muted)] leading-relaxed mb-4">{programs.advocacy.desc}</p>
                             <Link href="/apply?type=advocacy" className="font-sans text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider hover:underline">

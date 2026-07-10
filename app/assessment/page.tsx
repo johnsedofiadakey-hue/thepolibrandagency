@@ -1,6 +1,7 @@
 'use client';
 import { useState, useContext } from 'react';
 import Navbar from '@/components/Navbar';
+import IconGlyph from '@/components/IconGlyph';
 import { useRouter } from 'next/navigation';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
@@ -111,7 +112,7 @@ export default function AssessmentPage() {
                                 <div className="flex flex-col gap-3 mb-8">
                                     {assessment.hero.details.map((item: any) => (
                                         <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)' }}>
-                                            <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>{item.text}
+                                            <span style={{ display: 'inline-flex' }}><IconGlyph icon={item.icon} size={20} /></span>{item.text}
                                         </div>
                                     ))}
                                 </div>

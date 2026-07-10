@@ -6,31 +6,48 @@ import { getContent, getSettings } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency.com";
+
 export async function generateMetadata() {
-  const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thepolibrandagency-d4263.web.app");
+  const metadataBase = new URL(SITE_URL);
   const [content, settings] = await Promise.all([
     getContent().catch(() => ({})),
     getSettings().catch(() => ({})),
   ]);
-  
-  const meta = (content as any)?.metadata || {};
+
+  // Root layout's metadata is the fallback for every route that has no route-level
+  // layout.tsx override (home, not-found, etc.) — prefer the homepage-specific
+  // meta block if set, then the legacy global `content.metadata`, then a hardcoded default.
+  const homeMeta = (content as any)?.pages?.home?.meta || {};
+  const globalMeta = (content as any)?.metadata || {};
+  const meta = { ...globalMeta, ...homeMeta };
   const logo = (settings as any)?.theme?.logo || "/logo.svg";
-  
+
+  const title = meta.title || "The PoliBrand Agency | The Trusted Political Branding Partner";
+  const description = meta.description || "PoliBrand — Africa's trusted political branding agency. Political strategy, campaign communication, and leadership branding for candidates, parties, and institutions.";
+
   return {
     metadataBase,
-    title: meta.title || "The Polibrand Agency",
-    description: meta.description || "Strategic branding, campaign communication, and leadership development for political leaders across Africa.",
-    keywords: meta.keywords || "political branding, political leaders, Africa, campaign communication",
+    title,
+    description,
+    keywords: meta.keywords || "political branding, political branding agency, political communication strategy, campaign branding, candidate branding Africa, political consulting Ghana",
+    alternates: { canonical: SITE_URL },
     icons: {
       icon: logo,
       shortcut: logo,
       apple: logo,
     },
     openGraph: {
-      title: meta.title || "The Polibrand Agency",
-      description: meta.description || "The Leading Political Branding Partner in Africa",
+      title,
+      description,
+      url: SITE_URL,
       type: "website",
       images: [logo],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
@@ -50,11 +67,11 @@ export default async function RootLayout({
 
   const activeSettings = settings || {
     theme: {
-      primary: '#1A2B4C',
-      secondary: '#F1E5D1',
-      accent: '#FF6B6B',
-      background: '#FAFAFC',
-      text: '#2C3E50',
+      primary: '#F3010A',
+      secondary: '#ffa3a3',
+      accent: '#F3010A',
+      background: '#ffffff',
+      text: '#000000',
       heroImage: '',
       logo: '/logo.svg',
     },
@@ -124,11 +141,33 @@ export default async function RootLayout({
     }
   `;
 
+  const orgDescription = (content as any)?.pages?.home?.meta?.description
+    || (content as any)?.metadata?.description
+    || "PoliBrand — Africa's trusted political branding agency. Political strategy, campaign communication, and leadership branding for candidates, parties, and institutions.";
+
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'The PoliBrand Agency',
+    alternateName: 'PoliBrand',
+    url: SITE_URL,
+    logo: logo.startsWith('http') ? logo : `${SITE_URL}${logo}`,
+    image: logo.startsWith('http') ? logo : `${SITE_URL}${logo}`,
+    description: orgDescription,
+    areaServed: { '@type': 'Place', name: 'Africa' },
+    serviceType: ['Political branding', 'Political communication strategy', 'Campaign communication', 'Political leadership training'],
+    sameAs: [] as string[],
+  };
+
   return (
     <html lang="en">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="theme-color" content="#0a1128" />
+        <meta name="theme-color" content="#F3010A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -140,6 +179,9 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        {safeTheme.heroImage && (
+          <link rel="preload" as="image" href={safeTheme.heroImage} fetchPriority="high" />
+        )}
         <style dangerouslySetInnerHTML={{ __html: styleVariables }} />
       </head>
       <body>

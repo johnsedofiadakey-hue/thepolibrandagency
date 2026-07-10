@@ -1,12 +1,12 @@
 {
   "theme": {
-    "primary": "#1A2B4C",
-    "secondary": "#F1E5D1",
-    "accent": "#FF6B6B",
-    "background": "#FAFAFC",
-    "text": "#2C3E50",
-    "heroImage": "",
-    "logo": "/logo.svg"
+    "primary": "#F3010A",
+    "secondary": "#ffa3a3",
+    "accent": "#F3010A",
+    "background": "#ffffff",
+    "text": "#000000",
+    "heroImage": "https://firebasestorage.googleapis.com/v0/b/thepolibrandagency-d4263.firebasestorage.app/o/uploads%2F1781306633445_img_8791.webp?alt=media&token=58c6c904-afa1-4dae-818c-f737ffdbf743",
+    "logo": "/logo-transparent.png"
   },
   "typography": "modern_minimalist",
   "_source": "local_disk"

@@ -1,0 +1,847 @@
+{
+  "navbar": {
+    "cta": {
+      "label": "Apply Now",
+      "href": "/apply"
+    },
+    "links": [
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "href": "/services",
+        "label": "Services"
+      },
+      {
+        "href": "/programs",
+        "label": "Programs"
+      },
+      {
+        "href": "/assessment",
+        "label": "Assessment"
+      },
+      {
+        "label": "Institutional Clients",
+        "href": "/institutional-clients"
+      }
+    ],
+    "brand": {
+      "line2": "AGENCY",
+      "line1": "THE POLIBRAND."
+    }
+  },
+  "footer": {
+    "newsletter": {
+      "title": "Stay Informed",
+      "description": "Political strategy insights, fellowship updates, and program announcements."
+    },
+    "sections": [
+      {
+        "title": "Platform",
+        "links": [
+          {
+            "href": "/about",
+            "label": "About"
+          },
+          {
+            "href": "/services",
+            "label": "Services"
+          },
+          {
+            "label": "Programs",
+            "href": "/programs"
+          },
+          {
+            "href": "/assessment",
+            "label": "Political Readiness Index"
+          }
+        ]
+      },
+      {
+        "title": "Programs",
+        "links": [
+          {
+            "label": "Leadership Bootcamp",
+            "href": "/programs#bootcamp"
+          },
+          {
+            "label": "Fellowship",
+            "href": "/programs#fellowship"
+          },
+          {
+            "href": "/programs#courses",
+            "label": "Digital Courses"
+          },
+          {
+            "label": "Fellows Portal",
+            "href": "/portal"
+          }
+        ]
+      },
+      {
+        "links": [
+          {
+            "label": "Institutional Clients",
+            "href": "/institutional-clients"
+          },
+          {
+            "href": "/apply",
+            "label": "Partner Proposal"
+          },
+          {
+            "label": "Document Library",
+            "href": "/admin/documents"
+          }
+        ],
+        "title": "Institution"
+      }
+    ],
+    "socials": [
+      {
+        "label": "Twitter/X",
+        "href": "#"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "#"
+      },
+      {
+        "href": "#",
+        "label": "Instagram"
+      }
+    ],
+    "bottom": {
+      "links": [
+        {
+          "label": "Privacy",
+          "href": "#"
+        },
+        {
+          "href": "#",
+          "label": "Terms"
+        },
+        {
+          "label": "Cookies",
+          "href": "#"
+        }
+      ],
+      "copyright": "© 2026 The Polibrand Agency. All rights reserved."
+    },
+    "brand": {
+      "description": "The leading political branding partner for leaders across Africa."
+    }
+  },
+  "metadata": {
+    "keywords": "political branding, political leaders, Africa, campaign communication, leadership development, political strategy",
+    "description": "CREDIBLE | COFIDENTIAL | NON-PARTISAN",
+    "title": "The Polibrand Agency | The Leading Political Branding Partner"
+  },
+  "pages": {
+    "portal": {
+      "login": {
+        "button": "Sign In to Portal",
+        "title": "Fellows Portal",
+        "subtitle": "Access your strategic dashboard and program resources."
+      }
+    },
+    "assessment_results": {
+      "tiers": [
+        {
+          "advice": "Your results reveal critical gaps in your political brand — and this is exactly where Polibrand's work begins. The window to build a commanding presence is now. Apply for a consultation to build your brand from a position of strategy, not chance.",
+          "max": 49,
+          "label": "Foundation Stage",
+          "color": "#B22222",
+          "program": "Building Political Voice (Digital Course)",
+          "bg": "#fff5f5"
+        },
+        {
+          "program": "Leadership Branding Bootcamp",
+          "color": "#C9A227",
+          "bg": "#fff9e6",
+          "label": "Emerging Stage",
+          "max": 69,
+          "advice": "You have momentum, but your brand is not yet working hard enough for you. Every month without a sharper, more consistent strategy is an opportunity your competition is claiming. Apply now — this is your moment to close the gap."
+        },
+        {
+          "label": "Competitive Stage",
+          "program": "The Polibrand Fellowship",
+          "color": "#1F6F3E",
+          "bg": "#f0fdf4",
+          "advice": "You are well-positioned — but at this level, the difference between winning and falling short is brand precision. The leaders who break through are those who invest in their brand before they feel fully ready. Apply to take your positioning to the next level.",
+          "max": 89
+        },
+        {
+          "program": "Strategic Policy Consulting",
+          "bg": "#f0fdf4",
+          "color": "#1F6F3E",
+          "label": "Elite Stage",
+          "max": 100,
+          "advice": "You are operating at the top of your field. Protecting and scaling that legacy requires the kind of strategic brand infrastructure very few leaders have. Apply for a consultation — ensure your brand leads every room you walk into."
+        }
+      ],
+      "categories": [
+        {
+          "color": "#1F6F3E",
+          "weight": 25,
+          "label": "Brand Clarity",
+          "id": "clarity"
+        },
+        {
+          "color": "#C9A227",
+          "id": "narrative",
+          "weight": 35,
+          "label": "Narrative Strength"
+        }
+      ]
+    },
+    "apply": {
+      "hero": {
+        "title": "Apply to Polibrand",
+        "description": "Complete the application to book for an in-person or online consultation with our political communication strategists.",
+        "tag": "Take the Next Step"
+      },
+      "form": {
+        "consultationFee": {
+          "amount": "2,500",
+          "currency": "GHS",
+          "description": "50% of your consultation fee will be refunded when we begin working on your brand or enroll you in a program."
+        },
+        "placeholders": {
+          "phone": "+254...",
+          "role": "e.g. MP Candidate, NGO Director",
+          "essay": "Tell us about your political ambitions, the challenges you face in gaining visibility or influence, and what a strategic brand would help you achieve. What's your biggest communication gap right now?",
+          "firstName": "e.g. Grace",
+          "lastName": "Mutuku",
+          "email": "grace@example.com"
+        },
+        "step2_title": "Program & Background",
+        "success": {
+          "title": "Application Received",
+          "text": "Thank you, {name}. We will contact you within 5-7 business days to schedule your consultation and discuss how we can amplify your political brand."
+        },
+        "step1_title": "Personal details",
+        "labels": {
+          "email": "Email Address",
+          "firstName": "First Name",
+          "essay": "Why are you seeking strategic communication support?",
+          "country": "Country",
+          "lastName": "Last Name",
+          "phone": "Phone Number",
+          "role": "Current Role",
+          "program": "Program of Interest"
+        }
+      }
+    },
+    "assessment": {
+      "hero": {
+        "description": "Discover the gaps in your political brand and get a personalized action plan from Polibrand.",
+        "tag": "Diagnostic Tool",
+        "title": "Political Readiness Index (PRI)",
+        "details": [
+          {
+            "icon": "🎯",
+            "text": "4 Strategic Questions"
+          },
+          {
+            "icon": "⏱️",
+            "text": "2-Minute Assessment"
+          },
+          {
+            "icon": "📊",
+            "text": "Actionable Roadmap"
+          }
+        ]
+      },
+      "categories": [
+        {
+          "questions": [
+            {
+              "text": "When a key political opportunity arises — a nomination, endorsement, or high-stakes appointment — what is your honest reality?",
+              "options": [
+                {
+                  "text": "My name is rarely in the conversation. I'm not visible to the people who make these decisions.",
+                  "score": 4
+                },
+                {
+                  "text": "I'm occasionally mentioned, but I lose out to candidates with stronger, more recognisable brands.",
+                  "score": 3
+                },
+                {
+                  "text": "I get opportunities, but I'm not yet seen as the obvious, first-choice leader.",
+                  "score": 2
+                },
+                {
+                  "text": "I attract opportunities, but I need a strategic partner to maximise and scale them.",
+                  "score": 1
+                }
+              ],
+              "id": "q1"
+            }
+          ],
+          "id": "visibility",
+          "label": "Brand Visibility",
+          "weight": 25,
+          "color": "#C9A227"
+        },
+        {
+          "questions": [
+            {
+              "id": "q2",
+              "options": [
+                {
+                  "text": "I'd struggle. I don't yet have a sharp, compelling message that cuts through.",
+                  "score": 4
+                },
+                {
+                  "text": "I'd get through it, but it wouldn't be memorable or leave a strong impression.",
+                  "score": 3
+                },
+                {
+                  "text": "I'd do well — but my pitch isn't consistent and doesn't scale beyond one-on-one conversations.",
+                  "score": 2
+                },
+                {
+                  "text": "I deliver it confidently — but I need help amplifying it to the audiences that matter most.",
+                  "score": 1
+                }
+              ],
+              "text": "If a powerful decision-maker asked you to pitch your political vision in 60 seconds right now — what would happen?"
+            }
+          ],
+          "color": "#E74C3C",
+          "weight": 30,
+          "label": "Message Clarity",
+          "id": "messaging"
+        },
+        {
+          "questions": [
+            {
+              "options": [
+                {
+                  "text": "I honestly don't know — I haven't built enough presence for people to be talking about me.",
+                  "score": 4
+                },
+                {
+                  "text": "They might say I'm capable, but they likely can't define what I uniquely stand for.",
+                  "score": 3
+                },
+                {
+                  "text": "They respect me — but others are shaping my narrative before I get the chance to.",
+                  "score": 2
+                },
+                {
+                  "text": "They associate me with strong work, but my brand isn't yet commanding the rooms I want.",
+                  "score": 1
+                }
+              ],
+              "text": "When political stakeholders discuss you in rooms you're not in, what do you believe they say?",
+              "id": "q3"
+            }
+          ],
+          "id": "perception",
+          "weight": 25,
+          "label": "Public Perception",
+          "color": "#1F6F3E"
+        },
+        {
+          "questions": [
+            {
+              "text": "What is your most pressing political challenge right now?",
+              "options": [
+                {
+                  "text": "I'm figuring out my positioning — I know I'm meant for this, but I need a clear strategy.",
+                  "score": 4
+                },
+                {
+                  "text": "I'm preparing for an election or major role and need to be competitive, fast.",
+                  "score": 3
+                },
+                {
+                  "text": "I'm in the public eye but losing ground to candidates with bolder, more polished brands.",
+                  "score": 2
+                },
+                {
+                  "text": "I'm established — and I need to build a legacy brand that outlasts my current position.",
+                  "score": 1
+                }
+              ],
+              "id": "q4"
+            }
+          ],
+          "id": "ambition",
+          "weight": 20,
+          "label": "Political Ambition",
+          "color": "#3498DB"
+        }
+      ]
+    },
+    "institutional": {
+      "hero": {
+        "tag": "Institutional Partnership",
+        "description": "We partner with organizations to build the leadership pipelines necessary for inclusive democracy.",
+        "title": "Scaling Impact Through Strategic Alignment."
+      },
+      "models": [
+        {
+          "title": "NGO & Civic Programs",
+          "icon": "🌍",
+          "desc": "Custom leadership development programs for civic organizations.",
+          "features": [
+            "Grassroots narrative building",
+            "Community mobilization"
+          ]
+        },
+        {
+          "title": "Political Parties",
+          "icon": "🏛",
+          "desc": "Candidate communication and brand strategy.",
+          "features": [
+            "Candidate media training",
+            "Debate preparation"
+          ]
+        }
+      ],
+      "partners": [
+        {
+          "name": "Democratic Union",
+          "logo": "/partners/du.svg"
+        },
+        {
+          "name": "Civic Governance Foundation",
+          "logo": "/partners/gef.svg"
+        }
+      ]
+    },
+    "about": {
+      "philosophy": {
+        "title": "The Pillars of Narrative Power",
+        "cards": [
+          {
+            "text": "Building the core internal narrative that drives public branding.",
+            "title": "Identity architecture"
+          },
+          {
+            "text": "Absolute consistency across all communication channels.",
+            "title": "Message discipline"
+          },
+          {
+            "text": "Creating high-impact presence in the right spaces at the right time.",
+            "title": "Strategic visibility"
+          }
+        ],
+        "tag": "Polibrand Philosophy"
+      },
+      "hero": {
+        "title": "Redefining Political Leadership Through Strategic Communication.",
+        "tag": "About Us",
+        "description": "Democracy thrives when leadership reflects society. Polibrand combines political strategy, communication architecture, and leadership development to close the representation gap."
+      },
+      "strategy": {
+        "steps": [
+          {
+            "title": "Research-Driven Identity",
+            "desc": "Every strategy is grounded in political science and real-world electoral data."
+          },
+          {
+            "desc": "We work within democratic systems to build sustainable leadership pipelines.",
+            "title": "Institutional Alignment"
+          },
+          {
+            "desc": "Our programs measure success in real-world leadership advancement.",
+            "title": "Outcome-Oriented Training"
+          },
+          {
+            "title": "Strategically Measurable",
+            "desc": "Every roadmap delivers trackable, evidence-based growth benchmarks."
+          }
+        ],
+        "tag": "The Polibrand Strategy",
+        "title": "Our Strategic Architecture"
+      },
+      "vision": {
+        "items": [
+          {
+            "percentage": "50%",
+            "label": "Legislative Excellence"
+          },
+          {
+            "label": "Executive Leadership",
+            "percentage": "50%"
+          },
+          {
+            "label": "Party Governance",
+            "percentage": "50%"
+          }
+        ],
+        "title": "Representing the Future of African Governance",
+        "image": "/vision.svg",
+        "tag": "Our Future",
+        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where principled, capable leaders rise at every level of policy and power."
+      },
+      "founders": {
+        "title": "The Leadership Behind Polibrand",
+        "tag": "Meet the Founders",
+        "description": "Built by strategists who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
+        "team": [
+          {
+            "name": "Founder Name",
+            "title": "Founder & Executive Director",
+            "bio": "A seasoned political strategist with over 15 years of experience advising political leaders across West Africa. Designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
+            "image": ""
+          },
+          {
+            "name": "Co-Founder Name",
+            "title": "Co-Founder & Director of Programs",
+            "bio": "Former policy advisor and communications architect with deep roots in civic and policy advocacy. Leads curriculum design and program delivery across all Polibrand initiatives.",
+            "image": ""
+          }
+        ]
+      },
+      "foundersStory": {
+        "image": "",
+        "tag": "Our Origin",
+        "title": "The Polibrand Story",
+        "story": "Polibrand was born from a simple observation: African political leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that."
+      }
+    },
+    "programs": {
+      "consulting": {
+        "desc": "Translating complex policy into compelling public communication for diverse constituencies.",
+        "title": "Policy Communication Consulting",
+        "cta": "Request Consultation →"
+      },
+      "bootcamp": {
+        "tag": "Flagship Program",
+        "modules": [
+          "Political identity and brand architecture",
+          "Message clarity and narrative discipline",
+          "Media readiness and interview strategy",
+          "Digital communications and content positioning",
+          "Strategic visibility and public presence",
+          "Campaign communication foundations"
+        ],
+        "badge": "6 Weeks · Hybrid",
+        "next_cohort": "Applications for the March 2026 cohort are open. Limited to 25 participants.",
+        "outcomes": [
+          {
+            "label": "Personal Brand Framework",
+            "icon": "◈"
+          },
+          {
+            "label": "Media Readiness Profile",
+            "icon": "◉"
+          },
+          {
+            "icon": "◆",
+            "label": "Strategic Positioning Map"
+          },
+          {
+            "label": "Campaign Communication Playbook",
+            "icon": "◇"
+          }
+        ],
+        "cta": "Apply for Bootcamp →",
+        "description": "An intensive 6-week hybrid program designed to build every structural element of your political brand — from identity architecture to campaign-ready communication.",
+        "title": "Leadership Branding Bootcamp"
+      },
+      "advocacy": {
+        "cta": "Launch Your Campaign →",
+        "title": "Advocacy Campaign Architecture",
+        "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change."
+      },
+      "hero": {
+        "tag": "Learning & Growth",
+        "description": "From intensive bootcamps and flagship fellowships to digital courses and advanced policy communication consulting — our programs are outcome-driven and strategically measurable.",
+        "title": "Elite Programs for Political Advancement."
+      },
+      "courses": {
+        "tag": "Self-Paced",
+        "title": "Digital Courses",
+        "items": [
+          {
+            "number": "01",
+            "topics": [
+              "Voice architecture",
+              "Signature phrases",
+              "Message testing"
+            ],
+            "desc": "Develop a clear, consistent political voice grounded in your values and strategic positioning.",
+            "duration": "4 weeks",
+            "title": "Building Political Voice"
+          }
+        ],
+        "description": "Learning modules for leaders who want to build political communication skills on their own timeline."
+      },
+      "fellowship": {
+        "title": "The Polibrand Fellowship",
+        "cta_apply": "Apply to Fellowship",
+        "inclusions": [
+          {
+            "icon": "🧠",
+            "title": "Strategy Labs",
+            "desc": "Monthly workshops on political strategy, branding, and governance communication."
+          },
+          {
+            "icon": "🎙️",
+            "desc": "Hands-on training in TV, radio, and digital media performance.",
+            "title": "Media Workshops"
+          },
+          {
+            "icon": "👥",
+            "title": "Mentorship",
+            "desc": "1:1 mentorship with experienced political communicators and leaders."
+          },
+          {
+            "icon": "📊",
+            "desc": "Quarterly political readiness assessments with personalized growth plans.",
+            "title": "Readiness Scoring"
+          }
+        ],
+        "tag": "Flagship Initiative",
+        "badge": "3–6 Months · Selective Enrollment",
+        "cta_assessment": "Take Readiness Assessment First",
+        "description": "An immersive 3–6 month program for high-potential political leaders ready to build comprehensive political readiness and a competitive campaign infrastructure."
+      }
+    },
+    "services": {
+      "hero": {
+        "tag": "Strategic Services",
+        "title": "Institutional-Grade Tools for Modern Political Leadership.",
+        "description": "Every service is designed around the structural requirements of competitive democratic environments."
+      },
+      "cta": {
+        "title": "Ready to Build Your Political Power?",
+        "apply": "Apply",
+        "assessment": "Take the Assessment",
+        "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding."
+      },
+      "individual": {
+        "title": "Individual Strategy Services",
+        "tag": "For Individual Leaders",
+        "items": [
+          {
+            "number": "01",
+            "title": "Personal Brand Positioning",
+            "color": "var(--color-primary)",
+            "intro": "Identity architecture, message discipline, and leadership positioning built to distinguish you in a crowded political space.",
+            "deliverables": [
+              "Brand identity blueprint",
+              "Message matrix",
+              "Leadership archetype framework",
+              "Visual direction guide",
+              "Signature speaking themes"
+            ]
+          },
+          {
+            "number": "02",
+            "title": "Political Brand Strategy",
+            "color": "var(--color-secondary)",
+            "intro": "Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.",
+            "deliverables": [
+              "Constituency segmentation model",
+              "Issue alignment mapping",
+              "Strategic narrative playbook",
+              "Opponent positioning strategy",
+              "Voter communication calendar"
+            ]
+          },
+          {
+            "number": "03",
+            "title": "Campaign Communication Management",
+            "color": "var(--color-accent)",
+            "intro": "Media architecture, speech development, and crisis communication frameworks for the modern political environment.",
+            "deliverables": [
+              "Speech framework",
+              "Media engagement calendar",
+              "Press release structure",
+              "Crisis communication guide",
+              "Digital content strategy"
+            ]
+          },
+          {
+            "number": "04",
+            "title": "Media Training",
+            "color": "var(--color-primary)",
+            "intro": "Equipping political leaders with the confidence, language, and presence to command every media environment — from broadcast interviews to press conferences.",
+            "deliverables": [
+              "On-camera and on-air performance coaching",
+              "Interview preparation and Q&A frameworks",
+              "Hostile media response strategies",
+              "Press conference facilitation guide",
+              "Media relationship development plan"
+            ]
+          },
+          {
+            "number": "05",
+            "title": "Fundraising Strategy",
+            "color": "var(--color-secondary)",
+            "intro": "Developing the narrative frameworks and donor engagement systems that translate political credibility into sustainable financial support.",
+            "deliverables": [
+              "Donor persona and segmentation mapping",
+              "Fundraising narrative and pitch deck",
+              "Major donor engagement plan",
+              "Digital fundraising campaign structure",
+              "Stewardship and retention framework"
+            ]
+          }
+        ]
+      },
+      "institutional": {
+        "tag": "For Institutions",
+        "title": "Institutional Partnership Services",
+        "items": [
+          {
+            "icon": "📋",
+            "title": "Policy Communication Consulting",
+            "desc": "Translating complex policy into compelling public communication that resonates with diverse constituencies.",
+            "features": [
+              "Policy narrative development",
+              "Public messaging frameworks",
+              "Stakeholder communication plans",
+              "Plain language guides"
+            ]
+          },
+          {
+            "icon": "👑",
+            "title": "Leadership Development Programs",
+            "desc": "Custom-designed leadership and communication programs for political parties and NGOs.",
+            "features": [
+              "Cohort program design",
+              "Trainer certification",
+              "Curriculum development",
+              "Impact measurement frameworks"
+            ]
+          }
+        ]
+      }
+    },
+    "home": {
+      "diagnostic": {
+        "categories": [
+          "Brand Clarity",
+          "Communication Strength",
+          "Public Visibility",
+          "Fundraising Readiness"
+        ],
+        "tag": "Diagnostic Tool",
+        "description": "A structured assessment evaluating your communication clarity, narrative strength, visibility readiness, and fundraising positioning. Get your personalized score and growth roadmap.",
+        "title": "Measure Your Political Readiness."
+      },
+      "services": {
+        "items": [
+          {
+            "title": "Personal Brand Positioning",
+            "desc": "Identity architecture, message discipline, and leadership positioning that distinguishes you from the political noise.",
+            "icon": "◈"
+          },
+          {
+            "title": "Political Brand Strategy",
+            "desc": "Constituency mapping, narrative development, and strategic alignment for sustained electoral viability.",
+            "icon": "◆"
+          },
+          {
+            "title": "Campaign Communication",
+            "desc": "Media architecture, speech development, and crisis communication frameworks built for modern politics.",
+            "icon": "◉"
+          },
+          {
+            "icon": "◎",
+            "title": "Media Training",
+            "desc": "Interview simulations, debate strategy, camera presence coaching, and press preparation at the highest level."
+          },
+          {
+            "title": "Fundraising Strategy",
+            "desc": "Donor positioning, political credibility framing, and campaign funding narratives that open doors.",
+            "icon": "◇"
+          }
+        ],
+        "title": "Core Strategic Services",
+        "description": "Institutional-grade tools designed for the complexities of modern democratic competition.",
+        "tag": "What We Offer"
+      },
+      "cta": {
+        "proposal": "Request Partnership Proposal →",
+        "apply": "Apply",
+        "assessment": "Start Assessment →",
+        "partner": "Partner With Us",
+        "services": "Explore All Services →",
+        "mission": "Polibrand exists to equip political leaders with these structural tools."
+      },
+      "partnerships": {
+        "text": "We scale our impact by aligning with leading democratic and development institutions across the continent.",
+        "title": "Our Institutional Partners",
+        "tag": "Global Impact",
+        "items": [
+          {
+            "name": "Democratic Union",
+            "logo": "/partners/du.svg"
+          },
+          {
+            "name": "Civic Governance Foundation",
+            "logo": "/partners/gef.svg"
+          },
+          {
+            "name": "African Leadership Institute",
+            "logo": "/partners/ali.svg"
+          },
+          {
+            "name": "Global Governance Network",
+            "logo": "/partners/ggn.svg"
+          }
+        ]
+      },
+      "stats": [
+        {
+          "number": "200+",
+          "label": "Leaders Trained"
+        },
+        {
+          "number": "18",
+          "label": "African Countries Reached"
+        },
+        {
+          "number": "94%",
+          "label": "Campaign Success Rate"
+        },
+        {
+          "number": "12",
+          "label": "Institutional Partners"
+        }
+      ],
+      "challenge": {
+        "tag": "The Challenge",
+        "list": [
+          "Narrative clarity",
+          "Media discipline",
+          "Voter alignment",
+          "Fundraising architecture",
+          "Strategic visibility"
+        ],
+        "quote": "\"Power follows perception. Build the brand before the moment demands it.\"",
+        "stats": [
+          {
+            "label": "Candidates Without Message Discipline",
+            "value": "64%"
+          },
+          {
+            "label": "Campaigns Lacking Media Training",
+            "value": "57%"
+          },
+          {
+            "label": "Leaders Invisible to Key Decision-Makers",
+            "value": "41%"
+          }
+        ],
+        "text": "Behind every woman who almost run is a structural barrier built by systems, not a shortage of ambition. Women do not need more ambition. They need intentional reforms that stops penalizing it",
+        "title": "The Gender Gap\nIs Structural."
+      },
+      "hero": {
+        "tag": "The Leading Political Branding Partner.",
+        "subheadline": "CONFIDENTIAL | RELAIBLE | NON-PARTISAN",
+        "headline": "Shaping Political\nLeadership In Ghana\n& Across Africa"
+      }
+    }
+  },
+  "_source": "firebase"
+}

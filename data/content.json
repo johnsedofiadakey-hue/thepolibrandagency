@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "The Polibrand Agency | The Leading Political Branding Partner in Africa",
-    "description": "Strategic branding, campaign communication, and leadership development for political leaders shaping the future of governance across Africa.",
-    "keywords": "political branding, political leaders, Africa, campaign communication, leadership development, political strategy"
+    "title": "The PoliBrand Agency | The Trusted Political Branding Partner",
+    "description": "PoliBrand — The Trusted Political Branding Partner. Building Leaders. Shaping Influence. Winning Trust.",
+    "keywords": "political branding, trusted political branding partner, political leaders, Africa, campaign communication, leadership development, political strategy"
   },
   "navbar": {
     "brand": {
@@ -105,20 +105,7 @@
       "title": "Stay Informed",
       "description": "Political strategy insights, fellowship updates, and program announcements."
     },
-    "socials": [
-      {
-        "label": "Twitter/X",
-        "href": "#"
-      },
-      {
-        "label": "LinkedIn",
-        "href": "#"
-      },
-      {
-        "label": "Instagram",
-        "href": "#"
-      }
-    ],
+    "socials": [],
     "bottom": {
       "copyright": "© 2026 The Polibrand Agency. All rights reserved.",
       "links": [
@@ -140,38 +127,64 @@
   "pages": {
     "home": {
       "hero": {
-        "tag": "The Leading Political Branding Partner in Africa",
+        "tag": "The Trusted Political Branding Partner",
         "headline": "Building Political Power\nAcross Africa.",
         "subheadline": "Strategic branding, campaign communication, and leadership development for leaders shaping the future of governance."
       },
+      "whoWeServe": {
+        "tag": "Who We Serve",
+        "text": "Political power looks different depending on where you stand. We built PoliBrand to meet you at yours.",
+        "segments": [
+          {
+            "tag": "For First-Time Candidates",
+            "title": "You Have The Vision. We Build The Brand.",
+            "text": "Talent doesn't announce itself. Perception does.\n\nYou're stepping into politics for the first time, and the room doesn't know your name yet.\n\nWe build the identity, the message, and the visibility that turn first-timers into frontrunners.",
+            "highlight": "No résumé wins an election. A brand does.",
+            "ctaLabel": "Start Your Political Readiness Index →",
+            "ctaHref": "/assessment"
+          },
+          {
+            "tag": "For Incumbents",
+            "title": "Your Record Isn't The Whole Campaign. Your Narrative Is.",
+            "text": "You've governed. You've delivered. And still, perception erodes.\n\nIncumbency is not immunity. It's exposure.\n\nWe steward your legacy: refresh the narrative, defend the record, and stay top-of-mind before the challenger does.",
+            "highlight": "Power follows perception. Protect yours before the moment demands it.",
+            "ctaLabel": "Book a Stewardship Audit →",
+            "ctaHref": "/apply?program=Stewardship%20Audit"
+          },
+          {
+            "tag": "For Women in Politics",
+            "title": "The Room Wasn't Built For You. Build Your Own.",
+            "text": "Women in politics are judged twice — on capability and on likability — simultaneously, and harder.\n\nOur Women in Politics Programme was built by a woman who broke a first, and knows exactly what it costs, and what it's worth.",
+            "highlight": "We equip women leaders with the structure, storytelling, and salience to compete on their own terms — not on borrowed ones.",
+            "ctaLabel": "Apply to the Women in Politics Programme →",
+            "ctaHref": "/apply?program=Women%20in%20Politics%20Programme"
+          }
+        ]
+      },
       "stats": [
         {
-          "number": "200+",
-          "label": "Leaders Trained"
+          "number": "64%",
+          "label": "Candidates Lack Message Discipline"
         },
         {
-          "number": "18",
-          "label": "African Countries Reached"
+          "number": "57%",
+          "label": "Campaigns Skip Media Training"
         },
         {
-          "number": "94%",
-          "label": "Campaign Success Rate"
-        },
-        {
-          "number": "12",
-          "label": "Institutional Partners"
+          "number": "41%",
+          "label": "Leaders Invisible To Decision-Makers"
         }
       ],
       "challenge": {
         "tag": "The Challenge",
         "title": "The Branding Gap\nIs Structural.",
-        "text": "Across emerging democracies, capable political leaders are consistently outpaced by competitors with sharper messaging, stronger visibility, and more disciplined campaign infrastructure. The barrier is not ambition — it is strategic infrastructure.",
+        "text": "Across emerging democracies, capable political leaders are consistently outpaced by competitors with sharper messaging, stronger visibility, and more disciplined campaign infrastructure. We call the fix the 5S Framework — the five structural pillars behind every commanding political brand.",
         "list": [
-          "Narrative clarity",
-          "Media discipline",
-          "Voter alignment",
-          "Fundraising architecture",
-          "Strategic visibility"
+          "Structure",
+          "Strategy",
+          "Storytelling",
+          "Salience",
+          "Stewardship"
         ],
         "quote": "\"Power follows perception. Build the brand before the moment demands it.\"",
         "stats": [
@@ -234,24 +247,24 @@
       },
       "partnerships": {
         "tag": "Global Impact",
-        "title": "Our Institutional Partners",
-        "text": "We scale our impact by aligning with leading democratic and development institutions across the continent.",
+        "title": "The Institutions We Work With",
+        "text": "We scale our impact by aligning with the political and civic institutions driving inclusive governance across the continent. CDD Ghana and Afrobarometer data confirm what every strategist already knows: branding decides elections — competence alone does not.",
         "items": [
           {
-            "name": "Democratic Union",
-            "logo": "/partners/du.svg"
+            "name": "Political Parties & Candidates",
+            "logo": ""
           },
           {
-            "name": "Civic Governance Foundation",
-            "logo": "/partners/gef.svg"
+            "name": "Civic & Governance NGOs",
+            "logo": ""
           },
           {
-            "name": "African Leadership Institute",
-            "logo": "/partners/ali.svg"
+            "name": "Development Institutions",
+            "logo": ""
           },
           {
-            "name": "Global Governance Network",
-            "logo": "/partners/ggn.svg"
+            "name": "Academic & Research Partners",
+            "logo": ""
           }
         ]
       },
@@ -262,33 +275,49 @@
         "services": "Explore All Services →",
         "assessment": "Start Assessment →",
         "proposal": "Request Partnership Proposal →"
+      },
+      "meta": {
+        "title": "The PoliBrand Agency | Political Branding & Strategic Communication Partner",
+        "description": "PoliBrand is Africa's trusted political branding agency — political strategy, campaign communication, and leadership branding for candidates, parties, and institutions across Ghana and West Africa.",
+        "keywords": "political branding, political branding agency, political communication strategy, campaign branding, candidate branding Africa, political consulting Ghana, political strategy Africa, leadership branding"
       }
     },
     "about": {
       "hero": {
         "tag": "About Us",
         "title": "Redefining Political Leadership Through Strategic Communication.",
-        "description": "Democracy thrives when leadership reflects society. Polibrand combines political strategy, communication architecture, and leadership development to close the representation gap."
+        "description": "Democracy thrives when leadership reflects society. PoliBrand combines political strategy, communication architecture, and leadership development — built on our 5S Framework of Structure, Strategy, Storytelling, Salience, and Stewardship — to close the representation gap."
       },
-      "vision": {
-        "tag": "Our Future",
-        "title": "Representing the Future of African Governance",
-        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where principled, capable leaders rise at every level of policy and power.",
-        "image": "/vision.svg",
-        "items": [
+      "founder": {
+        "tag": "Meet the Founder",
+        "name": "Vera Fafa Agbenya",
+        "title": "Founder & Lead Strategist",
+        "bio": "Vera Fafa Agbenya made history as the first female SRC President at her university — elected in a race where she had less name recognition, less money, and less institutional backing than her opponents. What she had was a brand: a clear identity, a disciplined message, and the presence to be remembered in a room built to overlook her.\n\nThat result wasn't luck. It was strategy.\n\nVera founded The PoliBrand Agency on a single belief: political success is not about competence alone — it is about perception, presence, and positioning. She built the 5S Framework — Structure, Strategy, Storytelling, Salience, Stewardship — from that experience, and has since applied it to political leaders, aspirants, and institutions across Ghana and West Africa.\n\nShe also runs Kente Haul, a fashion and textile venture, and builds with the same intentionality in both spaces. Faith-driven and legacy-minded, she describes herself simply: \"The woman who builds.\"",
+        "image": ""
+      },
+      "team": {
+        "tag": "The TPA Team",
+        "title": "The People Behind The Work",
+        "description": "Beyond the founder, PoliBrand is growing a bench of strategists, communicators, and researchers who bring real electoral experience and deep roots in African political institutions.",
+        "members": [
           {
-            "label": "Legislative Excellence",
-            "percentage": "50%"
-          },
-          {
-            "label": "Executive Leadership",
-            "percentage": "50%"
-          },
-          {
-            "label": "Party Governance",
-            "percentage": "50%"
+            "name": "John Dakey",
+            "title": "Full-Stack Developer & Technical Lead",
+            "bio": "John Dakey is the technical architect behind The PoliBrand Agency's digital presence — building and maintaining the website, admin systems, and tools the agency runs on.\n\nA full-stack developer with a focus on modern web applications, John brings the same discipline to code that PoliBrand brings to political branding: structure, reliability, and attention to detail.\n\nHe is also the founder of Stormglide.io, where he builds software ventures of his own.",
+            "image": ""
           }
         ]
+      },
+      "vision": {
+        "tag": "Our Vision",
+        "title": "Representing the Future of African Governance",
+        "description": "We envision an Africa where political leadership undeniably reflects the society it governs — where principled, capable leaders rise at every level of policy and power.",
+        "image": "/vision.svg"
+      },
+      "mission": {
+        "tag": "Our Mission",
+        "title": "Equipping Leaders With the Tools to Win Trust",
+        "description": "PoliBrand exists to close the representation gap — equipping political leaders, aspirants, and institutions with the structural tools of the 5S Framework: Structure, Strategy, Storytelling, Salience, and Stewardship. We don't just advise on messaging; we build the disciplined systems that turn capable leaders into commanding political brands."
       },
       "strategy": {
         "tag": "The Polibrand Strategy",
@@ -330,37 +359,17 @@
           }
         ]
       },
-      "founders": {
-        "tag": "Meet the Founders",
-        "title": "The Leadership Behind Polibrand",
-        "description": "Built by strategists who understand political systems from the inside — our founders bring decades of combined experience in governance, strategic communications, and African political institutions.",
-        "team": [
-          {
-            "name": "Founder Name",
-            "title": "Founder & Executive Director",
-            "bio": "A seasoned political strategist with over 15 years of experience advising political leaders across West Africa. Designed communication frameworks for campaigns in Ghana, Nigeria, and Senegal.",
-            "image": ""
-          },
-          {
-            "name": "Co-Founder Name",
-            "title": "Co-Founder & Director of Programs",
-            "bio": "Former policy advisor and communications architect with deep roots in civic and policy advocacy. Leads curriculum design and program delivery across all Polibrand initiatives.",
-            "image": ""
-          }
-        ]
-      },
-      "foundersStory": {
-        "tag": "Our Origin",
-        "title": "The Polibrand Story",
-        "story": "Polibrand was born from a simple observation: African political leaders had the vision and the courage to drive change, but lacked the strategic communication frameworks to command the political attention their ideas deserved. Working across West African democracies, we watched brilliant candidates, policymakers, and advocates struggle to translate their political acumen into the disciplined brand positioning that shapes electoral outcomes and institutional influence. We decided to change that.",
-        "image": ""
+      "meta": {
+        "title": "About PoliBrand | Political Branding Strategists Building African Leaders",
+        "description": "Meet the team behind PoliBrand's 5S Framework — the political branding methodology helping African leaders win trust through structure, strategy, storytelling, salience, and stewardship.",
+        "keywords": "political branding agency, political branding team, 5S framework, political strategist Africa, political communication experts, PoliBrand founder"
       }
     },
     "services": {
       "hero": {
         "tag": "Strategic Services",
         "title": "Institutional-Grade Tools for Modern Political Leadership.",
-        "description": "Every service is designed around the structural requirements of competitive democratic environments."
+        "description": "Every service is designed around the 5S Framework — Structure, Strategy, Storytelling, Salience, Stewardship — the structural requirements of competitive democratic environments."
       },
       "individual": {
         "tag": "For Individual Leaders",
@@ -394,7 +403,7 @@
           },
           {
             "number": "03",
-            "title": "Campaign Communication Management",
+            "title": "Campaign Communication",
             "color": "var(--color-accent)",
             "intro": "Media architecture, speech development, and crisis communication frameworks for the modern political environment.",
             "deliverables": [
@@ -466,9 +475,15 @@
         "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding.",
         "apply": "Apply",
         "assessment": "Take the Assessment"
+      },
+      "meta": {
+        "title": "Political Branding Services | Strategy, Storytelling & Campaign Communication",
+        "description": "Explore PoliBrand's political branding services — identity architecture, message discipline, campaign communication, and strategic visibility for candidates, aspirants, and institutions.",
+        "keywords": "political branding services, campaign communication, political messaging, candidate branding, political identity strategy, political PR, political brand strategy"
       }
     },
     "programs": {
+      "enabled": true,
       "hero": {
         "tag": "Learning & Growth",
         "title": "Elite Programs for Political Advancement.",
@@ -565,6 +580,11 @@
         "title": "Advocacy Campaign Architecture",
         "desc": "Strategic planning, stakeholder alignment, and messaging for institutional change.",
         "cta": "Launch Your Campaign →"
+      },
+      "meta": {
+        "title": "Political Leadership Programs | Bootcamp, Fellowship & Training – PoliBrand",
+        "description": "Build political leadership skills with PoliBrand's Bootcamp, Fellowship, and Courses — practical training in political branding, communication, and campaign strategy for emerging African leaders.",
+        "keywords": "political leadership training, political bootcamp, political fellowship Africa, campaign training, political branding courses, leadership development Africa"
       }
     },
     "institutional": {
@@ -593,16 +613,12 @@
           ]
         }
       ],
-      "partners": [
-        {
-          "name": "Democratic Union",
-          "logo": "/partners/du.svg"
-        },
-        {
-          "name": "Civic Governance Foundation",
-          "logo": "/partners/gef.svg"
-        }
-      ]
+      "partners": [],
+      "meta": {
+        "title": "Institutional Partnerships | Political Branding for Parties & Institutions",
+        "description": "PoliBrand partners with political parties, NGOs, and development institutions to scale political branding, governance communication, and leadership development across Africa.",
+        "keywords": "institutional political branding, party branding, political party communication, governance partnerships Africa, NGO political strategy, political branding partners"
+      }
     },
     "assessment": {
       "hero": {
@@ -745,7 +761,12 @@
             }
           ]
         }
-      ]
+      ],
+      "meta": {
+        "title": "Political Readiness Index (PRI) | Free Political Branding Assessment",
+        "description": "Take PoliBrand's Political Readiness Index — a free diagnostic assessment measuring your political brand strength across structure, strategy, storytelling, salience, and stewardship.",
+        "keywords": "political readiness assessment, political brand audit, campaign readiness test, political branding diagnostic, political brand assessment"
+      }
     },
     "assessment_results": {
       "tiers": [
@@ -833,6 +854,11 @@
           "title": "Application Received",
           "text": "Thank you, {name}. We will contact you within 5-7 business days to schedule your consultation and discuss how we can amplify your political brand."
         }
+      },
+      "meta": {
+        "title": "Apply to PoliBrand | Political Branding & Leadership Programs",
+        "description": "Apply to work with PoliBrand — political branding strategy, leadership training, and campaign communication support for candidates, aspirants, and institutions across Africa.",
+        "keywords": "apply political branding agency, join political leadership program, political branding consultation, political branding application"
       }
     },
     "portal": {

@@ -6,6 +6,73 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
+function FutureGraphic() {
+    return (
+        <svg viewBox="0 0 600 700" className="w-full h-auto" role="img" aria-hidden="true">
+            <defs>
+                <linearGradient id="fg-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="color-mix(in srgb, var(--color-primary-dark), black 70%)" />
+                    <stop offset="50%" stopColor="color-mix(in srgb, var(--color-primary-dark), black 35%)" />
+                    <stop offset="100%" stopColor="color-mix(in srgb, var(--color-primary-dark), black 70%)" />
+                </linearGradient>
+                <radialGradient id="fg-orb" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#F5D77A" />
+                    <stop offset="55%" stopColor="#C9A227" />
+                    <stop offset="100%" stopColor="#C9A227" stopOpacity="0" />
+                </radialGradient>
+                <linearGradient id="fg-peaks" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#C9A227" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#C9A227" stopOpacity="0.15" />
+                </linearGradient>
+            </defs>
+
+            <rect width="600" height="700" fill="url(#fg-bg)" />
+
+            {/* faint constellation of dots */}
+            {[
+                [60, 90], [140, 60], [220, 130], [500, 80], [430, 150], [90, 220],
+                [540, 240], [40, 380], [560, 420], [70, 520], [510, 560], [150, 610],
+                [320, 60], [380, 200], [250, 320],
+            ].map(([cx, cy], i) => (
+                <circle key={i} cx={cx} cy={cy} r={i % 3 === 0 ? 2.5 : 1.5} fill="#F5D77A" opacity={0.25 + (i % 4) * 0.12} />
+            ))}
+
+            {/* rising orb, upper right */}
+            <circle cx="430" cy="190" r="170" fill="url(#fg-orb)" opacity="0.55" />
+            <circle cx="430" cy="190" r="58" fill="none" stroke="#C9A227" strokeWidth="1" opacity="0.5" />
+            <circle cx="430" cy="190" r="80" fill="none" stroke="#C9A227" strokeWidth="1" opacity="0.3" />
+            <circle cx="430" cy="190" r="104" fill="none" stroke="#C9A227" strokeWidth="1" opacity="0.18" />
+
+            {/* radiating light lines */}
+            {[20, 55, 95, 135, 170, 205, 245].map((angle, i) => {
+                const rad = (angle * Math.PI) / 180;
+                const x2 = 430 + Math.cos(rad) * 240;
+                const y2 = 190 + Math.sin(rad) * 240;
+                return (
+                    <line key={i} x1="430" y1="190" x2={x2} y2={y2} stroke="#C9A227" strokeWidth="1" opacity="0.12" />
+                );
+            })}
+
+            {/* ascending skyline / structural growth silhouette */}
+            <path
+                d="M0,700 L0,560 L60,560 L60,500 L120,500 L120,440 L190,440 L190,470 L250,470 L250,380 L320,380 L320,420 L380,420 L380,330 L450,330 L450,390 L520,390 L520,300 L600,300 L600,700 Z"
+                fill="url(#fg-peaks)"
+                opacity="0.85"
+            />
+            <path
+                d="M0,700 L0,560 L60,560 L60,500 L120,500 L120,440 L190,440 L190,470 L250,470 L250,380 L320,380 L320,420 L380,420 L380,330 L450,330 L450,390 L520,390 L520,300 L600,300"
+                fill="none"
+                stroke="#C9A227"
+                strokeWidth="2"
+                opacity="0.9"
+            />
+
+            {/* fine gold ascending line accent */}
+            <path d="M0,650 L110,610 L230,560 L340,470 L470,360 L600,250" fill="none" stroke="#F5D77A" strokeWidth="1.5" strokeDasharray="2 6" opacity="0.5" />
+        </svg>
+    );
+}
+
 export default function AboutPage() {
     const { content } = useContext(PoliSettingsContext) as any;
     const about = content.pages.about;
@@ -40,38 +107,116 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* ─── VISION ─── */}
-            <section className="section-pad bg-white">
-                <div className="container-brand">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <div className="inline-flex items-center gap-3 mb-6">
-                                <div className="w-8 h-px bg-[var(--color-secondary)]" />
-                                <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.vision.tag}</span>
+            {/* ─── FOUNDER SPOTLIGHT ─── */}
+            {about.founder && (
+                <section className="section-pad bg-white">
+                    <div className="container-brand">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                            {/* Story — left */}
+                            <div className="order-2 md:order-1">
+                                <div className="inline-flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-px bg-[var(--color-primary)]" />
+                                    <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">{about.founder.tag}</span>
+                                </div>
+                                <h2 className="font-display font-bold text-3xl md:text-4xl text-[#111] mb-1">{about.founder.name}</h2>
+                                <p className="font-sans text-xs font-semibold text-[var(--color-primary)] uppercase tracking-widest mb-7">{about.founder.title}</p>
+                                <div className="space-y-5">
+                                    {(about.founder.bio || '').split('\n\n').map((para: string, i: number) => (
+                                        <p key={i} className="font-sans text-base text-[var(--color-muted)] leading-relaxed">{para}</p>
+                                    ))}
+                                </div>
                             </div>
-                            <h2 className="font-display font-bold text-4xl text-[#111] mb-6">{about.vision.title}</h2>
-                            <p className="font-sans text-lg text-[var(--color-muted)] mb-8 leading-relaxed">
-                                {about.vision.description}
-                            </p>
-                            <div className="space-y-6">
-                                {about.vision.items.map((item: any, i: number) => (
-                                    <div key={i}>
-                                        <div className="flex justify-between mb-2">
-                                            <span className="font-sans text-sm font-bold text-[#111] uppercase tracking-wider">{item.label}</span>
-                                            <span className="font-display font-bold text-[var(--color-primary)]">{item.percentage}</span>
+                            {/* Image — right */}
+                            <div className="order-1 md:order-2">
+                                <div className="relative aspect-[4/5] w-full max-w-md mx-auto md:mx-0 rounded-2xl overflow-hidden shadow-xl border border-[var(--color-secondary)]/20">
+                                    {about.founder.image ? (
+                                        <img src={about.founder.image} alt={about.founder.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)]">
+                                            <span className="font-display font-bold text-7xl text-white">
+                                                {(about.founder.name || '?').charAt(0)}
+                                            </span>
                                         </div>
-                                        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                                            <div className="h-full bg-[var(--color-primary)] transition-all duration-1000" style={{ width: item.percentage }} />
-                                        </div>
-                                    </div>
-                                ))}
+                                    )}
+                                    <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#C9A227]" />
+                                </div>
                             </div>
                         </div>
-                        <div className="relative">
-                            <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl relative z-10">
-                                <img src={about.vision.image || '/vision.svg'} alt="Vision" className="w-full h-full object-cover opacity-80" />
+                    </div>
+                </section>
+            )}
+
+            {/* ─── TPA TEAM ─── */}
+            {about.team?.members?.length > 0 && (
+                <section className="section-pad bg-[var(--color-bg)]">
+                    <div className="container-brand">
+                        <div className="text-center mb-16">
+                            <div className="inline-flex items-center gap-3 mb-4 justify-center">
+                                <div className="w-8 h-px bg-[var(--color-secondary)]" />
+                                <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.team.tag}</span>
+                                <div className="w-8 h-px bg-[var(--color-secondary)]" />
                             </div>
-                            <div className="hide-mobile absolute -top-10 -right-10 w-48 h-48 border-2 border-[var(--color-secondary)]/20 rounded-lg animate-float pointer-events-none" />
+                            <h2 className="font-display font-bold text-4xl text-[#111] mb-4">{about.team.title}</h2>
+                            <div className="divider-gold divider-gold-center" />
+                            {about.team.description && (
+                                <p className="font-sans text-lg text-[var(--color-muted)] max-w-3xl mx-auto mt-6 leading-relaxed">{about.team.description}</p>
+                            )}
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-10">
+                            {about.team.members.map((member: any, i: number) => (
+                                <div key={i} className="card-brand text-center hover:-translate-y-2 transition-transform duration-300 w-full sm:w-[320px] flex-shrink-0">
+                                    <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[var(--color-secondary)]/20 shadow-lg bg-[var(--color-bg)]">
+                                        {member.image ? (
+                                            <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)]">
+                                                <span className="font-display font-bold text-3xl text-white">
+                                                    {(member.name || '?').charAt(0)}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <h3 className="font-display font-bold text-xl text-[#111] mb-1">{member.name}</h3>
+                                    <p className="font-sans text-xs font-semibold text-[var(--color-primary)] uppercase tracking-widest mb-4">{member.title}</p>
+                                    <div className="w-8 h-px bg-[var(--color-secondary)] mx-auto mb-4" />
+                                    <p className="font-sans text-sm text-[var(--color-muted)] leading-relaxed">{member.bio}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ─── VISION & MISSION ─── */}
+            <section className="section-pad bg-white overflow-hidden">
+                <div className="container-brand">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 lg:order-1 rounded-2xl overflow-hidden shadow-xl max-w-lg mx-auto lg:mx-0 w-full">
+                            <FutureGraphic />
+                        </div>
+                        <div className="order-1 lg:order-2 space-y-14">
+                            <div>
+                                <div className="inline-flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-px bg-[var(--color-secondary)]" />
+                                    <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.vision.tag}</span>
+                                </div>
+                                <h2 className="font-display font-bold text-3xl text-[#111] mb-6">{about.vision.title}</h2>
+                                <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed">
+                                    {about.vision.description}
+                                </p>
+                            </div>
+                            {about.mission && (
+                                <div className="pt-14 border-t border-[var(--color-border)]">
+                                    <div className="inline-flex items-center gap-3 mb-6">
+                                        <div className="w-8 h-px bg-[var(--color-primary)]" />
+                                        <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">{about.mission.tag}</span>
+                                    </div>
+                                    <h2 className="font-display font-bold text-3xl text-[#111] mb-6">{about.mission.title}</h2>
+                                    <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed">
+                                        {about.mission.description}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -119,87 +264,6 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
-
-            {/* ─── FOUNDERS ─── */}
-            {about.founders && (
-                <section className="section-pad bg-white">
-                    <div className="container-brand">
-                        <div className="text-center mb-16">
-                            <div className="inline-flex items-center gap-3 mb-4">
-                                <div className="w-8 h-px bg-[var(--color-primary)]" />
-                                <span className="font-sans text-xs font-semibold text-[var(--color-primary)] tracking-widest uppercase">{about.founders.tag}</span>
-                                <div className="w-8 h-px bg-[var(--color-primary)]" />
-                            </div>
-                            <h2 className="font-display font-bold text-4xl text-[#111] mb-4">{about.founders.title}</h2>
-                            <div className="divider-gold divider-gold-center" />
-                            {about.founders.description && (
-                                <p className="font-sans text-lg text-[var(--color-muted)] max-w-3xl mx-auto mt-6 leading-relaxed">{about.founders.description}</p>
-                            )}
-                        </div>
-                        <div className={`grid grid-cols-1 ${(about.founders.team || []).length === 1 ? 'max-w-lg mx-auto' : (about.founders.team || []).length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-3'} gap-10`}>
-                            {(about.founders.team || []).map((member: any, i: number) => (
-                                <div key={i} className="card-brand text-center hover:-translate-y-2 transition-transform duration-300">
-                                    <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[var(--color-secondary)]/20 shadow-lg bg-[var(--color-bg)]">
-                                        {member.image ? (
-                                            <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)]">
-                                                <span className="font-display font-bold text-3xl text-white">
-                                                    {(member.name || '?').charAt(0)}
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <h3 className="font-display font-bold text-xl text-[#111] mb-1">{member.name}</h3>
-                                    <p className="font-sans text-xs font-semibold text-[var(--color-primary)] uppercase tracking-widest mb-4">{member.title}</p>
-                                    <div className="w-8 h-px bg-[var(--color-secondary)] mx-auto mb-4" />
-                                    <p className="font-sans text-sm text-[var(--color-muted)] leading-relaxed">{member.bio}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* ─── FOUNDERS STORY ─── */}
-            {about.foundersStory && (
-                <section className="section-pad bg-white">
-                    <div className="container-brand max-w-4xl mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-
-                            {/* Text */}
-                            <div>
-                                <div className="inline-flex items-center gap-3 mb-4">
-                                    <div className="w-8 h-px bg-[var(--color-secondary)]" />
-                                    <span className="font-sans text-xs font-semibold text-[var(--color-secondary-dark)] tracking-widest uppercase">{about.foundersStory.tag}</span>
-                                </div>
-                                <h2 className="font-display font-bold text-4xl text-[#111] mb-6 leading-tight">{about.foundersStory.title}</h2>
-                                <p className="font-sans text-lg text-[var(--color-muted)] leading-relaxed mb-6">
-                                    {about.foundersStory.story}
-                                </p>
-                                <p className="font-sans text-sm text-gray-500 italic">
-                                    We started Polibrand to close that gap.
-                                </p>
-                            </div>
-
-                            {/* Image */}
-                            <div className="relative">
-                                {about.foundersStory.image ? (
-                                    <div className="aspect-square bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-xl">
-                                        <img src={about.foundersStory.image} alt="Founders Story" className="w-full h-full object-cover" />
-                                    </div>
-                                ) : (
-                                    <div className="aspect-square bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-lg overflow-hidden shadow-xl flex items-center justify-center">
-                                        <p className="font-sans text-white/40 text-center px-8">Story image to be added</p>
-                                    </div>
-                                )}
-                                <div className="hide-mobile absolute -bottom-6 -right-6 w-40 h-40 border-2 border-[var(--color-secondary)]/20 rounded-lg pointer-events-none" />
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-            )}
 
             {/* ─── JOURNEY ─── */}
             <section className="section-pad bg-[var(--color-bg)]">

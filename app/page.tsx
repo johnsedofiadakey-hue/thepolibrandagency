@@ -1,6 +1,7 @@
 "use client";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import WhoWeServeCard from '@/components/WhoWeServeCard';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
@@ -10,8 +11,9 @@ export default function Page() {
   
   // Safe deep access with fallbacks to prevent rendering crashes
   const home = content?.pages?.home || {
-    hero: { tag: "The Polibrand Agency", headline: "Building Political Power\nAcross Africa.", subheadline: "Strategic branding and leadership development." },
+    hero: { tag: "The Trusted Political Branding Partner", headline: "Building Political Power\nAcross Africa.", subheadline: "Strategic branding and leadership development." },
     stats: [],
+    whoWeServe: { tag: "Who We Serve", title: "", text: "", segments: [] },
     challenge: { tag: "Challenge", title: "Gap", text: "", list: [], quote: "", stats: [] },
     services: { tag: "Services", title: "Core Services", description: "", items: [] },
     diagnostic: { tag: "Diagnostic", title: "Ready?", description: "", categories: [] },
@@ -24,7 +26,7 @@ export default function Page() {
       <Navbar />
 
       {/* ─── HERO ─── */}
-      <section style={{
+      <section className="home-hero" style={{
         minHeight: '100vh',
         position: 'relative',
         display: 'flex',
@@ -35,54 +37,12 @@ export default function Page() {
         backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
-        {/* Primary dark overlay — always present for readability */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 1,
-          background: theme.heroImage
-            ? 'linear-gradient(110deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.2) 100%)'
-            : 'linear-gradient(110deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 100%)',
-        }} />
-
-        {/* Subtle geometric grid pattern */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 1, opacity: 0.04,
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }} />
-
-        {/* Gold radial glow — top left anchor */}
-        <div style={{
-          position: 'absolute', top: '-10%', left: '-5%', zIndex: 1,
-          width: '55vw', height: '55vw', borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.secondary || '#C9A227'}18 0%, transparent 65%)`,
-          pointerEvents: 'none',
-        }} />
-
-        {/* Diagonal accent stripe — right side */}
-        <div style={{
-          position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1,
-          width: '38%', clipPath: 'polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)',
-          background: `linear-gradient(160deg, ${theme.secondary || '#C9A227'}08 0%, ${theme.secondary || '#C9A227'}04 100%)`,
-          borderLeft: `1px solid ${theme.secondary || '#C9A227'}14`,
-        }} />
-
-        {/* Decorative corner mark — top right, hidden on mobile */}
-        <div className="hide-mobile" style={{ position: 'absolute', top: 100, right: 80, zIndex: 2, opacity: 0.18, pointerEvents: 'none' }}>
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
-            <circle cx="90" cy="90" r="88" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-            <circle cx="90" cy="90" r="64" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="4 6" />
-            <circle cx="90" cy="90" r="38" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
-            <line x1="90" y1="2" x2="90" y2="178" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
-            <line x1="2" y1="90" x2="178" y2="90" stroke={theme.secondary || '#C9A227'} strokeWidth="0.4" />
-          </svg>
-        </div>
-
         {/* Main hero content */}
-        <div className="container-brand" style={{ position: 'relative', zIndex: 3, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 40 }}>
-          <div style={{ maxWidth: 740 }}>
+        <div className="container-brand home-hero-content" style={{ position: 'relative', zIndex: 3, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 40 }}>
+          <div className="home-hero-copy" style={{ maxWidth: 740 }}>
 
             {/* Tag line */}
-            <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.25rem' }}>
+            <div className="animate-fade-up home-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.25rem' }}>
               <div style={{ width: 36, height: 1.5, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
               <span style={{
                 fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700,
@@ -93,11 +53,12 @@ export default function Page() {
             </div>
 
             {/* Headline */}
-            <h1 className="animate-fade-up-delay-1" style={{
+            <h1 className="animate-fade-up-delay-1 home-hero-title" style={{
               fontFamily: 'var(--font-display)', fontWeight: 800,
               fontSize: 'clamp(2.8rem, 5.5vw, 5rem)',
               color: '#fff', lineHeight: 1.08, marginBottom: '1.75rem',
               letterSpacing: '-1.5px',
+              textShadow: '0 4px 22px rgba(0,0,0,0.55)',
             }}>
               {home.hero.headline.split('\n').map((line: string, i: number) => (
                 <span key={i} style={{ display: 'block' }}>{line}</span>
@@ -105,7 +66,7 @@ export default function Page() {
             </h1>
 
             {/* Divider */}
-            <div className="animate-fade-up-delay-1" style={{
+            <div className="animate-fade-up-delay-1 home-hero-divider" style={{
               display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.75rem',
             }}>
               <div style={{ width: 48, height: 2, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
@@ -113,16 +74,17 @@ export default function Page() {
             </div>
 
             {/* Subheadline */}
-            <p className="animate-fade-up-delay-2" style={{
+            <p className="animate-fade-up-delay-2 home-hero-subtitle" style={{
               fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', fontWeight: 400,
               color: 'rgba(255,255,255,0.78)', lineHeight: 1.85, maxWidth: 520, marginBottom: '2.75rem',
               letterSpacing: '0.2px',
+              textShadow: '0 2px 14px rgba(0,0,0,0.55)',
             }}>
               {home.hero.subheadline}
             </p>
 
             {/* CTAs */}
-            <div className="animate-fade-up-delay-3" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div className="animate-fade-up-delay-3 home-hero-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
               <Link href="/apply" style={{
                 fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.72rem',
                 letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
@@ -164,7 +126,7 @@ export default function Page() {
             background: 'rgba(0,0,0,0.35)',
             backdropFilter: 'blur(16px)',
           }}>
-            <div className="container-brand stats-bar">
+            <div className="container-brand stats-bar home-stats-bar">
               {home.stats.map((s: any, i: number) => (
                 <div key={i} style={{
                   textAlign: 'center', padding: '12px 8px',
@@ -185,6 +147,32 @@ export default function Page() {
           </div>
         )}
       </section>
+
+      {/* ─── WHO WE SERVE ─── */}
+      {home.whoWeServe?.segments?.length > 0 && (
+        <section className="section-pad" style={{ background: '#f7f6f2' }}>
+          <div className="container-brand">
+            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
+                <div style={{ width: 28, height: 1.5, background: theme.secondary || '#C9A227' }} />
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase' }}>{home.whoWeServe.tag}</span>
+                <div style={{ width: 28, height: 1.5, background: theme.secondary || '#C9A227' }} />
+              </div>
+              {home.whoWeServe.text && (
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.98rem', color: '#666', maxWidth: 560, margin: '0 auto', lineHeight: 1.8 }}>
+                  {home.whoWeServe.text}
+                </p>
+              )}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+              {home.whoWeServe.segments.map((seg: any, i: number) => (
+                <WhoWeServeCard key={i} seg={seg} accent={theme.secondary || '#C9A227'} primary={theme.primary || '#F3010A'} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ─── STRATEGIC GAP ─── */}
       <section className="section-pad" style={{ background: '#fff' }}>
@@ -269,7 +257,7 @@ export default function Page() {
       {/* ─── SERVICES ─── */}
       <section className="section-pad" style={{ background: '#f7f6f2' }}>
         <div className="container-brand">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div className="home-section-intro" style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1rem' }}>
               <div style={{ width: 28, height: 1.5, background: theme.secondary || '#C9A227' }} />
               <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase' }}>{home.services.tag}</span>
@@ -283,9 +271,9 @@ export default function Page() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
+          <div className="home-services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
             {home.services.items.map((s: any, i: number) => (
-              <div key={i} style={{
+              <div key={i} className="home-service-card" style={{
                 background: '#fff',
                 borderRadius: 4,
                 padding: '2rem 1.5rem',
@@ -323,7 +311,7 @@ export default function Page() {
             ))}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <div className="home-services-cta" style={{ textAlign: 'center', marginTop: '3rem' }}>
             <Link href="/services" style={{
               fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
               letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
@@ -341,7 +329,7 @@ export default function Page() {
       </section>
 
       {/* ─── POLITICAL READINESS INDEX ─── */}
-      <section style={{
+      <section className="home-diagnostic" style={{
         background: theme.primary || '#1A2B4C',
         padding: '100px 0', position: 'relative', overflow: 'hidden',
       }}>
@@ -382,7 +370,7 @@ export default function Page() {
           <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', color: 'rgba(255,255,255,0.7)', maxWidth: 560, margin: '0 auto 2.5rem', lineHeight: 1.8 }}>
             {home.diagnostic.description}
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
+          <div className="home-diagnostic-tags" style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
             {home.diagnostic.categories.map((cat: string) => (
               <span key={cat} style={{
                 fontFamily: 'Inter, sans-serif', fontSize: '0.68rem', fontWeight: 600,
@@ -414,7 +402,7 @@ export default function Page() {
       {/* ─── PARTNERSHIPS ─── */}
       <section id="partnerships" className="section-pad" style={{ background: '#f7f6f2' }}>
         <div className="container-brand">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+          <div className="home-partnership-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
             <div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: '1.5rem' }}>
                 <div style={{ width: 28, height: 1.5, background: theme.secondary || '#C9A227' }} />
@@ -442,9 +430,9 @@ export default function Page() {
                 {home.cta?.proposal || "Request Partnership Proposal →"}
               </Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+            <div className="home-partner-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
               {home.partnerships.items.map((p: any, i: number) => (
-                <div key={p.name || p.title || i} style={{
+                <div key={p.name || p.title || i} className="home-partner-card" style={{
                   background: '#fff', border: '1px solid rgba(0,0,0,0.07)',
                   borderRadius: 4, padding: '1.75rem 1.25rem',
                   transition: 'all 0.25s', textAlign: 'center',
@@ -465,16 +453,16 @@ export default function Page() {
                   ) : (
                     <>
                       <div style={{
-                        width: 44, height: 44, borderRadius: 4, margin: '0 auto 0.75rem',
-                        background: `${theme.primary || '#1A2B4C'}0f`,
-                        border: `1px solid ${theme.primary || '#1A2B4C'}20`,
+                        width: 48, height: 48, borderRadius: '50%', margin: '0 auto 0.85rem',
+                        background: `linear-gradient(135deg, ${theme.primary || '#1A2B4C'}, ${theme.primary || '#1A2B4C'}cc)`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontFamily: 'Cinzel, Georgia, serif', fontWeight: 700,
-                        fontSize: '1.1rem', color: theme.primary || '#1A2B4C',
+                        fontSize: '1.15rem', color: '#fff',
+                        boxShadow: `0 6px 16px ${theme.primary || '#1A2B4C'}35`,
                       }}>
                         {(p.name || p.title || '?').charAt(0)}
                       </div>
-                      <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.78rem', color: '#111', lineHeight: 1.4 }}>{p.name || p.title}</div>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.8rem', color: '#111', lineHeight: 1.4 }}>{p.name || p.title}</div>
                     </>
                   )}
                 </div>
@@ -483,6 +471,159 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .home-hero {
+            min-height: 92vh !important;
+            background-position: 58% center !important;
+          }
+          .home-hero-content {
+            padding-top: 136px !important;
+            padding-bottom: 22px !important;
+            justify-content: flex-end !important;
+          }
+          .home-hero-copy {
+            max-width: 100% !important;
+          }
+          .home-eyebrow {
+            gap: 9px !important;
+            margin-bottom: 1.15rem !important;
+          }
+          .home-eyebrow span {
+            font-size: 0.54rem !important;
+            letter-spacing: 2.35px !important;
+            line-height: 1.65 !important;
+          }
+          .home-eyebrow div {
+            width: 24px !important;
+          }
+          .home-hero-title {
+            font-size: clamp(2.16rem, 12.4vw, 3.12rem) !important;
+            line-height: 1.04 !important;
+            margin-bottom: 1.1rem !important;
+            letter-spacing: 0 !important;
+            text-wrap: balance;
+          }
+          .home-hero-divider {
+            margin-bottom: 1.05rem !important;
+          }
+          .home-hero-subtitle {
+            font-size: 0.95rem !important;
+            line-height: 1.68 !important;
+            margin-bottom: 1.65rem !important;
+            max-width: 330px !important;
+          }
+          .home-hero-actions {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 0.78rem !important;
+            width: min(100%, 300px);
+          }
+          .home-hero-actions a {
+            width: 100% !important;
+            min-height: 50px;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px !important;
+            text-align: center;
+            white-space: normal;
+          }
+          .home-stats-bar {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            padding: 10px 0 !important;
+          }
+          .home-stats-bar > div {
+            padding: 9px 5px !important;
+          }
+          .home-stats-bar > div > div:first-child {
+            font-size: 1.38rem !important;
+          }
+          .home-stats-bar > div > div:last-child {
+            font-size: 0.5rem !important;
+            letter-spacing: 1px !important;
+            line-height: 1.35 !important;
+          }
+          .home-section-intro {
+            margin-bottom: 2.5rem !important;
+          }
+          .home-services-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .home-service-card {
+            min-height: auto;
+            padding: 1.55rem 1.35rem !important;
+          }
+          .home-service-card h3 {
+            font-size: 1.02rem !important;
+          }
+          .home-services-cta a,
+          .home-diagnostic a {
+            width: 100%;
+            max-width: 320px;
+            min-height: 50px;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 18px !important;
+            text-align: center;
+            white-space: normal;
+          }
+          .home-partnership-layout a {
+            width: 100%;
+            min-height: 50px;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 18px !important;
+            text-align: center;
+            white-space: normal;
+          }
+          .home-diagnostic {
+            padding: 72px 0 !important;
+          }
+          .home-diagnostic-tags {
+            gap: 0.55rem !important;
+            margin-bottom: 2.35rem !important;
+          }
+          .home-diagnostic-tags span {
+            flex: 1 1 calc(50% - 0.55rem);
+            max-width: 150px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.25;
+          }
+          .home-partnership-layout {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
+          .home-partner-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.85rem !important;
+          }
+          .home-partner-card {
+            min-height: 92px;
+            padding: 1.2rem 1.25rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            text-align: left !important;
+          }
+          .home-partner-card > div:nth-of-type(2) {
+            margin: 0 !important;
+            flex: 0 0 44px;
+          }
+          .home-partner-card > div:last-child {
+            flex: 1 1 auto !important;
+            text-align: left !important;
+          }
+        }
+      `}</style>
 
       <Footer />
     </>

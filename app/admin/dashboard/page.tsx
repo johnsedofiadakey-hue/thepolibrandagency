@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import IconGlyph from '@/components/IconGlyph';
 
 const quickLinks = [
     { label: 'Brand Settings', href: '/admin/brand', icon: '🎨', desc: 'Update colors, logo, typography' },
@@ -174,7 +175,7 @@ export default function AdminDashboard() {
                     <div key={s.label} className="stat-widget" style={{ borderLeftColor: s.color }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem', color: '#111' }}>{s.value}</div>
-                            <span style={{ fontSize: '1rem' }}>{s.icon}</span>
+                            <span style={{ display: 'inline-flex', color: s.color }}><IconGlyph icon={s.icon} size={18} /></span>
                         </div>
                         <div className="label" style={{ fontFamily: 'var(--font-body)', fontSize: '0.6rem', color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px', marginTop: 'auto' }}>{s.label}</div>
                     </div>
@@ -255,7 +256,7 @@ export default function AdminDashboard() {
                                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px',
                                     borderRadius: 8, textDecoration: 'none', background: '#f9fafb', border: '1px solid #f3f4f6', textAlign: 'center'
                                 }}>
-                                    <span style={{ fontSize: '1.25rem' }}>{link.icon}</span>
+                                    <span style={{ display: 'inline-flex', color: 'var(--color-primary)' }}><IconGlyph icon={link.icon} size={22} /></span>
                                     <div style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.65rem', color: '#111', textTransform: 'uppercase' }}>{link.label}</div>
                                 </Link>
                             ))}

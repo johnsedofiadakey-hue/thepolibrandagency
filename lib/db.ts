@@ -108,7 +108,6 @@ function getFirebaseStorageBucket(): string | undefined {
 
 function hasFirebaseConfig(): boolean {
     return !!(
-        getFirebaseProjectId() ||
         process.env.POLI_FIREBASE_SERVICE_ACCOUNT_KEY ||
         process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
         process.env.GOOGLE_APPLICATION_CREDENTIALS ||

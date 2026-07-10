@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0a1128",
+  "theme_color": "#F3010A",
   "description": "A modern, native-like web experience for The Poli Brand Agency.",
   "icons": [
     {

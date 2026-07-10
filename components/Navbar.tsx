@@ -8,6 +8,10 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { theme, content } = useContext(PoliSettingsContext) as any;
     const nav = content.navbar;
+    const programsEnabled = content?.pages?.programs?.enabled !== false;
+    const navLinks = (nav.links || []).filter((link: any) => programsEnabled || !String(link.href || '').startsWith('/programs'));
+    const navForeground = scrolled ? '#fff' : '#111';
+    const navSubtleForeground = scrolled ? 'rgba(255,255,255,0.9)' : '#222';
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -23,18 +27,24 @@ export default function Navbar() {
 
     return (
         <>
-            <nav style={{
+            <nav className="site-navbar" style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? theme.primary : 'rgba(17,17,17,0.6)',
-                backdropFilter: 'blur(16px)',
-                borderBottom: scrolled ? `1px solid ${theme.secondary}` : 'none',
+                background: scrolled
+                    ? 'linear-gradient(180deg, rgba(12,12,14,0.68) 0%, rgba(12,12,14,0.42) 72%, rgba(12,12,14,0.18) 100%)'
+                    : 'transparent',
+                backdropFilter: scrolled ? 'blur(18px) saturate(145%)' : 'none',
+                WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(145%)' : 'none',
+                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.10)' : '1px solid transparent',
+                boxShadow: scrolled ? '0 14px 40px rgba(0,0,0,0.18)' : 'none',
+                paddingTop: scrolled ? '0.75rem' : '1.25rem',
+                paddingLeft: '24px', paddingRight: '24px',
+                paddingBottom: scrolled ? '0.75rem' : '1.25rem',
                 transition: 'all 0.35s ease',
-                padding: scrolled ? '0.75rem 24px' : '1.25rem 24px',
             }}>
-                <div style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="site-navbar-inner" style={{ maxWidth: 1300, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     {/* Logo & Brand Lockup */}
-                    <Link href="/" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
-                        <div style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
+                    <Link href="/" className="site-brand-lockup" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
+                        <div className="site-brand-logo" style={{ position: 'relative', width: 68, height: 68, transition: 'transform 0.3s' }}>
                             <img
                                 src={theme.logo || '/logo.png'}
                                 alt="Logo"
@@ -44,17 +54,17 @@ export default function Navbar() {
                                 }}
                             />
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', borderLeft: `1px solid ${theme.secondary}40`, paddingLeft: '16px' }}>
+                        <div className="site-brand-text" style={{ display: 'flex', flexDirection: 'column', borderLeft: `1px solid ${theme.secondary}40`, paddingLeft: '16px' }}>
                             <span style={{
                                 fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '1.2rem',
                                 color: theme.secondary, letterSpacing: '2px', lineHeight: 1,
-                                textShadow: scrolled ? 'none' : '0 2px 10px rgba(0,0,0,0.4)'
+                                textShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.35)' : '0 1px 8px rgba(255,255,255,0.75)'
                             }}>
                                 {nav.brand.line1}
                             </span>
                             <span style={{
                                 fontFamily: 'Cinzel, serif', fontWeight: 400, fontSize: '0.8rem',
-                                color: '#fff', letterSpacing: '4.5px', marginTop: '2px',
+                                color: navSubtleForeground, letterSpacing: '4.5px', marginTop: '2px',
                                 opacity: 0.9
                             }}>
                                 {nav.brand.line2}
@@ -64,18 +74,18 @@ export default function Navbar() {
 
                     {/* Desktop Nav Links */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }} className="desktop-nav">
-                        {nav.links.map((link: any) => (
+                        {navLinks.map((link: any) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 style={{
                                     fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '0.75rem',
-                                    letterSpacing: '1.5px', textTransform: 'uppercase', color: '#fff',
+                                    letterSpacing: '1.5px', textTransform: 'uppercase', color: navForeground,
                                     textDecoration: 'none', transition: 'all 0.2s',
                                     opacity: 0.85
                                 }}
                                 onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = theme.secondary; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.color = '#fff'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.color = navForeground; }}
                             >
                                 {link.label}
                             </Link>
@@ -100,7 +110,7 @@ export default function Navbar() {
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 12, zIndex: 1001, position: 'relative' }}
-                        className="mobile-only"
+                        className="mobile-only site-menu-button"
                         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                     >
                         <div style={{ width: 24, height: 2, background: theme.secondary, marginBottom: 5, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none' }} />
@@ -112,6 +122,47 @@ export default function Navbar() {
                 <style>{`
           @media (min-width: 769px) { .mobile-only { display: none !important; } }
           @media (max-width: 768px) { .desktop-nav { display: none !important; } }
+          @media (max-width: 768px) {
+            .site-navbar {
+              padding: 0.72rem 16px !important;
+            }
+            .site-navbar-inner {
+              align-items: center !important;
+            }
+            .site-brand-lockup {
+              gap: 10px !important;
+              min-width: 0;
+            }
+            .site-brand-logo {
+              width: 48px !important;
+              height: 48px !important;
+              flex: 0 0 48px;
+            }
+            .site-brand-text {
+              padding-left: 10px !important;
+              max-width: 190px;
+            }
+            .site-brand-text span:first-child {
+              font-size: 0.9rem !important;
+              letter-spacing: 1.3px !important;
+            }
+            .site-brand-text span:last-child {
+              font-size: 0.58rem !important;
+              letter-spacing: 3px !important;
+            }
+            .site-menu-button {
+              width: 50px !important;
+              height: 50px !important;
+              min-width: 50px !important;
+              min-height: 50px !important;
+              padding: 13px !important;
+              border-radius: 999px !important;
+              background: rgba(255, 255, 255, 0.72) !important;
+              box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12) !important;
+              backdrop-filter: blur(14px);
+              -webkit-backdrop-filter: blur(14px);
+            }
+          }
         `}</style>
             </nav>
 
@@ -164,7 +215,7 @@ export default function Navbar() {
                     <div style={{ width: 40, height: 1.5, background: theme.secondary, margin: '8px auto 0' }} />
                 </div>
 
-                {nav.links.map((link: any, i: number) => (
+                {navLinks.map((link: any, i: number) => (
                     <Link
                         key={link.href}
                         href={link.href}

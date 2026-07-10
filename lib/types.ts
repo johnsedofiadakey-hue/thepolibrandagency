@@ -59,6 +59,7 @@ export interface SiteContent {
   };
   pages: {
     home: {
+      meta?: ContentMetadata;
       hero: { tag: string; headline: string; subheadline: string };
       stats: Array<{ number: string; label: string }>;
       challenge: {
@@ -71,18 +72,25 @@ export interface SiteContent {
       cta: Record<string, string>;
     };
     about: {
+      meta?: ContentMetadata;
       hero: HeroSection;
-      vision: { tag: string; title: string; description: string; image?: string; items: Array<{ label: string; percentage: string }> };
+      vision: { tag: string; title: string; description: string; image?: string; items?: Array<{ label: string; percentage: string }> };
+      mission?: { tag: string; title: string; description: string };
       strategy: { tag: string; title: string; steps: Array<{ title: string; desc: string }> };
       philosophy: { tag: string; title: string; cards: Array<{ title: string; text: string }> };
+      founder?: { tag: string; name: string; title: string; bio: string; image?: string };
+      team?: { tag: string; title: string; description?: string; members: Array<{ name: string; title: string; bio: string; image?: string }> };
     };
     services: {
+      meta?: ContentMetadata;
       hero: HeroSection;
       individual: { tag: string; title: string; items: any[] };
       institutional: { tag: string; title: string; items: any[] };
       cta: Record<string, string>;
     };
     programs: {
+      meta?: ContentMetadata;
+      enabled?: boolean;
       hero: HeroSection;
       bootcamp: any;
       fellowship: any;
@@ -91,16 +99,18 @@ export interface SiteContent {
       advocacy: any;
     };
     institutional: {
+      meta?: ContentMetadata;
       hero: HeroSection;
       models: any[];
       partners: PartnerItem[];
     };
     assessment: {
+      meta?: ContentMetadata;
       hero: HeroSection & { details?: Array<{ icon: string; text: string }> };
       categories: any[];
     };
     assessment_results: { tiers: any[]; categories: any[] };
-    apply: { hero: HeroSection; form: any };
+    apply: { meta?: ContentMetadata; hero: HeroSection; form: any };
     portal: { login: { title: string; subtitle: string; button: string } };
   };
 }

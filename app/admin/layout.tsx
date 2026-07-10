@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import IconGlyph from '@/components/IconGlyph';
 
 const navItems = [
     { label: 'Dashboard', href: '/admin/dashboard', icon: '◈' },
@@ -83,7 +84,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     border: active ? '1px solid rgba(201,162,39,0.2)' : '1px solid transparent'
                                 }}
                             >
-                                <span className="nav-icon" style={{ fontSize: '1.25rem' }}>{item.icon}</span>
+                                <span className="nav-icon" style={{ display: 'inline-flex' }}><IconGlyph icon={item.icon} size={20} /></span>
                                 <span className="nav-label" style={{
                                     fontFamily: 'var(--font-body)',
                                     fontSize: '0.82rem',

@@ -3,6 +3,7 @@ import { Suspense, useState, useContext, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import IconGlyph from '@/components/IconGlyph';
 import { useSearchParams } from 'next/navigation';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
@@ -14,6 +15,12 @@ const COUNTRIES = [
     'Botswana', 'Namibia', 'Mozambique', 'Madagascar', 'Malawi', 'Sierra Leone',
     'Liberia', 'Guinea', 'Mali', 'Burkina Faso', 'Niger', 'Chad', 'Sudan',
     'Egypt', 'Morocco', 'Tunisia', 'Algeria', 'Libya', 'Other African Country', 'International',
+];
+
+const CAREER_STAGES = [
+    'First-Time Candidate',
+    'Sitting Incumbent',
+    "Women's Track / Women in Politics",
 ];
 
 function ServiceCard({ item, selected, onToggle }: { item: { id: string; label: string; desc: string }; selected: boolean; onToggle: () => void }) {
@@ -95,7 +102,7 @@ function ApplyForm() {
 
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', email: '', phone: '',
-        country: '', role: '',
+        country: '', role: '', careerStage: '',
         services: getInitialServices(),
         essay: '',
         assessmentScore: paramScore ? parseInt(paramScore, 10) : undefined as number | undefined,
@@ -203,6 +210,7 @@ function ApplyForm() {
                             phone: formData.phone,
                             country: formData.country,
                             role: formData.role,
+                            careerStage: formData.careerStage,
                             program: getSelectedLabels().join(', '),
                             essay: formData.essay,
                             services: formData.services,
@@ -266,7 +274,7 @@ function ApplyForm() {
             <section className="pt-24 md:pt-36 pb-8 md:pb-12 relative overflow-hidden" style={{
                 background: apply.hero.image
                     ? `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(${apply.hero.image}) center/cover`
-                    : 'linear-gradient(135deg, var(--color-primary) 0%, #0d1f3c 100%)',
+                    : 'linear-gradient(135deg, var(--color-primary) 0%, #3d0000 100%)',
             }}>
                 <div className="container-brand max-w-2xl text-center relative z-10">
                     <div className="inline-flex items-center gap-3 mb-3 md:mb-4">
@@ -286,7 +294,7 @@ function ApplyForm() {
                     {/* Refund Notice */}
                     <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
                         <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
-                            <span className="font-semibold">💰 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
+                            <span className="font-semibold inline-flex items-center gap-2"><IconGlyph icon="💰" size={18} /> 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
                         </p>
                     </div>
 
@@ -377,6 +385,14 @@ function ApplyForm() {
                                             <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Current Role / Title <span className="text-red-400">*</span></label>
                                             <input required type="text" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className={inputCls} placeholder="e.g. MP Candidate, NGO Director" />
                                         </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Career Stage <span className="text-red-400">*</span></label>
+                                        <select required value={formData.careerStage} onChange={e => setFormData({ ...formData, careerStage: e.target.value })} className={inputCls + ' appearance-none cursor-pointer'} style={{ backgroundImage: selectArrow, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2em' }}>
+                                            <option value="" disabled>Select the stage that best describes you</option>
+                                            {CAREER_STAGES.map(c => <option key={c} value={c}>{c}</option>)}
+                                        </select>
                                     </div>
 
                                     <div className="pt-4">
@@ -472,6 +488,7 @@ function ApplyForm() {
                                                 { label: 'Phone', value: formData.phone },
                                                 { label: 'Country', value: formData.country },
                                                 { label: 'Role', value: formData.role },
+                                                { label: 'Stage', value: formData.careerStage },
                                             ].map(({ label, value }) => (
                                                 <div key={label} className="flex justify-between items-start px-5 py-3">
                                                     <span className="font-sans text-xs text-gray-400 shrink-0 w-16 sm:w-20">{label}</span>
@@ -490,7 +507,7 @@ function ApplyForm() {
                                     </div>
 
                                     {/* Payment card */}
-                                    <div style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, #0d1f3c 100%)', borderRadius: 14, padding: '1.5rem' }}>
+                                    <div style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, #3d0000 100%)', borderRadius: 14, padding: '1.5rem' }}>
                                         <div className="flex justify-between items-start mb-3">
                                             <div>
                                                 <p className="font-sans text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Consultation Fee</p>

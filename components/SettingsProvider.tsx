@@ -5,11 +5,11 @@ import type { PoliSettingsContextValue, SiteSettings, SiteContent } from '@/lib/
 import initialContent from '../data/content.json';
 
 const DEFAULT_THEME: SiteSettings['theme'] = {
-  primary: '#1A2B4C',
-  secondary: '#F1E5D1',
-  accent: '#FF6B6B',
-  background: '#FAFAFC',
-  text: '#2C3E50',
+  primary: '#F3010A',
+  secondary: '#ffa3a3',
+  accent: '#F3010A',
+  background: '#ffffff',
+  text: '#000000',
   heroImage: '',
   logo: '/logo.svg',
 };

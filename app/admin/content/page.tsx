@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
+import IconGlyph from '@/components/IconGlyph';
 
 const sections = [
     { id: 'metadata', label: 'Global SEO / Metadata', group: 'Global', icon: '🔍' },
@@ -20,7 +21,7 @@ const sections = [
 // ─── FIELD HELPERS ──────────────────────────────────────────────────────────────────
 //
 
-type FieldType = 'text' | 'textarea' | 'color' | 'image';
+type FieldType = 'text' | 'textarea' | 'color' | 'image' | 'checkbox';
 
 function getNestedValue(obj: any, path: string): any {
     return path.split('.').reduce((curr, k) => curr?.[k], obj);
@@ -44,7 +45,7 @@ function setNestedValue(obj: any, path: string, value: any): any {
 
 // Minimal field input
 function Field({ label, value, onChange, type = 'text' }: {
-    label: string; value: any; onChange: (v: string) => void; type?: FieldType;
+    label: string; value: any; onChange: (v: any) => void; type?: FieldType;
 }) {
     const commonStyle: React.CSSProperties = {
         width: '100%', padding: '9px 13px', border: '1.5px solid #e5e0d6',
@@ -56,7 +57,31 @@ function Field({ label, value, onChange, type = 'text' }: {
             <label style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', fontWeight: 600, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 6 }}>
                 {label}
             </label>
-            {type === 'textarea' ? (
+            {type === 'checkbox' ? (
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                    <span style={{ position: 'relative', display: 'inline-block', width: 46, height: 26 }}>
+                        <input
+                            type="checkbox"
+                            checked={!!value}
+                            onChange={e => onChange(e.target.checked)}
+                            style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', margin: 0, cursor: 'pointer' }}
+                        />
+                        <span style={{
+                            position: 'absolute', inset: 0, borderRadius: 999,
+                            background: value ? '#16a34a' : '#d1d5db',
+                            transition: 'background 0.2s',
+                        }} />
+                        <span style={{
+                            position: 'absolute', top: 3, left: value ? 23 : 3,
+                            width: 20, height: 20, borderRadius: '50%', background: '#fff',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s',
+                        }} />
+                    </span>
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: '#374151', fontWeight: 600 }}>
+                        {value ? 'Enabled' : 'Disabled'}
+                    </span>
+                </label>
+            ) : type === 'textarea' ? (
                 <textarea value={value ?? ''} onChange={e => onChange(e.target.value)} rows={3} style={{ ...commonStyle, minHeight: 80 }} />
             ) : type === 'color' ? (
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -280,6 +305,16 @@ function MetadataEditor({ content, onChange }: { content: any; onChange: (c: any
     );
 }
  
+function PageSeoFields({ meta, setField }: { meta: any; setField: (path: string, value: any) => void }) {
+    return (
+        <Collapsible label="Page SEO (Search Listing)">
+            <Field label="Page Title (shown in Google & browser tab)" value={meta?.title} onChange={v => setField('meta.title', v)} />
+            <Field label="Meta Description" value={meta?.description} onChange={v => setField('meta.description', v)} type="textarea" />
+            <Field label="Keywords (comma separated)" value={meta?.keywords} onChange={v => setField('meta.keywords', v)} type="textarea" />
+        </Collapsible>
+    );
+}
+
 //
 // ─── SECTION EDITORS ────────────────────────────────────────────────────────────────
 //
@@ -440,10 +475,28 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
 
     return (
         <>
+            <PageSeoFields meta={home.meta} setField={setField} />
             <SectionTitle>Hero</SectionTitle>
             <Field label="Tag / Overline" value={home.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Headline" value={home.hero?.headline} onChange={v => setField('hero.headline', v)} type="textarea" />
             <Field label="Subheadline" value={home.hero?.subheadline} onChange={v => setField('hero.subheadline', v)} type="textarea" />
+
+            <SectionTitle>Who We Serve</SectionTitle>
+            <Field label="Tag" value={home.whoWeServe?.tag} onChange={v => setField('whoWeServe.tag', v)} />
+            <Field label="Intro Text" value={home.whoWeServe?.text} onChange={v => setField('whoWeServe.text', v)} type="textarea" />
+            <ObjectListField
+                label="Audience Segments"
+                items={home.whoWeServe?.segments || []}
+                fields={[
+                    { key: 'tag', label: 'Segment Tag (e.g. For First-Time Candidates)' },
+                    { key: 'title', label: 'Title' },
+                    { key: 'text', label: 'Body Text (use blank line between paragraphs)', type: 'textarea' },
+                    { key: 'highlight', label: 'Highlight / Pull Quote', type: 'textarea' },
+                    { key: 'ctaLabel', label: 'CTA Label' },
+                    { key: 'ctaHref', label: 'CTA Link (e.g. /apply?program=...)' },
+                ]}
+                onChange={v => setField('whoWeServe.segments', v)}
+            />
 
             <SectionTitle>Statistics Bar</SectionTitle>
             {(home.stats || []).map((stat: any, i: number) => (
@@ -499,7 +552,7 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
                     const items = (home.services?.items || []).filter((_: any, idx: number) => idx !== i);
                     onChange(setNestedValue(content, 'pages.home.services.items', items));
                 }}>
-                    <Field label="Icon (emoji or symbol)" value={item.icon} onChange={v => updateService(i, 'icon', v)} />
+                    <Field label="Icon Key" value={item.icon} onChange={v => updateService(i, 'icon', v)} />
                     <Field label="Title" value={item.title} onChange={v => updateService(i, 'title', v)} />
                     <Field label="Description" value={item.desc} onChange={v => updateService(i, 'desc', v)} type="textarea" />
                 </ItemCard>
@@ -549,6 +602,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
 
     return (
         <>
+            <PageSeoFields meta={about.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={about.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={about.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -559,12 +613,11 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <Field label="Tag" value={about.vision?.tag} onChange={v => setField('vision.tag', v)} />
             <Field label="Title" value={about.vision?.title} onChange={v => setField('vision.title', v)} />
             <Field label="Description" value={about.vision?.description} onChange={v => setField('vision.description', v)} type="textarea" />
-            <ObjectListField 
-                label="Vision Metrics" 
-                items={about.vision?.items || []} 
-                fields={[{ key: 'label', label: 'Metric Name' }, { key: 'percentage', label: 'Percentage (e.g. 85%)' }]} 
-                onChange={v => setField('vision.items', v)}
-            />
+
+            <SectionTitle>Mission Section</SectionTitle>
+            <Field label="Tag" value={about.mission?.tag} onChange={v => setField('mission.tag', v)} />
+            <Field label="Title" value={about.mission?.title} onChange={v => setField('mission.title', v)} />
+            <Field label="Description" value={about.mission?.description} onChange={v => setField('mission.description', v)} type="textarea" />
 
             <SectionTitle>Strategic Architecture</SectionTitle>
             <Field label="Tag" value={about.strategy?.tag} onChange={v => setField('strategy.tag', v)} />
@@ -572,7 +625,7 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <ObjectListField 
                 label="Steps" 
                 items={about.strategy?.steps || []} 
-                fields={[{ key: 'title', label: 'Title' }, { key: 'desc', label: 'Description', type: 'textarea' }]} 
+                fields={[{ key: 'title', label: 'Title' }, { key: 'desc', label: 'Description', type: 'textarea' }]}
                 onChange={v => setField('strategy.steps', v)}
             />
 
@@ -582,61 +635,62 @@ function AboutEditor({ content, onChange }: { content: any; onChange: (c: any) =
             <ObjectListField 
                 label="Cards" 
                 items={about.philosophy?.cards || []} 
-                fields={[{ key: 'title', label: 'Title' }, { key: 'text', label: 'Text', type: 'textarea' }]} 
+                fields={[{ key: 'title', label: 'Title' }, { key: 'text', label: 'Text', type: 'textarea' }]}
                 onChange={v => setField('philosophy.cards', v)}
             />
 
-            <SectionTitle>Founders / Team Section</SectionTitle>
-            <Field label="Tag" value={about.founders?.tag} onChange={v => setField('founders.tag', v)} />
-            <Field label="Section Title" value={about.founders?.title} onChange={v => setField('founders.title', v)} />
-            <Field label="Section Description" value={about.founders?.description} onChange={v => setField('founders.description', v)} type="textarea" />
+            <SectionTitle>Founder Section</SectionTitle>
+            <Field label="Tag" value={about.founder?.tag} onChange={v => setField('founder.tag', v)} />
+            <Field label="Full Name" value={about.founder?.name} onChange={v => setField('founder.name', v)} />
+            <Field label="Title / Role" value={about.founder?.title} onChange={v => setField('founder.title', v)} />
+            <Field label="Bio" value={about.founder?.bio} onChange={v => setField('founder.bio', v)} type="textarea" />
+            <ImageUploadField label="Photo" value={about.founder?.image} onChange={v => setField('founder.image', v)} />
+
+            <SectionTitle>TPA Team Section</SectionTitle>
+            <Field label="Tag" value={about.team?.tag} onChange={v => setField('team.tag', v)} />
+            <Field label="Section Title" value={about.team?.title} onChange={v => setField('team.title', v)} />
+            <Field label="Section Description" value={about.team?.description} onChange={v => setField('team.description', v)} type="textarea" />
             <div style={{ marginTop: '0.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Team Members</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Team Members (shown once at least one is added)</span>
                     <button
                         type="button"
                         onClick={() => {
-                            const team = [...(about.founders?.team || []), { name: '', title: '', bio: '', image: '' }];
-                            setField('founders.team', team);
+                            const members = [...(about.team?.members || []), { name: '', title: '', bio: '', image: '' }];
+                            setField('team.members', members);
                         }}
                         style={{ padding: '4px 10px', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: 4, fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer' }}
                     >+ Add Member</button>
                 </div>
-                {(about.founders?.team || []).map((member: any, i: number) => (
+                {(about.team?.members || []).map((member: any, i: number) => (
                     <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: '1rem', marginBottom: '0.75rem', background: '#fafafa', position: 'relative' }}>
                         <button
                             type="button"
                             onClick={() => {
-                                const team = (about.founders?.team || []).filter((_: any, idx: number) => idx !== i);
-                                setField('founders.team', team);
+                                const members = (about.team?.members || []).filter((_: any, idx: number) => idx !== i);
+                                setField('team.members', members);
                             }}
                             style={{ position: 'absolute', top: 8, right: 8, background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, padding: '2px 8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer' }}
                         >Remove</button>
                         <Field label="Full Name" value={member.name} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, name: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, name: v } : m);
+                            setField('team.members', members);
                         }} />
                         <Field label="Title / Role" value={member.title} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, title: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, title: v } : m);
+                            setField('team.members', members);
                         }} />
                         <Field label="Bio" value={member.bio} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, bio: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, bio: v } : m);
+                            setField('team.members', members);
                         }} type="textarea" />
                         <ImageUploadField label="Photo" value={member.image} onChange={v => {
-                            const team = (about.founders?.team || []).map((m: any, idx: number) => idx === i ? { ...m, image: v } : m);
-                            setField('founders.team', team);
+                            const members = (about.team?.members || []).map((m: any, idx: number) => idx === i ? { ...m, image: v } : m);
+                            setField('team.members', members);
                         }} />
                     </div>
                 ))}
             </div>
-
-            <SectionTitle>Founders Story Section</SectionTitle>
-            <Field label="Tag" value={about.foundersStory?.tag} onChange={v => setField('foundersStory.tag', v)} />
-            <Field label="Title" value={about.foundersStory?.title} onChange={v => setField('foundersStory.title', v)} />
-            <Field label="Story" value={about.foundersStory?.story} onChange={v => setField('foundersStory.story', v)} type="textarea" />
-            <ImageUploadField label="Story Image" value={about.foundersStory?.image} onChange={v => setField('foundersStory.image', v)} />
 
             <SectionTitle>Impact Timeline</SectionTitle>
             <ObjectListField
@@ -655,6 +709,7 @@ function ServicesEditor({ content, onChange }: { content: any; onChange: (c: any
 
     return (
         <>
+            <PageSeoFields meta={services.meta} setField={setField} />
             <SectionTitle>Hero</SectionTitle>
             <Field label="Tag" value={services.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={services.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -781,6 +836,7 @@ function AssessmentEditor({ content, onChange }: { content: any; onChange: (c: a
 
     return (
         <>
+            <PageSeoFields meta={assessment.meta} setField={setField} />
             <SectionTitle>Hero & Intro</SectionTitle>
             <Field label="Tag" value={assessment.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={assessment.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -900,6 +956,7 @@ function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) =
 
     return (
         <>
+            <PageSeoFields meta={apply.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={apply.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={apply.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -931,6 +988,7 @@ function InstitutionalEditor({ content, onChange }: { content: any; onChange: (c
 
     return (
         <>
+            <PageSeoFields meta={page.meta} setField={setField} />
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={page.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={page.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -942,7 +1000,7 @@ function InstitutionalEditor({ content, onChange }: { content: any; onChange: (c
                 label="Models" 
                 items={page.models || []} 
                 fields={[
-                    { key: 'icon', label: 'Icon (emoji)' },
+                    { key: 'icon', label: 'Icon Key' },
                     { key: 'title', label: 'Title' },
                     { key: 'desc', label: 'Description', type: 'textarea' }
                 ]} 
@@ -982,7 +1040,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
                     <ObjectListField 
                         label="Outcomes" 
                         items={prog.outcomes} 
-                        fields={[{ key: 'icon', label: 'Icon' }, { key: 'label', label: 'Label' }]} 
+                        fields={[{ key: 'icon', label: 'Icon Key' }, { key: 'label', label: 'Label' }]}
                         onChange={v => setField(`${key}.outcomes`, v)}
                     />
                 )}
@@ -990,7 +1048,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
                     <ObjectListField 
                         label="Inclusions" 
                         items={prog.inclusions} 
-                        fields={[{ key: 'icon', label: 'Icon' }, { key: 'title', label: 'Title' }, { key: 'desc', label: 'Desc', type: 'textarea' }]} 
+                        fields={[{ key: 'icon', label: 'Icon Key' }, { key: 'title', label: 'Title' }, { key: 'desc', label: 'Desc', type: 'textarea' }]}
                         onChange={v => setField(`${key}.inclusions`, v)}
                     />
                 )}
@@ -1000,6 +1058,18 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
 
     return (
         <>
+            <PageSeoFields meta={page.meta} setField={setField} />
+            <SectionTitle>Page Visibility</SectionTitle>
+            <Field
+                label="Show Programs Page"
+                type="checkbox"
+                value={page.enabled !== false}
+                onChange={v => setField('enabled', v)}
+            />
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.6, marginTop: '-0.5rem', marginBottom: '1.5rem' }}>
+                Turn this off while programs are not running. The Programs navigation/footer links will be hidden, and the public page will show a closed notice.
+            </p>
+
             <SectionTitle>Hero Section</SectionTitle>
             <Field label="Tag" value={page.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Title" value={page.hero?.title} onChange={v => setField('hero.title', v)} type="textarea" />
@@ -1017,7 +1087,7 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
             <ObjectListField 
                 label="Courses List" 
                 items={page.courses?.items || []} 
-                fields={[{ key: 'number', label: 'No.' }, { key: 'title', label: 'Title' }, { key: 'duration', label: 'Duration' }, { key: 'desc', label: 'Desc', type: 'textarea' }]} 
+                fields={[{ key: 'number', label: 'No.' }, { key: 'title', label: 'Title' }, { key: 'duration', label: 'Duration' }, { key: 'desc', label: 'Desc', type: 'textarea' }]}
                 onChange={v => setField('courses.items', v)}
             />
 
@@ -1237,7 +1307,7 @@ export default function ContentPage() {
                                         transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: 8,
                                     }}
                                 >
-                                    <span style={{ fontSize: '0.9rem' }}>{s.icon}</span>
+                                    <span style={{ display: 'inline-flex' }}><IconGlyph icon={s.icon} size={16} /></span>
                                     <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: activeSection === s.id ? 600 : 400, color: activeSection === s.id ? '#1F6F3E' : '#374151' }}>
                                         {s.label}
                                     </span>
@@ -1250,7 +1320,7 @@ export default function ContentPage() {
                 {/* Editor Panel */}
                 <div style={{ background: '#fff', borderRadius: 8, border: '1px solid #e5e7eb', overflowY: 'auto', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
                     <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: 10, position: 'sticky', top: 0, background: '#fff', zIndex: 10 }}>
-                        <span style={{ fontSize: '1.1rem' }}>{active.icon}</span>
+                        <span style={{ display: 'inline-flex', color: '#1F6F3E' }}><IconGlyph icon={active.icon} size={20} /></span>
                         <div>
                             <h3 style={{ fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: '1.1rem', color: '#111', margin: 0 }}>{active.label}</h3>
                             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#9ca3af', margin: 0 }}>Update copy, links, and list items for this section.</p>
