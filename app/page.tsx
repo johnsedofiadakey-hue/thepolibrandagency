@@ -3,11 +3,20 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WhoWeServeCard from '@/components/WhoWeServeCard';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { PoliSettingsContext } from '@/components/SettingsProvider';
 
 export default function Page() {
   const { theme = {}, content = {} } = useContext(PoliSettingsContext) as any;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleSound = () => {
+    if (!videoRef.current) return;
+    const next = !muted;
+    videoRef.current.muted = next;
+    setMuted(next);
+  };
   
   // Safe deep access with fallbacks to prevent rendering crashes
   const home = content?.pages?.home || {
@@ -37,84 +46,166 @@ export default function Page() {
         backgroundPosition: 'center',
         overflow: 'hidden',
       }}>
-        {/* Main hero content */}
+        {/* Main hero content — two-column: copy left, video right */}
         <div className="container-brand home-hero-content" style={{ position: 'relative', zIndex: 3, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 40 }}>
-          <div className="home-hero-copy" style={{ maxWidth: 740 }}>
+          <div className="home-hero-inner">
 
-            {/* Tag line */}
-            <div className="animate-fade-up home-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.25rem' }}>
-              <div style={{ width: 36, height: 1.5, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
-              <span style={{
-                fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700,
-                color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase',
+            {/* ── LEFT: copy ── */}
+            <div className="home-hero-copy">
+
+              {/* Tag line */}
+              <div className="animate-fade-up home-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: '2.25rem' }}>
+                <div style={{ width: 36, height: 1.5, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
+                <span style={{
+                  fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: 700,
+                  color: theme.secondary || '#C9A227', letterSpacing: '4px', textTransform: 'uppercase',
+                }}>
+                  {home.hero.tag}
+                </span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="animate-fade-up-delay-1 home-hero-title" style={{
+                fontFamily: 'var(--font-display)', fontWeight: 800,
+                fontSize: 'clamp(2.8rem, 4.5vw, 4.6rem)',
+                color: '#fff', lineHeight: 1.08, marginBottom: '1.75rem',
+                letterSpacing: '-1.5px',
+                textShadow: '0 4px 22px rgba(0,0,0,0.55)',
               }}>
-                {home.hero.tag}
-              </span>
+                {home.hero.headline.split('\n').map((line: string, i: number) => (
+                  <span key={i} style={{ display: 'block' }}>{line}</span>
+                ))}
+              </h1>
+
+              {/* Divider */}
+              <div className="animate-fade-up-delay-1 home-hero-divider" style={{
+                display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.75rem',
+              }}>
+                <div style={{ width: 48, height: 2, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: theme.secondary || '#C9A227', opacity: 0.6 }} />
+              </div>
+
+              {/* Subheadline */}
+              <p className="animate-fade-up-delay-2 home-hero-subtitle" style={{
+                fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', fontWeight: 400,
+                color: 'rgba(255,255,255,0.78)', lineHeight: 1.85, maxWidth: 480, marginBottom: '2.75rem',
+                letterSpacing: '0.2px',
+                textShadow: '0 2px 14px rgba(0,0,0,0.55)',
+              }}>
+                {home.hero.subheadline}
+              </p>
+
+              {/* CTAs */}
+              <div className="animate-fade-up-delay-3 home-hero-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <Link href="/apply" style={{
+                  fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.72rem',
+                  letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
+                  background: theme.secondary || '#C9A227', color: '#0a0a0a',
+                  padding: '14px 32px', borderRadius: 3,
+                  boxShadow: `0 8px 32px ${theme.secondary || '#C9A227'}35`,
+                  transition: 'all 0.25s',
+                  display: 'inline-block',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${theme.secondary || '#C9A227'}50`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${theme.secondary || '#C9A227'}35`; }}
+                >
+                  {(home.cta?.apply && !home.cta.apply.toLowerCase().includes('fellowship')) ? home.cta.apply : "Apply"}
+                </Link>
+                <Link href="/assessment" style={{
+                  fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
+                  letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
+                  color: '#fff', padding: '13px 28px', borderRadius: 3,
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.25s',
+                  display: 'inline-block',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+                >
+                  {home.cta?.assessment || "Start Assessment →"}
+                </Link>
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className="animate-fade-up-delay-1 home-hero-title" style={{
-              fontFamily: 'var(--font-display)', fontWeight: 800,
-              fontSize: 'clamp(2.8rem, 5.5vw, 5rem)',
-              color: '#fff', lineHeight: 1.08, marginBottom: '1.75rem',
-              letterSpacing: '-1.5px',
-              textShadow: '0 4px 22px rgba(0,0,0,0.55)',
-            }}>
-              {home.hero.headline.split('\n').map((line: string, i: number) => (
-                <span key={i} style={{ display: 'block' }}>{line}</span>
-              ))}
-            </h1>
+            {/* ── RIGHT: founder video ── */}
+            <div className="home-hero-video-wrap">
+              <div style={{ position: 'relative', width: '100%' }}>
+                {home.hero?.videoUrl ? (
+                  <>
+                    {/* Soft-edge video — mask dissolves all four edges into the hero background */}
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      loop
+                      playsInline
+                      muted
+                      style={{
+                        width: '100%',
+                        maxHeight: '72vh',
+                        objectFit: 'cover',
+                        display: 'block',
+                        maskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
+                      }}
+                    >
+                      <source src={home.hero.videoUrl} type="video/mp4" />
+                    </video>
 
-            {/* Divider */}
-            <div className="animate-fade-up-delay-1 home-hero-divider" style={{
-              display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.75rem',
-            }}>
-              <div style={{ width: 48, height: 2, background: theme.secondary || '#C9A227', borderRadius: 1 }} />
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: theme.secondary || '#C9A227', opacity: 0.6 }} />
+                    {/* Sound toggle */}
+                    <button
+                      onClick={toggleSound}
+                      title={muted ? 'Unmute' : 'Mute'}
+                      style={{
+                        position: 'absolute', bottom: '12%', right: '14%',
+                        width: 40, height: 40, borderRadius: '50%',
+                        background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)',
+                        border: `1px solid rgba(255,255,255,0.2)`,
+                        color: '#fff', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '1rem', transition: 'background 0.2s',
+                        zIndex: 2,
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.8)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)'; }}
+                    >
+                      {muted ? '🔇' : '🔊'}
+                    </button>
+                  </>
+                ) : (
+                  /* Placeholder shown until client uploads a founder video */
+                  <div style={{
+                    width: '100%',
+                    aspectRatio: '9/14',
+                    maxHeight: '72vh',
+                    maskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
+                    WebkitMaskImage: 'radial-gradient(ellipse 82% 88% at 52% 50%, black 38%, transparent 100%)',
+                    background: `linear-gradient(160deg, ${theme.primary || '#1A2B4C'}cc 0%, rgba(0,0,0,0.6) 100%)`,
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center',
+                    gap: '1rem',
+                  }}>
+                    {/* Decorative reticle */}
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ opacity: 0.25 }}>
+                      <circle cx="60" cy="60" r="58" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
+                      <circle cx="60" cy="60" r="40" stroke={theme.secondary || '#C9A227'} strokeWidth="0.5" strokeDasharray="3 6" />
+                      <circle cx="60" cy="60" r="18" stroke={theme.secondary || '#C9A227'} strokeWidth="0.8" />
+                      {/* Play triangle */}
+                      <polygon points="52,46 52,74 78,60" fill={theme.secondary || '#C9A227'} opacity="0.5" />
+                    </svg>
+                    <span style={{
+                      fontFamily: 'Inter, sans-serif', fontSize: '0.62rem', fontWeight: 700,
+                      color: `${theme.secondary || '#C9A227'}80`, letterSpacing: '3px',
+                      textTransform: 'uppercase', textAlign: 'center',
+                    }}>
+                      Founder&rsquo;s Story
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Subheadline */}
-            <p className="animate-fade-up-delay-2 home-hero-subtitle" style={{
-              fontFamily: 'Inter, sans-serif', fontSize: '1.05rem', fontWeight: 400,
-              color: 'rgba(255,255,255,0.78)', lineHeight: 1.85, maxWidth: 520, marginBottom: '2.75rem',
-              letterSpacing: '0.2px',
-              textShadow: '0 2px 14px rgba(0,0,0,0.55)',
-            }}>
-              {home.hero.subheadline}
-            </p>
-
-            {/* CTAs */}
-            <div className="animate-fade-up-delay-3 home-hero-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Link href="/apply" style={{
-                fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.72rem',
-                letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
-                background: theme.secondary || '#C9A227', color: '#0a0a0a',
-                padding: '14px 32px', borderRadius: 3,
-                boxShadow: `0 8px 32px ${theme.secondary || '#C9A227'}35`,
-                transition: 'all 0.25s',
-                display: 'inline-block',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${theme.secondary || '#C9A227'}50`; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${theme.secondary || '#C9A227'}35`; }}
-              >
-                {(home.cta?.apply && !home.cta.apply.toLowerCase().includes('fellowship')) ? home.cta.apply : "Apply"}
-              </Link>
-              <Link href="/assessment" style={{
-                fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
-                letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
-                color: '#fff', padding: '13px 28px', borderRadius: 3,
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(8px)',
-                transition: 'all 0.25s',
-                display: 'inline-block',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
-              >
-                {home.cta?.assessment || "Start Assessment →"}
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -473,6 +564,20 @@ export default function Page() {
       </section>
 
       <style>{`
+        /* ── Hero two-column layout ── */
+        .home-hero-inner {
+          display: grid;
+          grid-template-columns: 55fr 45fr;
+          gap: 3rem;
+          align-items: center;
+          width: 100%;
+        }
+        .home-hero-video-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         @media (max-width: 768px) {
           .home-hero {
             min-height: 92vh !important;
@@ -482,6 +587,14 @@ export default function Page() {
             padding-top: 136px !important;
             padding-bottom: 22px !important;
             justify-content: flex-end !important;
+          }
+          /* Stack: copy full-width, video hidden on mobile */
+          .home-hero-inner {
+            grid-template-columns: 1fr !important;
+            gap: 0 !important;
+          }
+          .home-hero-video-wrap {
+            display: none !important;
           }
           .home-hero-copy {
             max-width: 100% !important;

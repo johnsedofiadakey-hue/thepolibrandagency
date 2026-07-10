@@ -480,6 +480,7 @@ function HomeEditor({ content, onChange }: { content: any; onChange: (c: any) =>
             <Field label="Tag / Overline" value={home.hero?.tag} onChange={v => setField('hero.tag', v)} />
             <Field label="Headline" value={home.hero?.headline} onChange={v => setField('hero.headline', v)} type="textarea" />
             <Field label="Subheadline" value={home.hero?.subheadline} onChange={v => setField('hero.subheadline', v)} type="textarea" />
+            <Field label="Founder Video URL (.mp4)" value={home.hero?.videoUrl} onChange={v => setField('hero.videoUrl', v)} />
 
             <SectionTitle>Who We Serve</SectionTitle>
             <Field label="Tag" value={home.whoWeServe?.tag} onChange={v => setField('whoWeServe.tag', v)} />
