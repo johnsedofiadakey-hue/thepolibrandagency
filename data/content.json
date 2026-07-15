@@ -852,8 +852,8 @@
           "description": "50% of your consultation fee will be refunded when we begin working on your brand or enroll you in a program."
         },
         "success": {
-          "title": "Application Received",
-          "text": "Thank you, {name}. We will contact you within 5-7 business days to schedule your consultation and discuss how we can amplify your political brand."
+          "title": "Booking Confirmed",
+          "text": "Thank you, {name}. Your booking is confirmed — we will give you a call shortly to discuss your {program} journey and how we can amplify your political brand."
         }
       },
       "meta": {
