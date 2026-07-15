@@ -154,20 +154,45 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
 
 function VideoUploadField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
     const [uploading, setUploading] = useState(false);
+    const [progress, setProgress] = useState(0);
     const [uploadError, setUploadError] = useState<string | null>(null);
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(true);
+        setProgress(0);
         setUploadError(null);
-        const formData = new FormData();
-        formData.append('file', file);
+
         try {
-            const res = await fetch('/api/upload/video', { method: 'POST', body: formData });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Upload failed.');
-            if (data.url) onChange(data.url);
+            // Step 1: Get a signed GCS URL — video goes directly browser→Storage, bypassing the 32 MB Cloud Run limit
+            const sigRes = await fetch('/api/upload/video-signed-url', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, contentType: file.type, size: file.size }),
+            });
+            const { signedUrl, publicUrl, downloadToken, error } = await sigRes.json();
+            if (!sigRes.ok || !signedUrl) throw new Error(error || 'Could not get upload URL');
+
+            // Step 2: PUT directly to Firebase Storage with XHR so we can track progress
+            await new Promise<void>((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.upload.onprogress = (ev) => {
+                    if (ev.lengthComputable) setProgress(Math.round((ev.loaded / ev.total) * 100));
+                };
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) resolve();
+                    else reject(new Error(`Storage rejected the upload (${xhr.status})`));
+                };
+                xhr.onerror = () => reject(new Error('Network error — check your connection and try again'));
+                xhr.open('PUT', signedUrl);
+                xhr.setRequestHeader('Content-Type', file.type);
+                // Must match the extension headers declared when the signed URL was issued
+                xhr.setRequestHeader('x-goog-meta-firebasestoragedownloadtokens', downloadToken);
+                xhr.send(file);
+            });
+
+            onChange(publicUrl);
         } catch (err: any) {
             setUploadError(err.message || 'Upload failed.');
         } finally {
@@ -182,7 +207,6 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 {label}
             </label>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
-                {/* Portrait preview */}
                 <div style={{ width: 54, height: 96, borderRadius: 6, background: '#f3f4f6', border: '1.5px solid #e5e0d6', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {value
                         ? <video src={value} muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -192,17 +216,22 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                         <label style={{ background: uploading ? '#9ca3af' : '#1F6F3E', color: '#fff', padding: '8px 14px', borderRadius: 4, cursor: uploading ? 'wait' : 'pointer', fontSize: '0.75rem', fontWeight: 600, display: 'inline-block' }}>
-                            {uploading ? 'Uploading…' : 'Upload Video'}
+                            {uploading ? `Uploading… ${progress}%` : 'Upload Video'}
                             <input type="file" accept="video/mp4,video/quicktime,video/webm" onChange={handleUpload} style={{ display: 'none' }} disabled={uploading} />
                         </label>
-                        {value && (
+                        {value && !uploading && (
                             <button onClick={() => onChange('')} style={{ background: 'transparent', border: '1.5px solid #e5e0d6', color: '#6b7280', padding: '8px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.72rem', fontWeight: 600 }}>
                                 Remove
                             </button>
                         )}
                     </div>
+                    {uploading && (
+                        <div style={{ height: 4, background: '#e5e7eb', borderRadius: 2, marginBottom: '0.5rem', overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${progress}%`, background: '#1F6F3E', borderRadius: 2, transition: 'width 0.3s' }} />
+                        </div>
+                    )}
                     <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: '#9ca3af', margin: 0 }}>
-                        MP4 · MOV · WebM &nbsp;·&nbsp; Max 100 MB &nbsp;·&nbsp; Portrait recommended
+                        MP4 · MOV · WebM &nbsp;·&nbsp; Up to 500 MB &nbsp;·&nbsp; Portrait recommended
                     </p>
                     {uploadError && <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#991b1b', margin: '6px 0 0' }}>{uploadError}</p>}
                 </div>

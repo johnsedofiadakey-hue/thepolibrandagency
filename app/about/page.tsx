@@ -305,7 +305,7 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link href="/apply" className="btn-gold justify-center">
-                            {(about.cta?.apply && !about.cta.apply.toLowerCase().includes('fellowship')) ? about.cta.apply : "Apply"}
+                            {(about.cta?.apply && !about.cta.apply.toLowerCase().includes('fellowship')) ? about.cta.apply : "Book Now"}
                         </Link>
                         <Link href="/assessment" className="btn-secondary justify-center">
                             {about.cta?.assessment || "Take the Assessment"}

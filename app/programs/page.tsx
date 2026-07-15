@@ -96,7 +96,7 @@ export default function ProgramsPage() {
                                 ))}
                             </ul>
                             <Link href="/apply?type=bootcamp" className="btn-primary" style={{ display: 'inline-flex' }}>
-                                {programs.bootcamp.cta || "Apply for Bootcamp →"}
+                                {programs.bootcamp.cta || "Book Now →"}
                             </Link>
                         </div>
 
@@ -147,7 +147,7 @@ export default function ProgramsPage() {
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href="/assessment" className="btn-primary">{programs.fellowship.cta_assessment || "Take Readiness Assessment First"}</Link>
-                        <Link href="/apply" className="btn-outline-dark">{programs.fellowship.cta_apply || "Apply to Fellowship"}</Link>
+                        <Link href="/apply" className="btn-outline-dark">{programs.fellowship.cta_apply || "Book Now"}</Link>
                     </div>
                 </div>
             </section>

@@ -109,8 +109,24 @@ export default function Page() {
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${theme.secondary || '#C9A227'}50`; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${theme.secondary || '#C9A227'}35`; }}
                 >
-                  {(home.cta?.apply && !home.cta.apply.toLowerCase().includes('fellowship')) ? home.cta.apply : "Apply"}
+                  {(home.cta?.apply && !home.cta.apply.toLowerCase().includes('fellowship')) ? home.cta.apply : "Book Now"}
                 </Link>
+                <a href="tel:0540249684" style={{
+                  fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.72rem',
+                  letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',
+                  color: '#fff', padding: '13px 24px', borderRadius: 3,
+                  border: `1px solid ${theme.secondary || '#C9A227'}70`,
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  display: 'inline-flex', alignItems: 'center', gap: 7,
+                  transition: 'all 0.25s',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = theme.secondary || '#C9A227'; (e.currentTarget as HTMLElement).style.background = `${theme.secondary || '#C9A227'}18`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = `${theme.secondary || '#C9A227'}70`; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                  Call Us
+                </a>
                 <Link href="/assessment" style={{
                   fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.72rem',
                   letterSpacing: '1.5px', textTransform: 'uppercase', textDecoration: 'none',

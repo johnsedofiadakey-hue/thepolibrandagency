@@ -32,7 +32,7 @@
       }
     ],
     "cta": {
-      "label": "Apply Now",
+      "label": "Book Now",
       "href": "/apply"
     }
   },
@@ -153,12 +153,12 @@
             "ctaHref": "/apply?program=Stewardship%20Audit"
           },
           {
-            "tag": "For Women in Politics",
+            "tag": "For Emerging Leaders",
             "title": "The Room Wasn't Built For You. Build Your Own.",
-            "text": "Women in politics are judged twice — on capability and on likability — simultaneously, and harder.\n\nOur Women in Politics Programme was built by a woman who broke a first, and knows exactly what it costs, and what it's worth.",
-            "highlight": "We equip women leaders with the structure, storytelling, and salience to compete on their own terms — not on borrowed ones.",
-            "ctaLabel": "Apply to the Women in Politics Programme →",
-            "ctaHref": "/apply?program=Women%20in%20Politics%20Programme"
+            "text": "Leaders in politics are judged twice — on capability and on likability — simultaneously, and harder.\n\nOur Emerging Leaders Programme was built by those who broke through first, and know exactly what it costs, and what it's worth.",
+            "highlight": "We equip emerging leaders with the structure, storytelling, and salience to compete on their own terms — not on borrowed ones.",
+            "ctaLabel": "Book Now →",
+            "ctaHref": "/apply?program=Emerging%20Leaders%20Programme"
           }
         ]
       },
@@ -270,7 +270,7 @@
         ]
       },
       "cta": {
-        "apply": "Apply",
+        "apply": "Book Now",
         "partner": "Partner With Us",
         "mission": "Polibrand exists to equip political leaders with these structural tools.",
         "services": "Explore All Services →",
@@ -474,7 +474,7 @@
       "cta": {
         "title": "Ready to Build Your Political Power?",
         "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding.",
-        "apply": "Apply",
+        "apply": "Book Now",
         "assessment": "Take the Assessment"
       },
       "meta": {
@@ -495,7 +495,7 @@
         "badge": "6 Weeks · Hybrid",
         "title": "Leadership Branding Bootcamp",
         "description": "An intensive 6-week hybrid program designed to build every structural element of your political brand — from identity architecture to campaign-ready communication.",
-        "cta": "Apply for Bootcamp →",
+        "cta": "Book Now →",
         "modules": [
           "Political identity and brand architecture",
           "Message clarity and narrative discipline",
@@ -529,7 +529,7 @@
         "tag": "Flagship Initiative",
         "title": "The Polibrand Fellowship",
         "description": "An immersive 3–6 month program for high-potential political leaders ready to build comprehensive political readiness and a competitive campaign infrastructure.",
-        "cta_apply": "Apply to Fellowship",
+        "cta_apply": "Book Now",
         "cta_assessment": "Take Readiness Assessment First",
         "inclusions": [
           {

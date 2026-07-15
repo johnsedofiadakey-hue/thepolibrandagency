@@ -240,6 +240,9 @@ export default function Footer() {
                     <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)' }}>
                         {footer.bottom.copyright}
                     </p>
+                    <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.2)', marginTop: '0.35rem', letterSpacing: '0.3px' }}>
+                        Built and powered by <a href="https://stormglide.io" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.65)'; }} onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'; }}>Stormglide.io</a>
+                    </p>
                     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
                         {footer.bottom.links.map((item: any) => (
                             <a key={item.label} href={item.href} style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>

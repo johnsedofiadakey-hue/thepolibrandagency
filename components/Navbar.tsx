@@ -90,6 +90,24 @@ export default function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
+                        <a
+                            href="tel:0540249684"
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: 6,
+                                background: 'rgba(255,255,255,0.1)', color: navForeground,
+                                padding: '10px 16px', borderRadius: '2px',
+                                fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '0.7rem',
+                                textTransform: 'uppercase', letterSpacing: '1px', textDecoration: 'none',
+                                border: `1px solid ${theme.secondary}60`,
+                                backdropFilter: 'blur(8px)',
+                                transition: 'all 0.3s',
+                            }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = `${theme.secondary}20`; (e.currentTarget as HTMLElement).style.borderColor = theme.secondary; }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLElement).style.borderColor = `${theme.secondary}60`; }}
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                            Call Us
+                        </a>
                         <Link
                             href={nav.cta.href}
                             style={{
@@ -254,6 +272,21 @@ export default function Navbar() {
                 >
                     {nav.cta.label}
                 </Link>
+                <a
+                    href="tel:0540249684"
+                    style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                        color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
+                        fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.82rem',
+                        letterSpacing: '1.5px', textTransform: 'uppercase',
+                        marginTop: '1rem', padding: '10px 0',
+                        opacity: menuOpen ? 1 : 0,
+                        transition: `opacity 0.4s 0.52s ease`,
+                    }}
+                >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                    0540 249 684
+                </a>
             </div>
         </>
     );
