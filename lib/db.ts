@@ -101,7 +101,7 @@ function getFirebaseProjectId(): string | undefined {
     return process.env.POLI_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || runtimeConfig.projectId || DEFAULT_FIREBASE_PROJECT_ID;
 }
 
-function getFirebaseStorageBucket(): string | undefined {
+export function getFirebaseStorageBucket(): string | undefined {
     const runtimeConfig = getFirebaseRuntimeConfig();
     return process.env.POLI_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET || runtimeConfig.storageBucket || DEFAULT_FIREBASE_STORAGE_BUCKET;
 }
