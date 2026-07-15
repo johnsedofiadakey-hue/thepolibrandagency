@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getFirebaseAdmin, getFirebaseStorageBucket } from '@/lib/db';
 import { requireAdmin } from '@/lib/session';
-import { randomUUID } from 'crypto';
 
 const ACCEPTED = ['video/mp4', 'video/quicktime', 'video/webm'];
 const MAX_BYTES = 500 * 1024 * 1024; // 500 MB
@@ -29,22 +28,15 @@ export async function POST(request: Request) {
 
         const safeName = String(filename).replace(/[^a-z0-9.]/gi, '_').toLowerCase();
         const storagePath = `uploads/${Date.now()}_${safeName}`;
-        const downloadToken = randomUUID();
 
-        // Signed URL that lets the browser PUT directly to GCS — bypasses Cloud Run 32 MB body limit
+        // No extensionHeaders — browser only sends Content-Type in the PUT, keeping CORS simple
         const [signedUrl] = await firebase.bucket.file(storagePath).getSignedUrl({
             action: 'write',
-            expires: Date.now() + 20 * 60 * 1000, // 20-minute window
+            expires: Date.now() + 20 * 60 * 1000,
             contentType,
-            extensionHeaders: {
-                // GCS will store this as object metadata; Firebase uses it as the download token
-                'x-goog-meta-firebasestoragedownloadtokens': downloadToken,
-            },
         });
 
-        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(storagePath)}?alt=media&token=${downloadToken}`;
-
-        return NextResponse.json({ signedUrl, publicUrl, downloadToken, storagePath });
+        return NextResponse.json({ signedUrl, storagePath, bucketName });
     } catch (err: any) {
         console.error('Signed URL generation failed:', err);
         return NextResponse.json({ error: err.message || 'Failed to generate upload URL' }, { status: 500 });

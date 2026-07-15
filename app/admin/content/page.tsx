@@ -165,16 +165,16 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
         setUploadError(null);
 
         try {
-            // Step 1: Get a signed GCS URL — video goes directly browser→Storage, bypassing the 32 MB Cloud Run limit
+            // Step 1: Get a signed GCS URL — browser will PUT the file directly, bypassing Cloud Run's 32 MB limit
             const sigRes = await fetch('/api/upload/video-signed-url', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filename: file.name, contentType: file.type, size: file.size }),
             });
-            const { signedUrl, publicUrl, downloadToken, error } = await sigRes.json();
+            const { signedUrl, storagePath, bucketName, error } = await sigRes.json();
             if (!sigRes.ok || !signedUrl) throw new Error(error || 'Could not get upload URL');
 
-            // Step 2: PUT directly to Firebase Storage with XHR so we can track progress
+            // Step 2: PUT the file directly to GCS — only Content-Type header, no custom headers (keeps CORS simple)
             await new Promise<void>((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.upload.onprogress = (ev) => {
@@ -182,15 +182,22 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 };
                 xhr.onload = () => {
                     if (xhr.status >= 200 && xhr.status < 300) resolve();
-                    else reject(new Error(`Storage rejected the upload (${xhr.status})`));
+                    else reject(new Error(`Storage rejected the upload (${xhr.status}). Check CORS and bucket permissions.`));
                 };
-                xhr.onerror = () => reject(new Error('Network error — check your connection and try again'));
+                xhr.onerror = () => reject(new Error('Network error during upload — check your connection and try again'));
                 xhr.open('PUT', signedUrl);
                 xhr.setRequestHeader('Content-Type', file.type);
-                // Must match the extension headers declared when the signed URL was issued
-                xhr.setRequestHeader('x-goog-meta-firebasestoragedownloadtokens', downloadToken);
                 xhr.send(file);
             });
+
+            // Step 3: Tell the server to stamp a download token on the object and get the public URL
+            const finRes = await fetch('/api/upload/video-finalize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ storagePath, bucketName }),
+            });
+            const { publicUrl, error: finError } = await finRes.json();
+            if (!finRes.ok || !publicUrl) throw new Error(finError || 'Could not finalize upload');
 
             onChange(publicUrl);
         } catch (err: any) {
