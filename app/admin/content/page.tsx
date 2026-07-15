@@ -171,10 +171,11 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filename: file.name, contentType: file.type, size: file.size }),
             });
-            const { signedUrl, storagePath, bucketName, error } = await sigRes.json();
-            if (!sigRes.ok || !signedUrl) throw new Error(error || 'Could not get upload URL');
+            const { sessionUri, storagePath, bucketName, error } = await sigRes.json();
+            if (!sigRes.ok || !sessionUri) throw new Error(error || 'Could not start upload session');
 
-            // Step 2: PUT the file directly to GCS — only Content-Type header, no custom headers (keeps CORS simple)
+            // Step 2: PUT the file directly to the GCS resumable session URI
+            // The session URI is self-authenticating — no auth header or custom headers needed
             await new Promise<void>((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.upload.onprogress = (ev) => {
@@ -182,10 +183,10 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 };
                 xhr.onload = () => {
                     if (xhr.status >= 200 && xhr.status < 300) resolve();
-                    else reject(new Error(`Storage rejected the upload (${xhr.status}). Check CORS and bucket permissions.`));
+                    else reject(new Error(`Upload failed (${xhr.status}). Try a smaller file or check your connection.`));
                 };
                 xhr.onerror = () => reject(new Error('Network error during upload — check your connection and try again'));
-                xhr.open('PUT', signedUrl);
+                xhr.open('PUT', sessionUri);
                 xhr.setRequestHeader('Content-Type', file.type);
                 xhr.send(file);
             });
