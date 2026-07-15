@@ -164,8 +164,11 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
         setProgress(0);
         setUploadError(null);
 
+        // 24 MB per chunk — safely under Cloud Run's 32 MB request body limit
+        const CHUNK = 24 * 1024 * 1024;
+
         try {
-            // Step 1: Get a signed GCS URL — browser will PUT the file directly, bypassing Cloud Run's 32 MB limit
+            // Step 1: Initiate a GCS resumable session on the server
             const sigRes = await fetch('/api/upload/video-signed-url', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -174,24 +177,43 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
             const { sessionUri, storagePath, bucketName, error } = await sigRes.json();
             if (!sigRes.ok || !sessionUri) throw new Error(error || 'Could not start upload session');
 
-            // Step 2: PUT the file directly to the GCS resumable session URI
-            // The session URI is self-authenticating — no auth header or custom headers needed
-            await new Promise<void>((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.upload.onprogress = (ev) => {
-                    if (ev.lengthComputable) setProgress(Math.round((ev.loaded / ev.total) * 100));
-                };
-                xhr.onload = () => {
-                    if (xhr.status >= 200 && xhr.status < 300) resolve();
-                    else reject(new Error(`Upload failed (${xhr.status}). Try a smaller file or check your connection.`));
-                };
-                xhr.onerror = () => reject(new Error('Network error during upload — check your connection and try again'));
-                xhr.open('PUT', sessionUri);
-                xhr.setRequestHeader('Content-Type', file.type);
-                xhr.send(file);
-            });
+            // Step 2: Send file through our server in ≤24 MB chunks — no CORS, no browser→GCS direct call
+            const totalChunks = Math.ceil(file.size / CHUNK);
+            for (let i = 0; i < totalChunks; i++) {
+                const start = i * CHUNK;
+                const end = Math.min(start + CHUNK, file.size);
+                const chunk = file.slice(start, end);
+                const isFinal = i === totalChunks - 1;
+                const params = new URLSearchParams({
+                    sessionUri,
+                    offset: String(start),
+                    totalSize: String(file.size),
+                    isFinal: String(isFinal),
+                });
 
-            // Step 3: Tell the server to stamp a download token on the object and get the public URL
+                await new Promise<void>((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.upload.onprogress = (ev) => {
+                        if (ev.lengthComputable) {
+                            const pct = ((i + ev.loaded / ev.total) / totalChunks) * 100;
+                            setProgress(Math.round(pct));
+                        }
+                    };
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) resolve();
+                        else {
+                            try { reject(new Error(JSON.parse(xhr.responseText).error || `Chunk ${i + 1} failed`)); }
+                            catch { reject(new Error(`Chunk ${i + 1} failed (${xhr.status})`)); }
+                        }
+                    };
+                    xhr.onerror = () => reject(new Error('Network error — check your connection'));
+                    xhr.open('POST', `/api/upload/video-chunk?${params}`);
+                    xhr.setRequestHeader('Content-Type', file.type);
+                    xhr.send(chunk);
+                });
+            }
+
+            // Step 3: Stamp a Firebase download token on the object and get the public URL
             const finRes = await fetch('/api/upload/video-finalize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
