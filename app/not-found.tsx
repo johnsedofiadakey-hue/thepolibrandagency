@@ -78,7 +78,7 @@ export default function NotFound() {
                             color: '#fff', padding: '12px 24px', borderRadius: 3,
                             border: '1px solid rgba(255,255,255,0.2)',
                         }}>
-                            Apply Now
+                            Book Now
                         </Link>
                     </div>
                 </div>

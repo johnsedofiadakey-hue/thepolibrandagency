@@ -138,7 +138,7 @@ function ResultsContent() {
                                 Based on your readiness score, we recommend: <strong style={{ color: '#C9A227' }}>{program}</strong>
                             </p>
                             <Link href={`/apply?score=${total}&program=${encodeURIComponent(program)}`} className="btn-gold w-full sm:w-auto text-center justify-center" style={{ fontSize: '0.8rem', padding: '12px 22px' }}>
-                                Apply Now →
+                                Book Now →
                             </Link>
                         </div>
                         <div className="rounded-sm p-5 md:p-8 flex flex-col" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
