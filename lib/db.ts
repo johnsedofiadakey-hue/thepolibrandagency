@@ -283,7 +283,11 @@ async function getFirestoreRestJson(collection: string, doc: string): Promise<Re
 
     const data = await response.json() as { fields?: { json?: { stringValue?: string } } };
     const json = data.fields?.json?.stringValue;
-    return json ? JSON.parse(json) as Record<string, unknown> : null;
+    // A document written by the Admin SDK stores plain fields, which this REST
+    // reader can't decode. Fail loudly rather than report "no document", or a
+    // merge-then-write would replace the real document with partial data.
+    if (!json) throw new Error('Firestore REST document is not stored in JSON format.');
+    return JSON.parse(json) as Record<string, unknown>;
 }
 
 async function setFirestoreRestJson(collection: string, doc: string, data: Record<string, unknown>): Promise<void> {
@@ -416,7 +420,10 @@ export async function setContent(data: Record<string, unknown>): Promise<void> {
 
     try {
         const firebase = requireFirebaseAdmin();
-        await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).set(cleanData, { merge: true });
+        // The editor always sends the whole content tree, so replace the document.
+        // This also clears any legacy { json } blob from the REST fallback, which
+        // reads prefer and which would otherwise hide every later save.
+        await firebase.db.collection(CONFIG_COLLECTION).doc(CONTENT_DOC).set(cleanData);
     } catch (error) {
         try {
             await setFirestoreRestJson(CONFIG_COLLECTION, CONTENT_DOC, cleanData);
@@ -554,21 +561,31 @@ export async function getSettings(): Promise<SiteSettings & { _source?: string }
 }
 
 export async function setSettings(data: SiteSettings): Promise<void> {
-    const cleanData = stripInternalSource(data as unknown as Record<string, unknown>) as unknown as SiteSettings;
+    const cleanData = stripInternalSource(data as unknown as Record<string, unknown>);
 
+    // Callers send partial settings (e.g. the content editor only sends theme and
+    // typography), so every path merges into the stored settings rather than
+    // replacing them — otherwise maintenance mode, hero image, logo etc. are lost.
     try {
         const firebase = requireFirebaseAdmin();
-        await firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC).set(cleanData, { merge: true });
+        const ref = firebase.db.collection(CONFIG_COLLECTION).doc(SETTINGS_DOC);
+        const snap = await ref.get();
+        const existing = snap.exists ? unwrapAdminSnapshotData(snap.data() as Record<string, unknown>) ?? {} : {};
+        // Full write of the merged result also replaces a legacy { json } blob,
+        // which reads would otherwise keep preferring over newer fields.
+        await ref.set({ ...existing, ...cleanData });
     } catch (error) {
         try {
-            await setFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC, cleanData as unknown as Record<string, unknown>);
+            const existing = await getFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC);
+            await setFirestoreRestJson(CONFIG_COLLECTION, SETTINGS_DOC, { ...(existing ?? {}), ...cleanData });
             return;
         } catch (restError) {
             console.error('Firestore REST setSettings error:', restError);
         }
         if (process.env.NODE_ENV === 'production') throw error;
         console.error('Firebase setSettings error; using local dev fallback:', error);
-        writeLocalDevJson(localSettingsPath, cleanData);
+        const existing = stripInternalSource(readJsonFile<Record<string, unknown>>(localSettingsPath, {}));
+        writeLocalDevJson(localSettingsPath, { ...existing, ...cleanData });
     }
 }
 

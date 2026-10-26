@@ -15,6 +15,7 @@ const sections = [
     { id: 'institutional', label: 'Institutional Clients', group: 'Pages', icon: '🤝' },
     { id: 'assessment', label: 'Readiness Index', group: 'Pages', icon: '📊' },
     { id: 'apply', label: 'Application Form', group: 'Pages', icon: '📝' },
+    { id: 'portal', label: 'Fellows Portal Login', group: 'Pages', icon: '🔐' },
 ];
 
 //
@@ -911,6 +912,14 @@ function ServicesEditor({ content, onChange }: { content: any; onChange: (c: any
                  const items = [...(services.institutional?.items || []), { icon: '📋', title: 'New Program', desc: 'Description.', features: [] }];
                  onChange(setNestedValue(content, 'pages.services.institutional.items', items));
             }} />
+
+            <SectionTitle>Bottom Call-to-Action</SectionTitle>
+            <Field label="Title" value={services.cta?.title} onChange={v => setField('cta.title', v)} />
+            <Field label="Description" value={services.cta?.description} onChange={v => setField('cta.description', v)} type="textarea" />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <Field label="Assessment Button Label" value={services.cta?.assessment} onChange={v => setField('cta.assessment', v)} />
+                <Field label="Programs Button Label" value={services.cta?.programs} onChange={v => setField('cta.programs', v)} />
+            </div>
         </>
     );
 }
@@ -1069,6 +1078,17 @@ function AssessmentEditor({ content, onChange }: { content: any; onChange: (c: a
     );
 }
 
+const APPLY_FORM_FIELDS: { key: string; label: string; placeholder: boolean }[] = [
+    { key: 'firstName', label: 'First Name', placeholder: true },
+    { key: 'lastName', label: 'Last Name', placeholder: true },
+    { key: 'email', label: 'Email', placeholder: true },
+    { key: 'phone', label: 'Phone', placeholder: true },
+    { key: 'country', label: 'Country', placeholder: false },
+    { key: 'role', label: 'Role / Title', placeholder: true },
+    { key: 'careerStage', label: 'Career Stage', placeholder: false },
+    { key: 'essay', label: 'Why Applying', placeholder: true },
+];
+
 function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) => void }) {
     const apply = content?.pages?.apply || {};
     const setField = (path: string, value: any) => onChange(setNestedValue(content, `pages.apply.${path}`, value));
@@ -1084,18 +1104,44 @@ function ApplyEditor({ content, onChange }: { content: any; onChange: (c: any) =
 
             <SectionTitle>Form Step Labels</SectionTitle>
             <Field label="Step 1 Title" value={apply.form?.step1_title} onChange={v => setField('form.step1_title', v)} />
+            <Field label="Step 1 Subtitle" value={apply.form?.step1_subtitle} onChange={v => setField('form.step1_subtitle', v)} />
             <Field label="Step 2 Title" value={apply.form?.step2_title} onChange={v => setField('form.step2_title', v)} />
+            <Field label="Step 2 Subtitle" value={apply.form?.step2_subtitle} onChange={v => setField('form.step2_subtitle', v)} />
+
+            <SectionTitle>Form Field Labels &amp; Placeholders</SectionTitle>
+            {APPLY_FORM_FIELDS.map(({ key, label, placeholder }) => (
+                <div key={key} style={{ display: 'grid', gridTemplateColumns: placeholder ? '1fr 1fr' : '1fr', gap: '1rem' }}>
+                    <Field label={`${label} — Label`} value={apply.form?.labels?.[key]} onChange={v => setField(`form.labels.${key}`, v)} />
+                    {placeholder && (
+                        <Field label={`${label} — Placeholder`} value={apply.form?.placeholders?.[key]} onChange={v => setField(`form.placeholders.${key}`, v)} type={key === 'essay' ? 'textarea' : 'text'} />
+                    )}
+                </div>
+            ))}
 
             <SectionTitle>Consultation Fee</SectionTitle>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <Field label="Amount (number only)" value={apply.form?.consultationFee?.amount} onChange={v => setField('form.consultationFee.amount', v)} />
                 <Field label="Currency" value={apply.form?.consultationFee?.currency} onChange={v => setField('form.consultationFee.currency', v)} />
             </div>
-            <Field label="Refund Description" value={apply.form?.consultationFee?.description} onChange={v => setField('form.consultationFee.description', v)} type="textarea" />
+            <Field label="Refund Text ({amount} = fee, {refund} = 50% of fee)" value={apply.form?.consultationFee?.description} onChange={v => setField('form.consultationFee.description', v)} type="textarea" />
 
             <SectionTitle>Success State</SectionTitle>
             <Field label="Success Title" value={apply.form?.success?.title} onChange={v => setField('form.success.title', v)} />
             <Field label="Success Text" value={apply.form?.success?.text} onChange={v => setField('form.success.text', v)} type="textarea" />
+        </>
+    );
+}
+
+function PortalEditor({ content, onChange }: { content: any; onChange: (c: any) => void }) {
+    const login = content?.pages?.portal?.login || {};
+    const setField = (path: string, value: any) => onChange(setNestedValue(content, `pages.portal.${path}`, value));
+
+    return (
+        <>
+            <SectionTitle>Login Screen</SectionTitle>
+            <Field label="Title" value={login.title} onChange={v => setField('login.title', v)} />
+            <Field label="Subtitle" value={login.subtitle} onChange={v => setField('login.subtitle', v)} type="textarea" />
+            <Field label="Sign-In Button Label" value={login.button} onChange={v => setField('login.button', v)} />
         </>
     );
 }
@@ -1144,14 +1190,17 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
     const page = content?.pages?.programs || {};
     const setField = (path: string, value: any) => onChange(setNestedValue(content, `pages.programs.${path}`, value));
 
-    const renderProgramSection = (key: string, label: string) => {
+    const renderProgramSection = (key: string, label: string, ctas: { key: string; label: string }[]) => {
         const prog = page[key] || {};
         return (
-            <Collapsible label={`${label} Section`}>
+            <Collapsible label={`${label} Section`} defaultOpen>
                 <Field label="Badge" value={prog.badge} onChange={v => setField(`${key}.badge`, v)} />
                 <Field label="Tag" value={prog.tag} onChange={v => setField(`${key}.tag`, v)} />
                 <Field label="Title" value={prog.title} onChange={v => setField(`${key}.title`, v)} />
                 <Field label="Description" value={prog.description} onChange={v => setField(`${key}.description`, v)} type="textarea" />
+                {ctas.map(cta => (
+                    <Field key={cta.key} label={cta.label} value={prog[cta.key]} onChange={v => setField(`${key}.${cta.key}`, v)} />
+                ))}
                 {prog.next_cohort !== undefined && <Field label="Next Cohort" value={prog.next_cohort} onChange={v => setField(`${key}.next_cohort`, v)} />}
                 
                 {prog.modules && <StringListField label="Modules" items={prog.modules} onChange={v => setField(`${key}.modules`, v)} />}
@@ -1196,8 +1245,11 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
             <ImageUploadField label="Hero Background Image" value={page.hero?.image} onChange={v => setField('hero.image', v)} />
 
             <SectionTitle>Main Programs</SectionTitle>
-            {renderProgramSection('bootcamp', 'Bootcamp')}
-            {renderProgramSection('fellowship', 'Elite Fellowship')}
+            {renderProgramSection('bootcamp', 'Bootcamp', [{ key: 'cta', label: 'Button Label' }])}
+            {renderProgramSection('fellowship', 'Elite Fellowship', [
+                { key: 'cta_apply', label: 'Book Button Label' },
+                { key: 'cta_assessment', label: 'Assessment Button Label' },
+            ])}
             
             <SectionTitle>Digital Courses</SectionTitle>
             <Field label="Tag" value={page.courses?.tag} onChange={v => setField('courses.tag', v)} />
@@ -1216,11 +1268,13 @@ function ProgramsEditor({ content, onChange }: { content: any; onChange: (c: any
                     <h5 style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: 8 }}>Consulting</h5>
                     <Field label="Title" value={page.consulting?.title} onChange={v => setField('consulting.title', v)} />
                     <Field label="Desc" value={page.consulting?.desc} onChange={v => setField('consulting.desc', v)} type="textarea" />
+                    <Field label="Button Label" value={page.consulting?.cta} onChange={v => setField('consulting.cta', v)} />
                 </div>
                 <div>
                     <h5 style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: 8 }}>Advocacy</h5>
                     <Field label="Title" value={page.advocacy?.title} onChange={v => setField('advocacy.title', v)} />
                     <Field label="Desc" value={page.advocacy?.desc} onChange={v => setField('advocacy.desc', v)} type="textarea" />
+                    <Field label="Button Label" value={page.advocacy?.cta} onChange={v => setField('advocacy.cta', v)} />
                 </div>
             </div>
         </>
@@ -1362,6 +1416,7 @@ export default function ContentPage() {
             case 'institutional': return <InstitutionalEditor content={localContent} onChange={setLocalContent} />;
             case 'assessment': return <AssessmentEditor content={localContent} onChange={setLocalContent} />;
             case 'apply': return <ApplyEditor content={localContent} onChange={setLocalContent} />;
+            case 'portal': return <PortalEditor content={localContent} onChange={setLocalContent} />;
             case 'theme': return <ThemeEditor theme={localTheme} onChange={setLocalTheme} />;
             default: return <p style={{ color: '#9ca3af' }}>Select a section to edit.</p>;
         }

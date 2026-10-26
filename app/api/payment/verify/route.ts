@@ -4,13 +4,18 @@ import { rateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
-// Expected fee in pesewas, read from the same content the apply page uses to
-// charge the customer, so the server check can't drift from the displayed price.
-async function getExpectedFeeInPesewas(): Promise<number> {
+// Expected fee (in the currency's minor unit) and currency, read from the same
+// content the apply page uses to charge the customer, so the server check can't
+// drift from the displayed price.
+async function getExpectedFee(): Promise<{ amount: number; currency: string }> {
   const content = await getContent();
-  const pages = (content as { pages?: { apply?: { form?: { consultationFee?: { amount?: string } } } } }).pages;
-  const amount = parseInt(String(pages?.apply?.form?.consultationFee?.amount || '2500').replace(/,/g, ''), 10);
-  return (Number.isFinite(amount) && amount > 0 ? amount : 2500) * 100;
+  const pages = (content as { pages?: { apply?: { form?: { consultationFee?: { amount?: string; currency?: string } } } } }).pages;
+  const fee = pages?.apply?.form?.consultationFee;
+  const amount = parseInt(String(fee?.amount || '2500').replace(/,/g, ''), 10);
+  return {
+    amount: (Number.isFinite(amount) && amount > 0 ? amount : 2500) * 100,
+    currency: String(fee?.currency || 'GHS').trim().toUpperCase(),
+  };
 }
 
 export async function POST(request: Request) {
@@ -70,7 +75,8 @@ export async function POST(request: Request) {
       );
     }
 
-    if ((txn?.currency || 'GHS') !== 'GHS' || (txn?.amount || 0) < (await getExpectedFeeInPesewas())) {
+    const expectedFee = await getExpectedFee();
+    if ((txn?.currency || 'GHS') !== expectedFee.currency || (txn?.amount || 0) < expectedFee.amount) {
       return NextResponse.json({ error: 'Payment amount is insufficient.' }, { status: 402 });
     }
 

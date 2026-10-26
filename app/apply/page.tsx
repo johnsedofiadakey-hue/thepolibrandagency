@@ -50,6 +50,17 @@ function ServiceCard({ item, selected, onToggle }: { item: { id: string; label: 
 // Public key is safe to embed — it's a Paystack publishable key (like Stripe pk_live_*)
 const PAYSTACK_PK_FALLBACK = 'pk_live_8ed2906bfdd2f7f064f4c2f171e2aa603b5690c7';
 
+// The site has always shown the cedi as "₵"; other currencies use their narrow symbol.
+function currencySymbol(code: string): string {
+    if (code === 'GHS') return '₵';
+    try {
+        return new Intl.NumberFormat('en', { style: 'currency', currency: code, currencyDisplay: 'narrowSymbol' })
+            .formatToParts(0).find(p => p.type === 'currency')?.value || `${code} `;
+    } catch {
+        return `${code} `;
+    }
+}
+
 function ApplyForm() {
     const { content } = useContext(PoliSettingsContext) as any;
     const apply = content.pages.apply;
@@ -59,6 +70,13 @@ function ApplyForm() {
     const feeCurrency = apply.form?.consultationFee?.currency || 'GHS';
     const feeNumeric = parseInt(feeDisplay.replace(/,/g, ''), 10) || 2500;
     const feeHalf = (feeNumeric / 2).toLocaleString();
+    const feeSymbol = currencySymbol(feeCurrency);
+    const feeLabel = `${feeSymbol}${feeDisplay}`;
+    const refundText = (apply.form?.consultationFee?.description || 'Your {amount} application fee will be 50% refunded ({refund}) when we proceed with or start working on your brand strategy.')
+        .replace('{amount}', feeLabel)
+        .replace('{refund}', `${feeSymbol}${feeHalf}`);
+    const labels = apply.form?.labels || {};
+    const placeholders = apply.form?.placeholders || {};
 
     // Build SERVICE_OPTIONS from the services page
     const serviceOptions = [
@@ -189,7 +207,7 @@ function ApplyForm() {
                 key: paystackPublicKey,
                 email: formData.email,
                 amount: amountInPesewas,
-                currency: 'GHS',
+                currency: feeCurrency,
                 ref: uniqueRef,
                 label: `${formData.firstName} ${formData.lastName}`,
                 metadata: {
@@ -294,7 +312,7 @@ function ApplyForm() {
                     {/* Refund Notice */}
                     <div className="rounded-xl bg-green-50 border border-green-200 px-5 py-4 mb-6">
                         <p className="font-sans text-sm text-green-900" style={{ lineHeight: 1.6 }}>
-                            <span className="font-semibold inline-flex items-center gap-2"><IconGlyph icon="💰" size={18} /> 50% Refund Policy:</span> Your ₵{feeDisplay} application fee will be 50% refunded (₵{feeHalf}) when we proceed with or start working on your brand strategy.
+                            <span className="font-semibold inline-flex items-center gap-2"><IconGlyph icon="💰" size={18} /> 50% Refund Policy:</span> {refundText}
                         </p>
                     </div>
 
@@ -347,48 +365,48 @@ function ApplyForm() {
                             {step === 1 && (
                                 <form onSubmit={e => { e.preventDefault(); goNext(); }} className="space-y-5 animate-fade-up">
                                     <div>
-                                        <h2 className="font-display font-bold text-2xl text-[#111]">Tell us about yourself</h2>
-                                        <p className="font-sans text-sm text-gray-500 mt-1">Basic information so we can reach you.</p>
+                                        <h2 className="font-display font-bold text-2xl text-[#111]">{apply.form?.step1_title || 'Tell us about yourself'}</h2>
+                                        <p className="font-sans text-sm text-gray-500 mt-1">{apply.form?.step1_subtitle || 'Basic information so we can reach you.'}</p>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">First Name <span className="text-red-400">*</span></label>
-                                            <input required type="text" value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} className={inputCls} placeholder="e.g. Ama" />
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.firstName || 'First Name'} <span className="text-red-400">*</span></label>
+                                            <input required type="text" value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} className={inputCls} placeholder={placeholders.firstName || 'e.g. Ama'} />
                                         </div>
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Last Name <span className="text-red-400">*</span></label>
-                                            <input required type="text" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} className={inputCls} placeholder="e.g. Mensah" />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Email Address <span className="text-red-400">*</span></label>
-                                            <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder="you@example.com" />
-                                        </div>
-                                        <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Phone Number <span className="text-red-400">*</span></label>
-                                            <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className={inputCls} placeholder="+233 20 000 0000" />
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.lastName || 'Last Name'} <span className="text-red-400">*</span></label>
+                                            <input required type="text" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} className={inputCls} placeholder={placeholders.lastName || 'e.g. Mensah'} />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Country <span className="text-red-400">*</span></label>
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.email || 'Email Address'} <span className="text-red-400">*</span></label>
+                                            <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className={inputCls} placeholder={placeholders.email || 'you@example.com'} />
+                                        </div>
+                                        <div>
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.phone || 'Phone Number'} <span className="text-red-400">*</span></label>
+                                            <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className={inputCls} placeholder={placeholders.phone || '+233 20 000 0000'} />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.country || 'Country'} <span className="text-red-400">*</span></label>
                                             <select required value={formData.country} onChange={e => setFormData({ ...formData, country: e.target.value })} className={inputCls + ' appearance-none cursor-pointer'} style={{ backgroundImage: selectArrow, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2em' }}>
                                                 <option value="" disabled>Select your country</option>
                                                 {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Current Role / Title <span className="text-red-400">*</span></label>
-                                            <input required type="text" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className={inputCls} placeholder="e.g. MP Candidate, NGO Director" />
+                                            <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.role || 'Current Role / Title'} <span className="text-red-400">*</span></label>
+                                            <input required type="text" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className={inputCls} placeholder={placeholders.role || 'e.g. MP Candidate, NGO Director'} />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Career Stage <span className="text-red-400">*</span></label>
+                                        <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.careerStage || 'Career Stage'} <span className="text-red-400">*</span></label>
                                         <select required value={formData.careerStage} onChange={e => setFormData({ ...formData, careerStage: e.target.value })} className={inputCls + ' appearance-none cursor-pointer'} style={{ backgroundImage: selectArrow, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.2em' }}>
                                             <option value="" disabled>Select the stage that best describes you</option>
                                             {CAREER_STAGES.map(c => <option key={c} value={c}>{c}</option>)}
@@ -408,8 +426,8 @@ function ApplyForm() {
                             {step === 2 && (
                                 <form onSubmit={handleStep2Submit} className="space-y-6 animate-fade-up">
                                     <div>
-                                        <h2 className="font-display font-bold text-2xl text-[#111]">What can we help with?</h2>
-                                        <p className="font-sans text-sm text-gray-500 mt-1">Select one or more services or programs. <span className="font-semibold text-[var(--color-primary)]">Multiple selections welcome.</span></p>
+                                        <h2 className="font-display font-bold text-2xl text-[#111]">{apply.form?.step2_title || 'What can we help with?'}</h2>
+                                        <p className="font-sans text-sm text-gray-500 mt-1">{apply.form?.step2_subtitle || 'Select one or more services or programs.'} <span className="font-semibold text-[var(--color-primary)]">Multiple selections welcome.</span></p>
                                     </div>
 
                                     {serviceOptions.map(group => (
@@ -433,14 +451,14 @@ function ApplyForm() {
                                     )}
 
                                     <div>
-                                        <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Why are you applying? <span className="text-red-400">*</span></label>
+                                        <label className="block font-sans text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">{labels.essay || 'Why are you applying?'} <span className="text-red-400">*</span></label>
                                         <textarea
                                             required
                                             value={formData.essay}
                                             onChange={e => setFormData({ ...formData, essay: e.target.value })}
                                             rows={4}
                                             className={inputCls + ' resize-none'}
-                                            placeholder="Tell us about your background, goals, and what you hope to achieve through Polibrand..."
+                                            placeholder={placeholders.essay || 'Tell us about your background, goals, and what you hope to achieve through Polibrand...'}
                                         />
                                         <p className="font-sans text-xs text-gray-400 mt-1.5">Minimum 50 words recommended.</p>
                                     </div>
@@ -511,7 +529,7 @@ function ApplyForm() {
                                         <div className="flex justify-between items-start mb-3">
                                             <div>
                                                 <p className="font-sans text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Consultation Fee</p>
-                                                <p className="font-display font-bold text-4xl" style={{ color: '#C9A227' }}>₵{feeDisplay}</p>
+                                                <p className="font-display font-bold text-4xl" style={{ color: '#C9A227' }}>{feeLabel}</p>
                                             </div>
                                             <span className="font-sans text-xs font-bold px-3 py-1.5 rounded-full" style={{ background: 'rgba(201,162,39,0.18)', color: '#C9A227' }}>ONE-TIME</span>
                                         </div>
@@ -520,7 +538,7 @@ function ApplyForm() {
                                         </p>
                                         <div className="rounded-lg px-3 py-2.5 mb-4" style={{ background: 'rgba(201,162,39,0.08)', border: '1px solid rgba(201,162,39,0.2)' }}>
                                             <p className="font-sans text-xs" style={{ color: 'rgba(201,162,39,0.9)' }}>
-                                                <span className="font-semibold">50% refund:</span> Your consultation fee will be refunded when we proceed or start working on your brand.
+                                                <span className="font-semibold">50% refund:</span> {refundText}
                                             </p>
                                         </div>
                                         <div className="flex gap-4 flex-wrap" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.75rem' }}>
@@ -543,8 +561,8 @@ function ApplyForm() {
                                         >
                                             {paymentLoading ? 'Opening payment...' : (
                                                 <>
-                                                    <span className="sm:hidden">Pay ₵{feeDisplay} {feeCurrency} →</span>
-                                                    <span className="hidden sm:inline">Pay ₵{feeDisplay} & Submit Application →</span>
+                                                    <span className="sm:hidden">Pay {feeLabel} →</span>
+                                                    <span className="hidden sm:inline">Pay {feeLabel} & Submit Application →</span>
                                                 </>
                                             )}
                                         </button>

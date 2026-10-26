@@ -472,10 +472,10 @@
         ]
       },
       "cta": {
-        "title": "Ready to Build Your Political Power?",
-        "description": "Join political leaders across Africa who are transforming their futures through strategic communication and branding.",
-        "apply": "Book Now",
-        "assessment": "Take the Assessment"
+        "title": "Ready to Begin?",
+        "description": "Start with the Political Readiness Index to identify your strategic starting point.",
+        "assessment": "Start Assessment →",
+        "programs": "View Programs"
       },
       "meta": {
         "title": "Political Branding Services | Strategy, Storytelling & Campaign Communication",
@@ -826,30 +826,32 @@
         "description": "Complete the application to book for an in-person or online consultation with our political communication strategists."
       },
       "form": {
-        "step1_title": "Personal details",
-        "step2_title": "Program & Background",
+        "step1_title": "Tell us about yourself",
+        "step1_subtitle": "Basic information so we can reach you.",
+        "step2_title": "What can we help with?",
+        "step2_subtitle": "Select one or more services or programs.",
         "labels": {
           "firstName": "First Name",
           "lastName": "Last Name",
           "email": "Email Address",
           "phone": "Phone Number",
           "country": "Country",
-          "program": "Program of Interest",
-          "role": "Current Role",
-          "essay": "Why are you seeking strategic communication support?"
+          "role": "Current Role / Title",
+          "careerStage": "Career Stage",
+          "essay": "Why are you applying?"
         },
         "placeholders": {
-          "firstName": "e.g. Grace",
-          "lastName": "Mutuku",
-          "email": "grace@example.com",
-          "phone": "+254...",
+          "firstName": "e.g. Ama",
+          "lastName": "e.g. Mensah",
+          "email": "you@example.com",
+          "phone": "+233 20 000 0000",
           "role": "e.g. MP Candidate, NGO Director",
-          "essay": "Tell us about your political ambitions, the challenges you face in gaining visibility or influence, and what a strategic brand would help you achieve. What's your biggest communication gap right now?"
+          "essay": "Tell us about your background, goals, and what you hope to achieve through Polibrand..."
         },
         "consultationFee": {
           "amount": "2,500",
           "currency": "GHS",
-          "description": "50% of your consultation fee will be refunded when we begin working on your brand or enroll you in a program."
+          "description": "Your {amount} application fee will be 50% refunded ({refund}) when we proceed with or start working on your brand strategy."
         },
         "success": {
           "title": "Booking Confirmed",

@@ -147,7 +147,7 @@ export default function PaymentsPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                     <div>
                         <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#111', marginBottom: 2 }}>Payment Integration · Paystack</h3>
-                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af' }}>Enter your Paystack keys to enable ₵1,500 payment collection on the application form.</p>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#9ca3af' }}>Enter your Paystack keys to enable consultation fee collection on the application form.</p>
                     </div>
                     <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: '0.65rem', fontWeight: 700, fontFamily: 'var(--font-body)', background: isConfigured ? '#dcfce7' : '#f3f4f6', color: isConfigured ? '#166534' : '#6b7280' }}>
                         {isConfigured ? '● ACTIVE' : '● NOT SET'}
@@ -179,7 +179,7 @@ export default function PaymentsPage() {
             </div>
 
             <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', color: '#9a3412', borderRadius: 8, padding: '0.85rem 1rem', marginBottom: '1rem', fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.5 }}>
-                {isConfigured ? 'Payment gateway active — applications now require ₵1,500 via Paystack before submission.' : 'Payment gateway not connected. Add Paystack keys above to activate. Figures below are from approved applications only.'}
+                {isConfigured ? 'Payment gateway active — applications now require the consultation fee via Paystack before submission.' : 'Payment gateway not connected. Add Paystack keys above to activate. Figures below are from approved applications only.'}
             </div>
 
             <div className="grid-cols-2-mobile-1" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>

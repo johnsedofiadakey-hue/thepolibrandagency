@@ -125,11 +125,11 @@ export default function ServicesPage() {
             {/* ─── CTA ─── */}
             <section style={{ background: '#111', padding: 'clamp(56px, 10vw, 80px) 0' }}>
                 <div className="container-brand" style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: '#fff', marginBottom: '0.75rem' }}>Ready to Begin?</h2>
-                    <p style={{ fontFamily: 'var(--font-body)', color: 'rgba(255,255,255,0.65)', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: 1.7 }}>Start with the Political Readiness Index to identify your strategic starting point.</p>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: '#fff', marginBottom: '0.75rem' }}>{services.cta?.title || 'Ready to Begin?'}</h2>
+                    <p style={{ fontFamily: 'var(--font-body)', color: 'rgba(255,255,255,0.65)', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: 1.7 }}>{services.cta?.description || 'Start with the Political Readiness Index to identify your strategic starting point.'}</p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Link href="/assessment" className="btn-gold">Start Assessment →</Link>
-                        {programsEnabled && <Link href="/programs#fellowship" className="btn-secondary">View Programs</Link>}
+                        <Link href="/assessment" className="btn-gold">{services.cta?.assessment || 'Start Assessment →'}</Link>
+                        {programsEnabled && <Link href="/programs#fellowship" className="btn-secondary">{services.cta?.programs || 'View Programs'}</Link>}
                     </div>
                 </div>
             </section>
