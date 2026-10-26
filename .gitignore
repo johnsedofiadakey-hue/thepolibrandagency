@@ -56,3 +56,6 @@ lint_output.txt
 # firebase
 .firebase/
 firebase-debug.log*
+
+# tool logs
+tailwindcss-*.log

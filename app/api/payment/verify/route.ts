@@ -1,8 +1,17 @@
 import { NextResponse } from 'next/server';
-import { createApplication, describePersistenceError, getIntegrations } from '@/lib/db';
+import { createApplication, describePersistenceError, getApplications, getContent, getIntegrations } from '@/lib/db';
 import { rateLimit } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
+
+// Expected fee in pesewas, read from the same content the apply page uses to
+// charge the customer, so the server check can't drift from the displayed price.
+async function getExpectedFeeInPesewas(): Promise<number> {
+  const content = await getContent();
+  const pages = (content as { pages?: { apply?: { form?: { consultationFee?: { amount?: string } } } } }).pages;
+  const amount = parseInt(String(pages?.apply?.form?.consultationFee?.amount || '2500').replace(/,/g, ''), 10);
+  return (Number.isFinite(amount) && amount > 0 ? amount : 2500) * 100;
+}
 
 export async function POST(request: Request) {
   const limited = rateLimit(request, { scope: 'payment-verify', limit: 10, windowMs: 60 * 60 * 1000 });
@@ -27,6 +36,13 @@ export async function POST(request: Request) {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(applicationData.email)) {
       return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 });
+    }
+
+    // A Paystack reference may only be redeemed once, otherwise a single payment
+    // could be replayed to create unlimited "paid" applications.
+    const existing = await getApplications();
+    if (existing.some((app) => app?.paymentRef === reference.trim())) {
+      return NextResponse.json({ error: 'This payment reference has already been used.' }, { status: 409 });
     }
 
     const integrations = await getIntegrations();
@@ -54,8 +70,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 150 000 pesewas = ₵1 500 GHS
-    if ((txn?.amount || 0) < 150000) {
+    if ((txn?.currency || 'GHS') !== 'GHS' || (txn?.amount || 0) < (await getExpectedFeeInPesewas())) {
       return NextResponse.json({ error: 'Payment amount is insufficient.' }, { status: 402 });
     }
 

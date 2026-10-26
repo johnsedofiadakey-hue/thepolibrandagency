@@ -8,13 +8,16 @@ export async function POST(request: Request) {
     if (unauthorized) return unauthorized;
 
     try {
-        const { storagePath, bucketName } = await request.json();
-        if (!storagePath || !bucketName) {
-            return NextResponse.json({ error: 'Missing storagePath or bucketName' }, { status: 400 });
+        const { storagePath } = await request.json();
+        // Only objects created by video-signed-url may be finalized; never trust a
+        // client-supplied bucket or an arbitrary path in it.
+        if (typeof storagePath !== 'string' || !/^uploads\/[a-z0-9._]+$/.test(storagePath)) {
+            return NextResponse.json({ error: 'Invalid storagePath' }, { status: 400 });
         }
 
         const firebase = getFirebaseAdmin();
-        if (!firebase?.bucket) {
+        const bucketName = getFirebaseStorageBucket();
+        if (!firebase?.bucket || !bucketName) {
             return NextResponse.json({ error: 'Firebase Storage is not configured.' }, { status: 503 });
         }
 

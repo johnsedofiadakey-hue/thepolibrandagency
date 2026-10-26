@@ -174,7 +174,7 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filename: file.name, contentType: file.type, size: file.size }),
             });
-            const { sessionUri, storagePath, bucketName, error } = await sigRes.json();
+            const { sessionUri, storagePath, error } = await sigRes.json();
             if (!sigRes.ok || !sessionUri) throw new Error(error || 'Could not start upload session');
 
             // Step 2: Send file through our server in ≤24 MB chunks — no CORS, no browser→GCS direct call
@@ -217,7 +217,7 @@ function VideoUploadField({ label, value, onChange }: { label: string; value: st
             const finRes = await fetch('/api/upload/video-finalize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ storagePath, bucketName }),
+                body: JSON.stringify({ storagePath }),
             });
             const { publicUrl, error: finError } = await finRes.json();
             if (!finRes.ok || !publicUrl) throw new Error(finError || 'Could not finalize upload');
